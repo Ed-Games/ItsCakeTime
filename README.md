@@ -2,6 +2,8 @@
 
 ### This is a simple website and mobile app for making connections between beakers and their customers
 
+```This project is opensource and it's under the MIT license, as soon as possible we'll give you the documentation explaining the fork process and all you need to get this working.```
+
 It's cake time permites that a bearker show your products (like cakes, candies, bread, pies) to the world. 
 Each Beaker is a user registered in the aplication. This user will have a profile with informations about his/hers work and a page to create and display his/hers products. All this happens in the website.
 
