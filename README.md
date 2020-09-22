@@ -20,4 +20,5 @@ on the mobile app the customer will be able to see and search for products and f
   The user can log in or request for a password reset, in case his/her forgot it.
   
 - <strong>Profile</strong>: <br />
-  
+  Here the user can change the info that will be displayed about his/hers work.
+  There will be the user's name, a simple description, infos about the user's specialty and contact (e-mail or whatsapp).
