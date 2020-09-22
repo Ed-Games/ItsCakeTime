@@ -1,6 +1,6 @@
 # It'sCakeTime
 
-### This is a simple website and mobile app for making connections between beakers and their customers
+### This is a simple website and mobile app for making connections between bakers and their customers
 
 ```This project is opensource and it's under the MIT license, as soon as possible we'll give you the documentation explaining the fork process and all you need to get this working.```
 
@@ -38,7 +38,7 @@ on the mobile app the customer will be able to see and search for products and f
   Here the user can search and see a list of products ordered by category.
   
 - <strong>List specific product Screen</strong>: <br />
-  After pressing a detail button on the List Screen, the user will se a full info about one product and the contact buttons. There'll also be a button to see the   beaker's profile.
+  After pressing a detail button on the List Screen, the user will se a full info about one product and the contact buttons. There'll also be a button to see the   baker's profile.
 
 - <strong>Beakers Profile Screen</strong>:<br />
   Here the info from the Profile page on the website is displayed for the customer.
