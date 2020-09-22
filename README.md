@@ -28,3 +28,17 @@ on the mobile app the customer will be able to see and search for products and f
   
 - <strong>Register Product</strong>: <br />
   Here the user will have a form to register a new product with them same data explained in the product page.
+
+### Mobile
+
+- <strong>Initial Screen</strong>:<br />
+  A fast and simple explanation about the app and buttons to get started.
+
+- <strong>List screen</strong>:<br />
+  Here the user can search and see a list of products ordered by category.
+  
+- <strong>List specific product Screen</strong>: <br />
+  After pressing a detail button on the List Screen, the user will se a full info about one product and the contact buttons. There'll also be a button to see the   beaker's profile.
+
+- <strong>Beakers Profile Screen</strong>:<br />
+  Here the info from the Profile page on the website is displayed for the customer.
