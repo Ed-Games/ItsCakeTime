@@ -22,3 +22,9 @@ on the mobile app the customer will be able to see and search for products and f
 - <strong>Profile</strong>: <br />
   Here the user can change the info that will be displayed about his/hers work.
   There will be the user's name, a simple description, infos about the user's specialty and contact (e-mail or whatsapp).
+  
+- <strong>Products-page</strong>:
+  In this page, the user's products will be displayed with price, details and the contact buttons.
+  
+- <strong>Register Product</strong>: <br />
+  Here the user will have a form to register a new product with them same data explained in the product page.
