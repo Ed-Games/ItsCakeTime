@@ -19,5 +19,10 @@ module.exports = {
         })
 
         return response.status(201).json("created user")
+    },
+
+    async delete(request,response){
+        const {id} = request.params
+        await connection.delete('user').where('user.id', '=', id)
     }
 }
