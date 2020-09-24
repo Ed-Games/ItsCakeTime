@@ -23,6 +23,7 @@ module.exports = {
 
     async delete(request,response){
         const {id} = request.params
-        await connection.delete('user').where('user.id', '=', id)
+        const userToDelete = await connection('user').select('*').where("user.id","=",id).delete();
+        return response.json(userToDelete)
     }
 }
