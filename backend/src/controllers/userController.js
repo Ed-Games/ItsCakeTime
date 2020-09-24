@@ -10,13 +10,15 @@ module.exports = {
 
     async create(request,response){
         console.log("objeto JSON", request.body)
-        const {userName, email, password} = request.body
+        const {userName, email, password, whatsapp} = request.body
 
         await connection('user').insert({
             userName,
             email,
-            password
+            password,
+            whatsapp
         })
+
 
         return response.status(201).json("created user")
     },
@@ -25,5 +27,12 @@ module.exports = {
         const {id} = request.params
         const userToDelete = await connection('user').select('*').where("user.id","=",id).delete();
         return response.json(userToDelete)
+    },
+
+    async resetPassword(request,response){
+        const {password} = request.body
+        const {id} = request.params
+        const passwdField = await connection('user').select('user.password').where("user.id", "=",id).update({'password':`${password}`})
+        return response.json(passwdField)
     }
 }
