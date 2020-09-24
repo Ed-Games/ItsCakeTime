@@ -18,4 +18,6 @@ routes.post('/users/create', userController.create)
 
 routes.delete('/users/delete/:id', userController.delete)
 
+routes.put('/users/resetPassword/:id', userController.resetPassword)
+
 module.exports = routes
