@@ -16,4 +16,6 @@ routes.get('/users', userController.index)
 
 routes.post('/users/create', userController.create)
 
+routes.delete('/users/delete/:id', userController.delete)
+
 module.exports = routes
