@@ -3,8 +3,8 @@ exports.up = function(Knex){
         table.increments().primary();
         table.string('userName').notNullable();
         table.string('email').notNullable();
-        table.string('whatsapp').notNullable();
         table.string('password').notNullable();
+        table.unique(['userName','email']);
 
 })};
 
