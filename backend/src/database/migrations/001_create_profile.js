@@ -2,7 +2,11 @@ exports.up = function(Knex){
     return Knex.schema.createTable('profile', function(table){
         table.increments();
         table.string('description');
-        table.string('user_id').notNullable();
+        table.string('whatsapp').notNullable();
+        table.decimal('user_id').notNullable();
+        table.string('image');
+        table.string('specialty');
+        table.unique('user_id');
 
         table.foreign('user_id').references('id').inTable('user').onDelete('CASCADE');
 
