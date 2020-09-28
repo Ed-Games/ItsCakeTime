@@ -1,9 +1,10 @@
 exports.up = function(Knex){
     return Knex.schema.createTable('user', function(table){
-        table.string('id').primary();
+        table.increments().primary();
         table.string('userName').notNullable();
         table.string('email').notNullable();
         table.string('password').notNullable();
+        table.unique(['userName','email']);
 
 })};
 

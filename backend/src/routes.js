@@ -1,5 +1,6 @@
 const { urlencoded } = require('express')
 const express = require('express')
+const profileController = require('./controllers/profileController')
 const userController = require('./controllers/userController')
 
 const routes = express.Router()
@@ -12,8 +13,18 @@ routes.use(urlencoded({
 
 console.log("routes is on")
 
-routes.get('/users', userController.index)
+routes.get('/users', userController.index) //NOT TO USE IN PRODUCTION
 
 routes.post('/users/create', userController.create)
+
+routes.delete('/users/delete/:id', userController.delete)
+
+routes.put('/users/resetPassword/:id', userController.resetPassword)
+
+routes.delete('/profile/delete/:id',profileController.delete) //NOT TO USE IN PRODUCTION
+
+routes.get('/profile', profileController.index) //NOT TO USE IN PRODUCTION
+
+routes.put('/profile/update/:id', profileController.update)
 
 module.exports = routes
