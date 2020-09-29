@@ -8,14 +8,15 @@ module.exports = {
     },
 
     async create(request,response){
-        const {price, detail,category,user_id, image} = request.body;
+        const {price, detail,category,user_id, image, name} = request.body;
         console.log("ioiioioioioioioioio")
         await connection('product').insert({
             price,
             detail,
             category,
             user_id,
-            image
+            image,
+            name
         })
 
         return response.status(201).json("product created");
@@ -23,7 +24,18 @@ module.exports = {
 
     async detail(request,response){
         const {id} = request.params
-        const product = await connection('product').select('*').where('product.id','=',id)
+        const product = await connection('product')
+        .join('user','user.id','=','product.user_id')
+        .join('profile','profile.user_id','=','product.user_id')
+        .select('product.detail',
+        'product.price',
+        'product.category',
+        'product.image',
+        'product.name',
+        'profile.whatsapp',
+        'user.email',
+        'user.userName',
+        ).where('product.id','=',id)
         return response.json(product)
     },
 
@@ -33,13 +45,10 @@ module.exports = {
         .join('user','user.id','=',"product.user_id")
         .join('profile','profile.user_id','=','product.user_id')
         .select(
-            'product.detail',
             'product.price',
             'product.category',
             'product.image',
-            'profile.whatsapp',
-            'user.email',
-            'user.userName',
+            'product.name',
             )
         .where("user.userName","=", userName)
         .andWhere("product.price","=",price)
