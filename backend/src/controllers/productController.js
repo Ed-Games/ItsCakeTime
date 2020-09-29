@@ -3,7 +3,7 @@ const connection = require('../database/connection');
 
 module.exports = {
     async index(request,response){
-        const products = await connection('product').select('*');
+        const products = await connection('product').select('name','price','category','image');
         return response.json(products)
     },
 
