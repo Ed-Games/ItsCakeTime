@@ -54,5 +54,15 @@ module.exports = {
         .andWhere("product.price","=",price)
         .andWhere("product.category","=",category)
         return response.json(products)
+    },
+
+    async delete(request,response){
+        const {id} = request.params
+        const productToDelete = await connection('product').select('*').where('product.id','=',id).delete()
+        return response.json(productToDelete)
+    },
+
+    async update(request,response){
+
     }
 }
