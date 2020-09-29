@@ -27,21 +27,20 @@ module.exports = {
         return response.json(product)
     },
 
-    /*async filter(request,response){
-        const{price, userName, category} = request.body
-        const {product, profile}=await connection('product')
-        .join('profile','profile.user_id','=','product.user_id')
-        .select('*').where()
-        const products = await connection('product').select('*');
-        return response.json(products)
-        
-    },*/
-
     async filter(request,response){
         const {price, category, userName} = request.body
         const products = await connection('product')
         .join('user','user.id','=',"product.user_id")
-        .select('*')
+        .join('profile','profile.user_id','=','product.user_id')
+        .select(
+            'product.detail',
+            'product.price',
+            'product.category',
+            'product.image',
+            'profile.whatsapp',
+            'user.email',
+            'user.userName',
+            )
         .where("user.userName","=", userName)
         .andWhere("product.price","=",price)
         .andWhere("product.category","=",category)
