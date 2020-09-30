@@ -14,10 +14,10 @@ module.exports = {
     },
 
     async update(request,response){
-        console.log("oioioioioioioioio")
         const {id} = request.params
         const requestData = request.body
-
+        console.log(requestData)
+        
         await connection('profile').select('*').where("profile.id", "=", id).update(requestData)
 
         return response.status(200).json("perfil atualizado")
