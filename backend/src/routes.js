@@ -3,6 +3,7 @@ const express = require('express')
 const productController = require('./controllers/productController')
 const profileController = require('./controllers/profileController')
 const userController = require('./controllers/userController')
+const upload = require('./services/multerConfig')
 
 
 const routes = express.Router()
@@ -29,7 +30,7 @@ routes.delete('/profile/delete/:id/',profileController.delete) //NOT TO USE IN P
 
 routes.get('/profile/', profileController.index) //NOT TO USE IN PRODUCTION
 
-routes.put('/profile/update/:id/', profileController.update)
+routes.put('/profile/update/:id/',upload.single('image') ,profileController.update)
 
 routes.get('/products/', productController.index)
 
