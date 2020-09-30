@@ -63,6 +63,10 @@ module.exports = {
     },
 
     async update(request,response){
+        const {id} = request.params
+        const product = request.body
+        await connection('product').select('*').where('product.id','=',id).update(product)
 
+        return response.json(product)
     }
 }
