@@ -41,4 +41,6 @@ routes.get('/product/filter/',productController.filter)
 
 routes.delete('/products/delete/:id',productController.delete)
 
+routes.put('/products/update/:id', productController.update)
+
 module.exports = routes
