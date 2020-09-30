@@ -398,4 +398,7 @@ Temporary Items
 # Ignore all local history of files
 .history
 
+#My Owm
+Plan.txt
+
 # End of https://www.toptal.com/developers/gitignore/api/linux,node,react,reactnative,visualstudiocode
