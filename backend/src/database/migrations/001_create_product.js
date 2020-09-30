@@ -1,6 +1,7 @@
 exports.up = function(Knex){
     return Knex.schema.createTable('product', function(table){
         table.increments().primary();
+        table.string('name').notNullable();
         table.string('detail').notNullable();
         table.string('category').defaultTo('Não categorizado');
         table.string('image').notNullable();
