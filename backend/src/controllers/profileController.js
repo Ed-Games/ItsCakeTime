@@ -1,3 +1,4 @@
+const { request } = require('express')
 const connection = require('../database/connection')
 
 module.exports = {
@@ -14,11 +15,12 @@ module.exports = {
     },
 
     async update(request,response){
-        console.log("oioioioioioioioio")
         const {id} = request.params
         const requestData = request.body
-
-        await connection('profile').select('*').where("profile.id", "=", id).update(requestData)
+        console.log(request.file.path)
+        const path = request.file.path
+        
+        await connection('profile').select('*').where("profile.id", "=", id).update(requestData).update({image:path})
 
         return response.status(200).json("perfil atualizado")
     }
