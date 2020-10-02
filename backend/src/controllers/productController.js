@@ -8,14 +8,14 @@ module.exports = {
     },
 
     async create(request,response){
-        const {price, detail,category,user_id, image, name} = request.body;
+        const {price, detail,category,user_id, name} = request.body;
         console.log("ioiioioioioioioioio")
         await connection('product').insert({
             price,
             detail,
             category,
             user_id,
-            image,
+            image: request.file.path,
             name
         })
 
