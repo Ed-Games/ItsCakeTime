@@ -1,12 +1,38 @@
-const { query } = require('express')
 const connection = require('../database/connection')
-const profileController = require('./profileController')
 
 module.exports = {
     async index(request, response){
         const user = await connection('user').select('*')
 
         return response.json(user)
+    },
+
+    async login(request,response){
+
+        try {
+            const {userName, password} = request.body
+        } catch (error) {
+            return response.status(401).json("invalid data")
+        }
+
+       try {
+            const user = await connection('user')
+            .select('*')
+            .where("user.userName","=",userName)
+            .andWhere("user.password","=",password)
+       } catch (error) {
+            return response.sendStatus(500)
+       }
+        
+        if (!user.userName) return response.status(404).json("No user found")
+
+        const user = {name : userName}
+
+
+
+        return response.json(user)
+
+
     },
 
     async create(request,response){
