@@ -20,6 +20,8 @@ console.log("routes is on")
 
 routes.get('/users/', userController.index) //NOT TO USE IN PRODUCTION
 
+routes.post('/login', userController.login)
+
 routes.post('/users/create/', userController.create)
 
 routes.delete('/users/delete/:id/', userController.delete)
