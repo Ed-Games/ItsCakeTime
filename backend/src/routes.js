@@ -34,7 +34,7 @@ routes.put('/profile/update/:id/',upload.single('image') ,profileController.upda
 
 routes.get('/products/', productController.index)
 
-routes.post('/products/create/', productController.create)
+routes.post('/products/create/',upload.single('image'), productController.create)
 
 routes.get('/products/:id/', productController.detail)
 
