@@ -8,6 +8,7 @@ const upload = require('./services/multerConfig')
 
 const routes = express.Router()
 const morgan = require('morgan');
+const { authenticateToken } = require('./services/authorization')
 routes.use(morgan('dev'));
 
 routes.use(express.json())
@@ -31,6 +32,8 @@ routes.put('/users/resetPassword/:id/', userController.resetPassword)
 routes.delete('/profile/delete/:id/',profileController.delete) //NOT TO USE IN PRODUCTION
 
 routes.get('/profile/', profileController.index) //NOT TO USE IN PRODUCTION
+
+routes.get('/profile/show',authenticateToken, profileController.show)
 
 routes.put('/profile/update/:id/',upload.single('image') ,profileController.update)
 
