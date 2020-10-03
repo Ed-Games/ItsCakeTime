@@ -1,4 +1,6 @@
+require('dotenv').config()
 const connection = require('../database/connection')
+const jwt = require('jsonwebtoken')
 
 module.exports = {
     async index(request, response){
@@ -8,29 +10,24 @@ module.exports = {
     },
 
     async login(request,response){
-
-        try {
-            const {userName, password} = request.body
-        } catch (error) {
-            return response.status(401).json("invalid data")
-        }
-
+        const {userName, password} = request.body
        try {
             const user = await connection('user')
             .select('*')
             .where("user.userName","=",userName)
             .andWhere("user.password","=",password)
+            console.log(user[0].userName)
+            if (!user[0].userName) return response.status(404).json("No user found")
+
        } catch (error) {
+           console.log(error)
             return response.sendStatus(500)
        }
         
-        if (!user.userName) return response.status(404).json("No user found")
 
-        const user = {name : userName}
-
-
-
-        return response.json(user)
+        const userauth = {name : userName}
+        const accessToken = jwt.sign(userauth, ''+process.env.ACCESS_TOKEN_SECRET)
+        return response.json(accessToken)
 
 
     },
