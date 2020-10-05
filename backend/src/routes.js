@@ -35,7 +35,7 @@ routes.get('/profile/', profileController.index) //NOT TO USE IN PRODUCTION
 
 routes.get('/profile/show',authenticateToken, profileController.show)
 
-routes.put('/profile/update/:id/',upload.single('image') ,profileController.update)
+routes.put('/profile/update/:id/',authenticateToken,upload.single('image') ,profileController.update)
 
 routes.get('/products/', productController.index)
 
