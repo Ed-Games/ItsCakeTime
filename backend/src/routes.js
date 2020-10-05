@@ -27,7 +27,7 @@ routes.post('/users/register/', userController.create)
 
 routes.delete('/users/delete/:id/',authenticateToken, userController.delete)
 
-routes.put('/users/resetPassword/:id/', userController.resetPassword)
+routes.put('/users/resetPassword/:id/',authenticateToken, userController.resetPassword)
 
 routes.delete('/profile/delete/:id/',profileController.delete) //NOT TO USE IN PRODUCTION
 
