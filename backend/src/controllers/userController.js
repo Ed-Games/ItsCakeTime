@@ -57,10 +57,17 @@ module.exports = {
 
     async delete(request,response){
         const {id} = request.params
-        //const userToDelete = await connection('user').select('*').where("user.id","=",id).delete();
-        const userToDelete = await connection('user').select('*').where("user.id","=",id).delete()
-        const profileToDelete = await connection('profile').select("*").where('profile.user_id', "=", id).delete()
-        return response.json([userToDelete, profileToDelete])
+        const user = request.user.name
+        const userToDelete = await connection('user').select('*').where("user.id",'=',id)
+        console.log(userToDelete[0]['userName'])
+
+        if (userToDelete[0]['userName']==user){
+            const userToDelete = await connection('user').select('*').where("user.id","=",id).delete()
+            const profileToDelete = await connection('profile').select("*").where('profile.user_id', "=", id).delete()
+            return response.json([userToDelete, profileToDelete])
+        } else{
+            return response.status(403).json("Você não tem permissão para excluir esta conta")
+        }
     },
 
     async resetPassword(request,response){
