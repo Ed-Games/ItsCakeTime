@@ -21,13 +21,17 @@ module.exports = {
 
        } catch (error) {
            console.log(error)
-            return response.sendStatus(500)
+            return response.sendStatus(400)
        }
         
+        try {
+            const userauth = {name : userName}
+            const accessToken = jwt.sign(userauth, ''+process.env.ACCESS_TOKEN_SECRET)
+            return response.json(accessToken)  
 
-        const userauth = {name : userName}
-        const accessToken = jwt.sign(userauth, ''+process.env.ACCESS_TOKEN_SECRET)
-        return response.json(accessToken)
+        } catch (error) {
+           return response.status(500).json("couldn't create a token, try again")
+       }
 
 
     },
@@ -43,7 +47,7 @@ module.exports = {
         })
 
         id = await connection('user').select('user.id').where('user.email', "=", email)
-        console.log("aqui se encontra o id necessario", id)
+        console.log("here is the id need", id)
 
         user_id = id[0]['id']
         
@@ -66,7 +70,7 @@ module.exports = {
             const profileToDelete = await connection('profile').select("*").where('profile.user_id', "=", id).delete()
             return response.json([userToDelete, profileToDelete])
         } else{
-            return response.status(403).json("Você não tem permissão para excluir esta conta")
+            return response.status(403).json("you're not able to delete this account")
         }
     },
 
