@@ -40,7 +40,7 @@ module.exports = {
     },
 
     async filter(request,response){
-        const {price, category, userName} = request.body
+        const {price, category} = request.body
         const products = await connection('product')
         .join('user','user.id','=',"product.user_id")
         .join('profile','profile.user_id','=','product.user_id')
@@ -50,8 +50,7 @@ module.exports = {
             'product.image',
             'product.name',
             )
-        .where("user.userName","=", userName)
-        .andWhere("product.price","=",price)
+        .where("product.price","=",price)
         .andWhere("product.category","=",category)
         return response.json(products)
     },
