@@ -6,7 +6,7 @@ module.exports = {
     async delete(request,response){
         const {id} = request.params
         await connection('profile').select('*').where("profile.id", "=", id).delete() 
-        return response.status(200).json("perfil deletado")
+        return response.status(200).json("profile deleted")
     },
 
     async index(request,response){
@@ -35,11 +35,21 @@ module.exports = {
     async update(request,response){
         const {id} = request.params
         const requestData = request.body
-        console.log(request.file.path)
-        const path = request.file.path
+        const user = request.user.name
         
-        await connection('profile').select('*').where("profile.id", "=", id).update(requestData).update({image:path})
+        const profileUser = await connection('profile').join('user','user.id','profile.user_id').select('user.userName').where('profile.id','=',id)
+        
+        console.log(profileUser)
+        
+        if(user!=profileUser[0]['userName']) return response.sendStatus(403)
 
-        return response.status(200).json("perfil atualizado")
+        if(request.file){
+            const path = request.file.path
+            await connection('profile').select('*').where("profile.id", "=", id).update(requestData).update({image:path})
+       } else {
+            await connection('profile').select('*').where("profile.id", "=", id).update(requestData)
+       }
+
+        return response.status(200).json("profile updated")
     }
 }
