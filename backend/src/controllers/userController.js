@@ -75,9 +75,24 @@ module.exports = {
     },
 
     async resetPassword(request,response){
-        const {password} = request.body
-        const {id} = request.params
-        const passwdField = await connection('user').select('user.password').where("user.id", "=",id).update({'password':`${password}`})
-        return response.json(passwdField)
+        try {
+            const {password} = request.body
+            const {id} = request.params
+            const user = request.user.name
+
+            const userName = await connection('user').select('user.userName').where('user.id','=',id)
+
+            if(userName[0]['userName']!=user){
+                return response.sendStatus(403)
+            }
+            
+            const passwdField = await connection('user')
+            .select('user.password').where("user.id", "=",id)
+            .update({'password':`${password}`})
+            return response.json(passwdField)
+        } catch (error) {
+            console.log(error)
+            return response.sendStatus(400)
+        }
     }
 }
