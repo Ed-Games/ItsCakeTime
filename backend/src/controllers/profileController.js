@@ -39,7 +39,7 @@ module.exports = {
         
         const profileUser = await connection('profile').join('user','user.id','profile.user_id').select('user.userName').where('profile.id','=',id)
         
-        console.log(profileUser)
+        console.log(profileUser[0]['userName'], user)
         
         if(user!=profileUser[0]['userName']) return response.sendStatus(403)
 
