@@ -61,6 +61,15 @@ module.exports = {
 
     async delete(request,response){
         const {id} = request.params
+        const user = request.user.name
+        const productUser =  await connection('product')
+        .join('user','user.id','product.user_id')
+        .select('user.username')
+        .where('product.id','=',id)
+
+        console.log("alert:",user,productUser)
+        if(user!=productUser[0]['userName']) return response.sendStatus(403)
+
         const productToDelete = await connection('product').select('*').where('product.id','=',id).delete()
         return response.json(productToDelete)
     },
@@ -68,7 +77,20 @@ module.exports = {
     async update(request,response){
         const {id} = request.params
         const product = request.body
-        await connection('product').select('*').where('product.id','=',id).update(product)
+        const user = request.user.name
+
+        const productUser = await connection('product')
+        .join('user','user.id','product.user_id')
+        .select('user.userName')
+        .where('product.id','=',id)
+
+        console.log(user, productUser)
+        if(productUser[0]['userName']!=user) return response.sendStatus(403)
+
+        await connection('product')
+        .select('*')
+        .where('product.id','=',id)
+        .update(product)
 
         return response.json(product)
     },
