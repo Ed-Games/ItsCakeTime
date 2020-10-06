@@ -87,5 +87,30 @@ module.exports = {
     
 
         return response.json(products)
+    },
+
+    async edit(request,response){
+        const user = request.user.name
+        const {id} = request.params
+        const data = request.body
+
+        const profileUser = await connection('product')
+        .join('user','user.id','product.user_id')
+        .select('user.userName')
+        .where('product.id','=',id)
+
+        console.log(profileUser)
+
+        if(user!=profileUser[0]['userName']) return response.sendStatus(403)
+
+        const editedProduct = await connection('product')
+        .join('user','user.id','product.user_id')
+        .select('*')
+        .where('product.id','=',id)
+        .update(data)
+
+        return response.json(editedProduct)
+
     }
+
 }
