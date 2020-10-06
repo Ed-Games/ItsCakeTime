@@ -39,7 +39,7 @@ routes.put('/profile/update/:id/',authenticateToken,upload.single('image') ,prof
 
 routes.get('/products/', productController.index)
 
-routes.post('/products/create/',upload.single('image'), productController.create)
+routes.post('/products/create/',authenticateToken,upload.single('image'), productController.create)
 
 routes.get('/products/:id/', productController.detail)
 
@@ -48,5 +48,7 @@ routes.get('/product/filter/',productController.filter)
 routes.delete('/products/delete/:id',productController.delete)
 
 routes.put('/products/update/:id', productController.update)
+
+routes.get('/product/myproducts',authenticateToken,productController.list)
 
 module.exports = routes
