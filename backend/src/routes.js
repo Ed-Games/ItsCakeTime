@@ -51,4 +51,6 @@ routes.put('/products/update/:id', productController.update)
 
 routes.get('/product/myproducts',authenticateToken,productController.list)
 
+routes.put('/products/edit/:id', authenticateToken,upload.single('image'), productController.edit)
+
 module.exports = routes
