@@ -45,12 +45,14 @@ routes.get('/products/:id/', productController.detail)
 
 routes.get('/product/filter/',productController.filter)
 
-routes.delete('/products/delete/:id',productController.delete)
+routes.delete('/products/delete/:id',authenticateToken,productController.delete)
 
-routes.put('/products/update/:id', productController.update)
+routes.put('/products/update/:id',authenticateToken, productController.update)
 
 routes.get('/product/myproducts',authenticateToken,productController.list)
 
 routes.put('/products/edit/:id', authenticateToken,upload.single('image'), productController.edit)
+
+routes.get('/profile/search',profileController.search)
 
 module.exports = routes
