@@ -1,5 +1,6 @@
 const { request, response } = require('express')
 const connection = require('../database/connection')
+const { use } = require('../routes')
 const { GetRequestUser } = require('../services/authorization')
 
 module.exports = {
@@ -51,5 +52,14 @@ module.exports = {
        }
 
         return response.status(200).json("profile updated")
+    },
+
+    async search(request,response){
+        const {search} = request.body
+        const users = await connection('profile')
+        .join('user','user.id','profile.user_id')
+        .select('user.userName','profile.image','profile.specialty').where('user.userName','=',search)
+
+        return response.json(users)
     }
 }
