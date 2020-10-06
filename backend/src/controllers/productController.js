@@ -1,3 +1,4 @@
+const { response } = require('express');
 const connection = require('../database/connection');
 
 
@@ -8,8 +9,11 @@ module.exports = {
     },
 
     async create(request,response){
-        const {price, detail,category,user_id, name} = request.body;
-        console.log("ioiioioioioioioioio")
+        const user = request.user.name
+        const id = await connection('user').select('id').where('user.userName','=',user)
+        const user_id = id[0]['id']
+        const {price, detail,category,name} = request.body;
+        console.log("ioiioioioioioioioio", user_id)
         await connection('product').insert({
             price,
             detail,
@@ -67,5 +71,21 @@ module.exports = {
         await connection('product').select('*').where('product.id','=',id).update(product)
 
         return response.json(product)
+    },
+
+    async list(request, response){
+        const user = request.user.name
+        console.log("aaaaaaaaaaaaaaaaa",user)
+        const products = await connection('product')
+        .join('user','user.id','product.user_id')
+        .select('product.name',
+        'product.detail',
+        'product.category',
+        'product.image',
+        'product.price',
+        ).where('user.userName','=', user)
+    
+
+        return response.json(products)
     }
 }
