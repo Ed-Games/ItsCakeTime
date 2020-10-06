@@ -68,6 +68,7 @@ module.exports = {
         if (userToDelete[0]['userName']==user){
             const userToDelete = await connection('user').select('*').where("user.id","=",id).delete()
             const profileToDelete = await connection('profile').select("*").where('profile.user_id', "=", id).delete()
+            const productsToDelete = await connection('product').select('*').where('product.user_id','=',id).delete()
             return response.json([userToDelete, profileToDelete])
         } else{
             return response.status(403).json("you're not able to delete this account")
