@@ -8,7 +8,8 @@ const upload = require('./services/multerConfig')
 
 const routes = express.Router()
 const morgan = require('morgan');
-const { authenticateToken } = require('./services/authorization')
+const { authenticateToken, refreshToken } = require('./services/authorization')
+
 routes.use(morgan('dev'));
 
 routes.use(express.json())
@@ -17,7 +18,6 @@ routes.use(urlencoded({
     extended: true
 }))
 
-console.log("routes is on")
 
 routes.get('/users/', userController.index) //NOT TO USE IN PRODUCTION
 
@@ -54,5 +54,7 @@ routes.get('/product/myproducts',authenticateToken,productController.list)
 routes.put('/products/edit/:id', authenticateToken,upload.single('image'), productController.edit)
 
 routes.get('/profile/search',profileController.search)
+
+routes.get('/token',refreshToken)
 
 module.exports = routes
