@@ -1,6 +1,7 @@
 require('dotenv').config()
 const connection = require('../database/connection')
 const jwt = require('jsonwebtoken')
+const {refreshTokens, generateAccessToken} = require('../services/authorization')
 
 module.exports = {
     async index(request, response){
@@ -26,10 +27,15 @@ module.exports = {
         
         try {
             const userauth = {name : userName}
-            const accessToken = jwt.sign(userauth, ''+process.env.ACCESS_TOKEN_SECRET)
-            return response.json(accessToken)  
+            const accessToken = generateAccessToken(userName)
+            const refreshToken = jwt.sign(userauth,''+process.env.REFRESH_TOKEN_SECRET)
+            console.log(refreshToken)
+            refreshTokens.push(refreshToken)
+            console.log(accessToken, refreshToken)
+            return response.json({accessToken : accessToken, refreshToken:refreshToken})  
 
         } catch (error) {
+            console.log(error)
            return response.status(500).json("couldn't create a token, try again")
        }
 
