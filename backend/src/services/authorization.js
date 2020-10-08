@@ -16,14 +16,22 @@ function generateAccessToken(userName){
 
 function refreshToken(request,response){
     const refreshToken = request.body.token
-    console.log(String(refreshToken),refreshTokens)
     if (refreshToken == null) return response.sendStatus(401)
+    console.log('chegou!!!')
 
-    if (!refreshTokens.includes(String(refreshToken))) return response.sendStatus(403)
+    if (!refreshTokens.includes(''+ refreshToken)){
+        console.log(''+refreshToken,refreshTokens)
+        console.log(" tá dentro do IF cara, funciona")
+        return response.sendStatus(403)
+    } 
 
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (error, user)=>{
-        if(error) return response.sendStatus(403)
-        const accessToken = generateAccessToken({name : user.name})
+    jwt.verify(refreshToken, ''+process.env.REFRESH_TOKEN_SECRET, (error, user)=>{
+        if(error) {
+            console.log(error)
+            return response.sendStatus(403)
+        }
+        console.log("olha o nome do user",user.name)
+        const accessToken = generateAccessToken(user.name)
 
         return response.json(accessToken)
     })
