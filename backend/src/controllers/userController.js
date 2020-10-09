@@ -1,7 +1,8 @@
 require('dotenv').config()
 const connection = require('../database/connection')
 const jwt = require('jsonwebtoken')
-const {refreshTokens, generateAccessToken} = require('../services/authorization')
+const {generateAccessToken} = require('../services/authorization')
+let {refreshTokens} = require('../services/authorization')
 
 module.exports = {
     async index(request, response){
@@ -17,7 +18,7 @@ module.exports = {
             .select('*')
             .where("user.userName","=",userName)
             .andWhere("user.password","=",password)
-            console.log(user[0].userName)
+            //console.log(user[0].userName)
             if (!user[0].userName) return response.status(404).json("No user found")
 
        } catch (error) {
@@ -29,9 +30,9 @@ module.exports = {
             const userauth = {name : userName}
             const accessToken = generateAccessToken(userName)
             const refreshToken = jwt.sign(userauth,''+process.env.REFRESH_TOKEN_SECRET)
-            console.log(refreshToken)
+            //console.log(refreshToken)
             refreshTokens.push(refreshToken)
-            console.log(accessToken, refreshToken)
+            //console.log(accessToken, refreshToken)
             return response.json({accessToken : accessToken, refreshToken:refreshToken})  
 
         } catch (error) {
@@ -42,8 +43,18 @@ module.exports = {
 
     },
 
+    async logout(request,response){
+        console.log("O QUE IMPORTA È AQUI")
+       // refreshTokens = refreshTokens.filter(token => token !== request.body.token)
+       const removeToken = request.body.accessToken
+       refreshTokens.splice(refreshTokens.indexOf(removeToken),1)
+        console.log(refreshTokens)
+        if(refreshTokens == null) return console.log('nulo')
+        return response.sendStatus(204)
+    },
+
     async create(request,response){
-        console.log("objeto JSON", request.body)
+        //console.log("objeto JSON", request.body)
         const {userName, email, password, whatsapp} = request.body
 
         await connection('user').insert({
@@ -53,7 +64,7 @@ module.exports = {
         })
 
         id = await connection('user').select('user.id').where('user.email', "=", email)
-        console.log("here is the id need", id)
+        //console.log("here is the id need", id)
 
         user_id = id[0]['id']
         
@@ -69,7 +80,7 @@ module.exports = {
         const {id} = request.params
         const user = request.user.name
         const userToDelete = await connection('user').select('*').where("user.id",'=',id)
-        console.log(userToDelete[0]['userName'])
+        //console.log(userToDelete[0]['userName'])
 
         if (userToDelete[0]['userName']==user){
             const userToDelete = await connection('user').select('*').where("user.id","=",id).delete()
