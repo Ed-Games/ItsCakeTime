@@ -5,23 +5,24 @@ require('dotenv').config()
 
 let User = null
 
-const refreshTokens = []
+let refreshTokens = []
 
 function generateAccessToken(userName){
     const userauth = {name : userName}
     const accessToken = jwt.sign(userauth, ''+process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s'})
-    console.log(userauth)
+    //console.log(userauth)
     return accessToken
 }
 
 function refreshToken(request,response){
     const refreshToken = request.body.token
-    if (refreshToken == null) return response.sendStatus(401)
-    console.log('chegou!!!')
+    if (refreshToken == null) {
+        console.log('nulo')
+        return response.sendStatus(401)
+    }
 
     if (!refreshTokens.includes(''+ refreshToken)){
-        console.log(''+refreshToken,refreshTokens)
-        console.log(" tá dentro do IF cara, funciona")
+        console.log('não esta no array')
         return response.sendStatus(403)
     } 
 
@@ -30,7 +31,7 @@ function refreshToken(request,response){
             console.log(error)
             return response.sendStatus(403)
         }
-        console.log("olha o nome do user",user.name)
+        //console.log("olha o nome do user",user.name)
         const accessToken = generateAccessToken(user.name)
 
         return response.json(accessToken)
