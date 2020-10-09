@@ -57,4 +57,6 @@ routes.get('/profile/search',profileController.search)
 
 routes.get('/token',refreshToken)
 
+routes.delete('/logout', userController.logout)
+
 module.exports = routes
