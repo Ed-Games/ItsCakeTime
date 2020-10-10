@@ -55,8 +55,8 @@ routes.put('/products/edit/:id', authenticateToken,upload.single('image'), produ
 
 routes.get('/profile/search',profileController.search)
 
-routes.get('/token',refreshToken)
+routes.get('/token',authenticateToken,refreshToken)
 
-routes.delete('/logout', userController.logout)
+routes.delete('/logout',authenticateToken, userController.logout)
 
 module.exports = routes
