@@ -1,11 +1,10 @@
 const { response } = require('express')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
+const connection = require('../database/connection')
 
 
 let User = null
-
-let refreshTokens = []
 
 function generateAccessToken(userName){
     const userauth = {name : userName}
@@ -14,17 +13,28 @@ function generateAccessToken(userName){
     return accessToken
 }
 
-function refreshToken(request,response){
+ async function refreshToken(request,response){
     const refreshToken = request.body.token
+    console.log(request.user.name)
+    const user = request.user.name
     if (refreshToken == null) {
         console.log('nulo')
         return response.sendStatus(401)
     }
 
-    if (!refreshTokens.includes(''+ refreshToken)){
-        console.log('não esta no array')
-        return response.sendStatus(403)
-    } 
+    try {
+        const userRefreshToken = await connection('user')
+        .select('refreshToken')
+        .where('user.userName','=',user)
+        console.log(userRefreshToken,refreshToken)
+        if (userRefreshToken[0]['refreshToken']!=refreshToken){
+            console.log('wrong token')
+            return response.sendStatus(403)
+        } 
+    } catch (error) {
+        return response.status(403).json("provided token didn't match your token")
+    }
+
 
     jwt.verify(refreshToken, ''+process.env.REFRESH_TOKEN_SECRET, (error, user)=>{
         if(error) {
@@ -62,7 +72,6 @@ function GetRequestUser(){
 module.exports = {
     authenticateToken,
     GetRequestUser,
-    refreshTokens,
     generateAccessToken,
     refreshToken
 
