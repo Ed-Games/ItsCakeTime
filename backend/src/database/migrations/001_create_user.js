@@ -4,7 +4,8 @@ exports.up = function(Knex){
         table.string('userName').notNullable();
         table.string('email').notNullable();
         table.string('password').notNullable();
-        table.unique(['userName','email']);
+        table.string('refreshToken');
+        table.unique(['userName','email','refreshToken']);
 
 })};
 
