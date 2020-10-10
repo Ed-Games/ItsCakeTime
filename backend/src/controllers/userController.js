@@ -2,7 +2,6 @@ require('dotenv').config()
 const connection = require('../database/connection')
 const jwt = require('jsonwebtoken')
 const {generateAccessToken} = require('../services/authorization')
-let {refreshTokens} = require('../services/authorization')
 
 module.exports = {
     async index(request, response){
@@ -30,9 +29,7 @@ module.exports = {
             const userauth = {name : userName}
             const accessToken = generateAccessToken(userName)
             const refreshToken = jwt.sign(userauth,''+process.env.REFRESH_TOKEN_SECRET)
-            //console.log(refreshToken)
-            refreshTokens.push(refreshToken)
-            //console.log(accessToken, refreshToken)
+            await connection('user').where('user.userName','=',userName).update({refreshToken})
             return response.json({accessToken : accessToken, refreshToken:refreshToken})  
 
         } catch (error) {
@@ -44,12 +41,10 @@ module.exports = {
     },
 
     async logout(request,response){
+        const user = request.user.name
         console.log("O QUE IMPORTA È AQUI")
        // refreshTokens = refreshTokens.filter(token => token !== request.body.token)
-       const removeToken = request.body.accessToken
-       refreshTokens.splice(refreshTokens.indexOf(removeToken),1)
-        console.log(refreshTokens)
-        if(refreshTokens == null) return console.log('nulo')
+       await connection('user').where('user.userName','=',user).update({refreshToken: null})
         return response.sendStatus(204)
     },
 
