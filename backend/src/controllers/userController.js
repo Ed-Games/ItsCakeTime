@@ -5,19 +5,23 @@ const {generateAccessToken} = require('../services/authorization')
 
 module.exports = {
     async index(request, response){
-        const user = await connection('user').select('*')
+        try {
+            const user = await connection('user').select('*') 
+            return response.json(user)
+        } catch (error) {
+            return response.send(500),json('unable to get users list, try again later')
+        }
 
-        return response.json(user)
     },
 
     async login(request,response){
+        if(!request.body.userName || !request.body.password) return response.sendStatus(400)
         const {userName, password} = request.body
        try {
             const user = await connection('user')
             .select('*')
             .where("user.userName","=",userName)
             .andWhere("user.password","=",password)
-            //console.log(user[0].userName)
             if (!user[0].userName) return response.status(404).json("No user found")
 
        } catch (error) {
@@ -42,48 +46,67 @@ module.exports = {
 
     async logout(request,response){
         const user = request.user.name
-        console.log("O QUE IMPORTA È AQUI")
-       // refreshTokens = refreshTokens.filter(token => token !== request.body.token)
-       await connection('user').where('user.userName','=',user).update({refreshToken: null})
-        return response.sendStatus(204)
+        try {
+            await connection('user').where('user.userName','=',user).update({refreshToken: null})
+             return response.sendStatus(204)  
+        } catch (error) {
+            console.log(error)
+            return response.status(500).json('internal server error')
+        }
     },
 
     async create(request,response){
         //console.log("objeto JSON", request.body)
-        const {userName, email, password, whatsapp} = request.body
+        try {
+            const {userName, email, password, whatsapp} = request.body
 
-        await connection('user').insert({
-            userName,
-            email,
-            password,
-        })
+            const trx = await connection.transaction()
 
-        id = await connection('user').select('user.id').where('user.email', "=", email)
-        //console.log("here is the id need", id)
+            await trx('user').insert({
+                userName,
+                email,
+                password,
+            })
 
-        user_id = id[0]['id']
-        
-        await connection('profile').insert({
-            user_id,
-            whatsapp
-        })
+            id = await trx('user').select('user.id').where('user.email', "=", email)
+            //console.log("here is the id need", id)
 
-        return response.status(201).json("created user")
+            user_id = id[0]['id']
+            
+            await trx('profile').insert({
+                user_id,
+                whatsapp
+            })
+
+            await trx.commit()
+
+            return response.status(201).json("created user")    
+        } catch (error) {
+            console.log(error)
+            return response.status(500).json('unable to create user or profile, please check if your data is correct and try again')
+        }
     },
 
     async delete(request,response){
-        const {id} = request.params
-        const user = request.user.name
-        const userToDelete = await connection('user').select('*').where("user.id",'=',id)
-        //console.log(userToDelete[0]['userName'])
-
-        if (userToDelete[0]['userName']==user){
-            const userToDelete = await connection('user').select('*').where("user.id","=",id).delete()
-            const profileToDelete = await connection('profile').select("*").where('profile.user_id', "=", id).delete()
-            const productsToDelete = await connection('product').select('*').where('product.user_id','=',id).delete()
-            return response.json([userToDelete, profileToDelete])
-        } else{
-            return response.status(403).json("you're not able to delete this account")
+        try {
+            const {id} = request.params
+            const user = request.user.name
+            const trx = await connection.transaction()
+    
+            const userToDelete = await trx('user').select('*').where("user.id",'=',id)
+            //console.log(userToDelete[0]['userName'])
+    
+            if (userToDelete[0]['userName']==user){
+                const userToDelete = await trx('user').select('*').where("user.id","=",id).delete()
+                const profileToDelete = await trx('profile').select("*").where('profile.user_id', "=", id).delete()
+                const productsToDelete = await trx('product').select('*').where('product.user_id','=',id).delete()
+                await trx.commit()
+                return response.json([userToDelete, profileToDelete])
+            } else{
+                return response.status(403).json("you're not able to delete this account")
+            }
+        } catch (error) {
+            return response.status(500).json('unable to delete user, please check your data and try again')
         }
     },
 
@@ -93,8 +116,9 @@ module.exports = {
             const {id} = request.params
             const user = request.user.name
 
-            const userName = await connection('user').select('user.userName').where('user.id','=',id)
+            console.log(user)
 
+            const userName = await connection('user').select('user.userName').where('user.id','=',id)
             if(userName[0]['userName']!=user){
                 return response.sendStatus(403)
             }
