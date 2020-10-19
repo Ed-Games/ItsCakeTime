@@ -8,7 +8,7 @@ let User = null
 
 function generateAccessToken(userName){
     const userauth = {name : userName}
-    const accessToken = jwt.sign(userauth, ''+process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30s'})
+    const accessToken = jwt.sign(userauth, ''+process.env.ACCESS_TOKEN_SECRET, { expiresIn: '20min'})
     //console.log(userauth)
     return accessToken
 }
