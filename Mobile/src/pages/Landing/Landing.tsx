@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { Image, Text, View } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
@@ -7,6 +8,12 @@ import styles from './styles'
 
 
 export default function Landing(){
+    const navigation = useNavigation()
+
+    function handleNavigateToProductsList(){
+        navigation.navigate('ProductsList')
+    }
+
     return(
         <View style={styles.container} >
             <Text style={styles.title} >Seja bem vindo ao</Text>
@@ -15,7 +22,7 @@ export default function Landing(){
             <Text style={styles.contentText}>Ter uma padaria por perto é bom, mas agora ela esta no seu bolso</Text>
             <Text style={styles.actionText}>O que deseja fazer?</Text>
             <View style={styles.buttonsView}>
-                <RectButton style={styles.clientButton}><Text style={styles.ButtonText}>Fazer uma encomenda</Text></RectButton>
+                <RectButton onPress={handleNavigateToProductsList} style={styles.clientButton}><Text style={styles.ButtonText}>Fazer uma encomenda</Text></RectButton>
                 <RectButton style={styles.bakerButton}><Text style={styles.ButtonText}>Ver minha confeitaria</Text></RectButton>
             </View>
         </View>
