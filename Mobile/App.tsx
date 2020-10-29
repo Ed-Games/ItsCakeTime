@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import {Archivo_600SemiBold, useFonts} from '@expo-google-fonts/archivo'
-import {Poppins_600SemiBold, Poppins_600SemiBold_Italic, Poppins_500Medium_Italic} from '@expo-google-fonts/poppins'
+import {Poppins_600SemiBold, Poppins_600SemiBold_Italic, Poppins_500Medium_Italic, Poppins_300Light, Poppins_400Regular} from '@expo-google-fonts/poppins'
 import Routes from './src/routes';
 import { AppLoading } from 'expo';
 
@@ -12,7 +12,9 @@ export default function App() {
     Archivo_600SemiBold,
     Poppins_600SemiBold, 
     Poppins_600SemiBold_Italic, 
-    Poppins_500Medium_Italic
+    Poppins_500Medium_Italic,
+    Poppins_300Light,
+    Poppins_400Regular
   })
 
   if(!fontsLoaded){
