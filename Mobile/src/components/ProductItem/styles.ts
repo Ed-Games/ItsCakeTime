@@ -1,3 +1,5 @@
+import { Poppins_600SemiBold } from "@expo-google-fonts/poppins"
+
 const styles = {
     ProductItem : {
         marginTop: 30,
@@ -28,7 +30,7 @@ const styles = {
 
     CategoryText:{
         color: '#F159E2',
-        fontSize: 10,
+        fontSize: 15,
         marginTop: 20,
         fontFamily: 'Poppins_400Regular'
     },
@@ -42,12 +44,12 @@ const styles = {
     ProductPriceLabel : {
         color: '#9330AC',
         fontFamily: 'Poppins_600SemiBold',
-        fontSize: 11,
+        fontSize: 15,
     },
     ProductPriceValue : {
         color: '#978D9C',
         fontFamily: 'Poppins_600SemiBold',
-        fontSize: 11,
+        fontSize: 15,
     },
 
     ProductDescription : {
@@ -57,6 +59,37 @@ const styles = {
         fontFamily: 'Poppins_300Light',
         fontSize: 15,
     },
+
+    LinkButton:{
+        width: 40,
+        height: 36,
+        backgroundColor: '#F782EC',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 20
+
+    },
+
+    LinkView :{
+        borderTopRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        backgroundColor: '#F782EC',
+        Height:36,
+        width:40,
+        marginTop: -30,
+        marginLeft: 42
+    },
+
+    LinkText:{
+        width: 65,
+        height:30,
+        fontSize: 10,
+        fontFamily: 'Poppins_600SemiBold',
+        marginLeft: -30,
+        color: '#9330AC'
+        
+    },
+
 }
 
 export default styles
