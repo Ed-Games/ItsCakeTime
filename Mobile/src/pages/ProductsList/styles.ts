@@ -3,17 +3,33 @@ import { Dimensions } from "react-native"
 
 const styles = {
     container : {
-        backgroundColor: '#9553A0',
+        backgroundColor: '#F5F5F5',
         flex: 1,
         alignItems: 'center',
     },
 
+    waves : {
+        width: Dimensions.get('screen').width,
+        flex: 1,
+        height: 300,
+        alignItems: 'center',
+    },
+
     title:{
-        marginTop: 67,
         fontSize: 20,
         fontFamily: 'Archivo600_SemiBold',
-        color: '#FFF'
+        color: '#FFF',
+        marginLeft: 50,
+        marginRight: 50
     },
+
+    iconButton: {
+        width: 27,
+        height: 24,
+        borderRadius: 5,
+        alignItems: 'center',
+    },
+
 
     filterText: {
         color: '#FFF',
@@ -82,10 +98,24 @@ const styles = {
     ProductsList : {
         marginRight: 10,
         width: Dimensions.get('screen').width,
-        flex: 1,
         marginLeft:10,
         alignItems: 'center',
     },
+
+    Frame : {
+        width: Dimensions.get('screen').width, 
+        flex: 1,
+    },
+
+    ListView: {
+        backgroundColor: '#000'
+    },
+
+    FlexRowView : {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 67
+    }
 
     
 

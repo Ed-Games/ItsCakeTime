@@ -1,6 +1,6 @@
 const styles = {
     ProductItem : {
-        marginTop: 100,
+        marginTop: 30,
         backgroundColor: '#FFF',
         width: 330,
         height:300,
