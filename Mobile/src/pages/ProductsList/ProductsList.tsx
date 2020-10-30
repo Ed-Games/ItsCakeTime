@@ -3,20 +3,27 @@ import { Text, View,TextInput, Image, ImageBackground, ScrollView} from 'react-n
 import {Picker} from '@react-native-community/picker'
 import styles from './styles'
 import {Feather, FontAwesome} from '@expo/vector-icons'
-
 import selectImg from '../../images/select.png'
 import Waves from '../../images/waves.png'
 import { RectButton } from 'react-native-gesture-handler'
 import ProductItem from '../../components/ProductItem/ProductItem'
+import { useNavigation } from '@react-navigation/native'
 
 export default function ProductsList() {
     const [value, setValue] = useState("0")
+
+    const navigation = useNavigation()
+
+    function handleNavigateToLandingPage(){
+        navigation.navigate('Landing')
+    }
+
     return(
         <View style={styles.container}>
             <View style={{height:310}}>
                 <ImageBackground source={Waves} style={styles.waves}>
                     <View style={styles.FlexRowView}>
-                       <RectButton style={styles.iconButton}>
+                       <RectButton onPress={handleNavigateToLandingPage} style={styles.iconButton}>
                        <Feather  name="arrow-left" size={24} color='#FFF' />
                        </RectButton>
                         <Text style={styles.title}>Produtos Disponíveis:</Text>
