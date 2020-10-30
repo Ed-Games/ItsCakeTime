@@ -4,6 +4,8 @@ import EmailButton from '../EmailButton/EmailButton'
 import WhatsappButton from '../WhatsappButton/WhatsappButton'
 import styles from './styles'
 import Cake from '../../images/cake.jpg'
+import { RectButton } from 'react-native-gesture-handler'
+import { Feather } from '@expo/vector-icons'
 
 export default function ProductItem() {
     return(
@@ -15,6 +17,14 @@ export default function ProductItem() {
                     <Text style={styles.ProductTitle}>Bolo de aniversario</Text>
                     <View style={styles.FlexRowView}>
                         <Text style={styles.ProductPriceLabel}>Preço: </Text><Text style={styles.ProductPriceValue}>R$ 35,00</Text>
+                    </View>
+                </View>
+                <View>
+                    <Text style={styles.LinkText}>Informações do vendedor</Text>
+                    <View style={styles.LinkView}>
+                        <RectButton style={styles.LinkButton}>
+                            <Feather name="arrow-right" size={24} color='#FFF' />
+                        </RectButton>
                     </View>
                 </View>
             </View>
