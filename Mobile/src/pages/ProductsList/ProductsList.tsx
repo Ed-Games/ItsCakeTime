@@ -8,6 +8,7 @@ import Waves from '../../images/waves.png'
 import { RectButton } from 'react-native-gesture-handler'
 import ProductItem from '../../components/ProductItem/ProductItem'
 import { useNavigation } from '@react-navigation/native'
+import Header from '../../components/Header/Header'
 
 export default function ProductsList() {
     const [value, setValue] = useState("0")
@@ -22,15 +23,7 @@ export default function ProductsList() {
         <View style={styles.container}>
             <View style={{height:310}}>
                 <ImageBackground source={Waves} style={styles.waves}>
-                    <View style={styles.FlexRowView}>
-                       <RectButton onPress={handleNavigateToLandingPage} style={styles.iconButton}>
-                       <Feather  name="arrow-left" size={24} color='#FFF' />
-                       </RectButton>
-                        <Text style={styles.title}>Produtos Disponíveis:</Text>
-                        <RectButton>
-                            <Feather  style={styles.iconButton} name="menu" size={24} color='#FFF' />
-                        </RectButton>
-                    </View>
+                    <Header title="Produtos Disponíveis" />
                     <Text style={styles.filterText}>Filtre sua busca:</Text>
 
                     <View style={styles.FilterView}>
