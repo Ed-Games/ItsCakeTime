@@ -6,8 +6,16 @@ import styles from './styles'
 import Cake from '../../images/cake.jpg'
 import { RectButton } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 
 export default function ProductItem() {
+
+    const navigation = useNavigation()
+
+    function handleNavigateToProfile(){
+        navigation.navigate('Profile')
+    }
+
     return(
         <View style={styles.ProductItem}>
             <View style={styles.FlexRowView}>
@@ -22,7 +30,7 @@ export default function ProductItem() {
                 <View>
                     <Text style={styles.LinkText}>Informações do vendedor</Text>
                     <View style={styles.LinkView}>
-                        <RectButton style={styles.LinkButton}>
+                        <RectButton onPress={handleNavigateToProfile} style={styles.LinkButton}>
                             <Feather name="arrow-right" size={24} color='#FFF' />
                         </RectButton>
                     </View>
