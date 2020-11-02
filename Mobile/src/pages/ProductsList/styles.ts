@@ -115,7 +115,7 @@ const styles = {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 67
-    }
+    },
 
     
 
