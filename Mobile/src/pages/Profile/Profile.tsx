@@ -9,8 +9,16 @@ import WhatsappButton from '../../components/WhatsappButton/WhatsappButton'
 import EmailButton from '../../components/EmailButton/EmailButton'
 import { RectButton } from 'react-native-gesture-handler'
 import { FontAwesome } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 
 export default function Profile() {
+
+    const navigation = useNavigation()
+
+    function handleNavigateToProfileProducts(){
+        navigation.navigate('ProfileProducts')
+    }
+
     return(
         <View style={styles.container}>
             <View>
@@ -40,7 +48,7 @@ export default function Profile() {
                     <EmailButton />
                 </View>
                 <View style={{alignItems:'center'}}>
-                <RectButton style={styles.ListButton} >
+                <RectButton onPress={handleNavigateToProfileProducts} style={styles.ListButton} >
                     <View style={styles.FlexRowView}>
                         <FontAwesome name="birthday-cake" size={24} color='#FFF' style={{marginLeft: 5, marginTop: 5}} />
                         <Text style={styles.ButtonText}>Lista de produtos</Text>
