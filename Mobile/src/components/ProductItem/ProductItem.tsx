@@ -8,7 +8,11 @@ import { RectButton } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 
-export default function ProductItem() {
+interface ProductItemProps{
+    InfoButton?: boolean
+}
+
+export default function ProductItem(props:ProductItemProps) {
 
     const navigation = useNavigation()
 
@@ -27,14 +31,16 @@ export default function ProductItem() {
                         <Text style={styles.ProductPriceLabel}>Preço: </Text><Text style={styles.ProductPriceValue}>R$ 35,00</Text>
                     </View>
                 </View>
-                <View>
-                    <Text style={styles.LinkText}>Informações do vendedor</Text>
-                    <View style={styles.LinkView}>
-                        <RectButton onPress={handleNavigateToProfile} style={styles.LinkButton}>
-                            <Feather name="arrow-right" size={24} color='#FFF' />
-                        </RectButton>
+                {props.InfoButton!=false && (
+                    <View>
+                        <Text style={styles.LinkText}>Informações do vendedor</Text>
+                        <View style={styles.LinkView}>
+                            <RectButton onPress={handleNavigateToProfile} style={styles.LinkButton}>
+                                <Feather name="arrow-right" size={24} color='#FFF' />
+                            </RectButton>
+                        </View>
                     </View>
-                </View>
+                )}
             </View>
             <Text style={styles.ProductDescription}>Bolo de creme com calda de morango, perfeito para aniversarios infantis. Entregas ocorrem em até um dia após o pedido.</Text>
             <View style={styles.FlexRowView}>
