@@ -74,6 +74,13 @@ const styles = {
         marginRight: 20
 
     },
+
+    ProductsList : {
+        marginRight: 10,
+        width: Dimensions.get('screen').width,
+        marginLeft:10,
+        alignItems: 'center',
+    },
 }
 
 export default styles
