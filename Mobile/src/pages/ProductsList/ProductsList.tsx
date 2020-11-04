@@ -21,9 +21,8 @@ export default function ProductsList() {
 
     return(
         <View style={styles.container}>
-            <View style={{height:310}}>
+            <View style={{height:250}}>
                 <ImageBackground source={Waves} style={styles.waves}>
-                    <Header title="Produtos Disponíveis" />
                     <Text style={styles.filterText}>Filtre sua busca:</Text>
 
                     <View style={styles.FilterView}>
@@ -58,7 +57,7 @@ export default function ProductsList() {
                 <ScrollView contentContainerStyle={{
                             alignItems: 'center',
                             paddingTop: 40,
-                            paddingBottom:300,
+                            paddingBottom:180,
                             marginTop: -70
                         }}>
                             <ProductItem />
