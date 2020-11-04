@@ -1,14 +1,17 @@
 import React from 'react'
 import {NavigationContainer} from '@react-navigation/native'
-import {createStackNavigator} from '@react-navigation/stack'
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator} from '@react-navigation/drawer';
 import Landing from './pages/Landing/Landing'
-import ProductsList from './pages/ProductsList/ProductsList'
 import Profile from './pages/Profile/Profile'
+import Search from './pages/SearchProfiles/Search';
+import ProductScreen from './components/Screens/RouteScreens';
 
 
-const {Navigator, Screen} = createStackNavigator()
+
+
 const Drawer = createDrawerNavigator()
+
+
 
 export default function Routes() {
     return(
@@ -21,12 +24,12 @@ export default function Routes() {
                 <Screen name="Profile" component={Profile} />
                 <Screen name="ProfileProducts" component={Profile} />
             </Navigator>*/}
-            <Drawer.Navigator initialRouteName="Landing">
+            <Drawer.Navigator  initialRouteName="Landing">
                 <Drawer.Screen name="Landing" component={Landing} />
-                <Drawer.Screen name="ProductsList" component={ProductsList} />
-                <Drawer.Screen      
-                name="Profile" component={Profile} />
+                <Drawer.Screen name="ProductsList" component={ProductScreen} />
+                <Drawer.Screen name="Profile" component={Profile} />
                 <Drawer.Screen name="ProfileProducts" component={Profile} />
+                <Drawer.Screen name="Search Profiles" component={Search} />
             </Drawer.Navigator>
         </NavigationContainer>
     )
