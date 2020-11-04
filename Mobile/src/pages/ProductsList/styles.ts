@@ -11,7 +11,7 @@ const styles = {
     waves : {
         width: Dimensions.get('screen').width,
         flex: 1,
-        height: 300,
+        height: 230,
         alignItems: 'center',
     },
 
