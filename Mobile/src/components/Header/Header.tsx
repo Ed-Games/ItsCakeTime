@@ -23,7 +23,7 @@ export default function Header(props:Headerprops) {
             <RectButton onPress={handleNavigateToPreviousPage} style={styles.iconButton}>
                 <Feather  name="arrow-left" size={24} color='#FFF' />
             </RectButton>
-            {props.title && <Text style={styles.title}>Produtos Disponíveis:</Text> }
+            {props.title && <Text style={styles.title}>{props.title}</Text> }
             {props.image && 
                 <Image style={styles.Avatar} source={props.image} />
             }
