@@ -7,6 +7,7 @@ import Landing from './pages/Landing/Landing'
 import Profile from './pages/Profile/Profile'
 import Search from './pages/SearchProfiles/Search';
 import ProductScreen from './components/Screens/RouteScreens';
+import ProfileScreen from './components/Screens/ProfileScreen';
 
 import DrawerContent from './components/DrawerContent/DrawerContent'
 
@@ -30,8 +31,8 @@ export default function Routes() {
             <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}  initialRouteName="Landing">
                 <Drawer.Screen name="Landing" component={Landing} />
                 <Drawer.Screen name="ProductsList" component={ProductScreen} />
-                <Drawer.Screen name="Profile" component={Profile} />
-                <Drawer.Screen name="ProfileProducts" component={Profile} />
+                <Drawer.Screen name="Profile" component={ProfileScreen} />
+                <Drawer.Screen name="ProfileProducts" component={ProfileScreen} />
                 <Drawer.Screen name="Search Profiles" component={Search} />
             </Drawer.Navigator>
         </NavigationContainer>
