@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { ImageBackground, Text, View } from 'react-native'
-import Header from '../../components/Header/Header'
+import { Image, ImageBackground, Text, View } from 'react-native'
 import Waves from '../../images/waves.png'
 import styles from './style'
 
@@ -11,12 +10,10 @@ import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { FontAwesome } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import ProductItem from '../../components/ProductItem/ProductItem'
-import {useRoute} from '@react-navigation/native';
 
 export default function Profile() {
 
     const navigation = useNavigation()
-    const route = useRoute()
     const [component,SetComponent] = useState('Info')
 
     function handleNavigateToProfileProducts(){
@@ -27,13 +24,11 @@ export default function Profile() {
         <View style={styles.container}>
             <View>
                 <ImageBackground style={styles.Waves} source={Waves}>
-                    <View style={styles.FlexRowView}>
-                        <Header image={Avatar} />
-                    </View>
+                        <Image source={Avatar} style={styles.Avatar}/>
                         <Text style={styles.Name}>Alice Andrade Campus</Text>
                 </ImageBackground>
             </View>
-            {route.name == 'Profile'?(
+            {component == 'Info'?(
                 <View style={styles.InfoView}>
                     <Text style={styles.TopicText}>Biografia:</Text>
                     <Text style={styles.ContentText}>
@@ -53,7 +48,7 @@ export default function Profile() {
                         <EmailButton />
                     </View>
                     <View style={{alignItems:'center'}}>
-                    <RectButton onPress={handleNavigateToProfileProducts} style={styles.ListButton} >
+                    <RectButton onPress={()=> SetComponent('Products')} style={styles.ListButton} >
                         <View style={styles.FlexRowView}>
                             <FontAwesome name="birthday-cake" size={24} color='#FFF' style={{marginLeft: 5, marginTop: 5}} />
                             <Text style={styles.ButtonText}>Lista de produtos</Text>
@@ -66,7 +61,7 @@ export default function Profile() {
                 <ScrollView contentContainerStyle={{
                             alignItems: 'center',
                             paddingTop: 40,
-                            paddingBottom:300,
+                            paddingBottom:210,
                             marginTop: -60
                         }}>
                             <ProductItem InfoButton={false} />
