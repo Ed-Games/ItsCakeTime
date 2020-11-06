@@ -1,4 +1,6 @@
-const styles = {
+import { StyleSheet } from "react-native"
+
+const styles = StyleSheet.create({
     title:{
         fontSize: 20,
         fontFamily: 'Archivo600_SemiBold',
@@ -28,6 +30,6 @@ const styles = {
         height:96,
         borderRadius: 50
     }
-}
+})
 
 export default styles
