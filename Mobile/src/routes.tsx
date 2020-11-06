@@ -1,11 +1,14 @@
 import React from 'react'
 import {NavigationContainer} from '@react-navigation/native'
 import { createDrawerNavigator} from '@react-navigation/drawer';
+
+
 import Landing from './pages/Landing/Landing'
 import Profile from './pages/Profile/Profile'
 import Search from './pages/SearchProfiles/Search';
 import ProductScreen from './components/Screens/RouteScreens';
 
+import DrawerContent from './components/DrawerContent/DrawerContent'
 
 
 
@@ -24,7 +27,7 @@ export default function Routes() {
                 <Screen name="Profile" component={Profile} />
                 <Screen name="ProfileProducts" component={Profile} />
             </Navigator>*/}
-            <Drawer.Navigator  initialRouteName="Landing">
+            <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}  initialRouteName="Landing">
                 <Drawer.Screen name="Landing" component={Landing} />
                 <Drawer.Screen name="ProductsList" component={ProductScreen} />
                 <Drawer.Screen name="Profile" component={Profile} />
