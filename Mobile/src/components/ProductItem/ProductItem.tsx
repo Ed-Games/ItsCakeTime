@@ -32,7 +32,7 @@ export default function ProductItem(props:ProductItemProps) {
                     </View>
                 </View>
                 {props.InfoButton!=false && (
-                    <View>
+                    <View style={{alignItems:'flex-start',marginRight:0}}>
                         <Text style={styles.LinkText}>Informações do vendedor</Text>
                         <View style={styles.LinkView}>
                             <RectButton onPress={handleNavigateToProfile} style={styles.LinkButton}>
