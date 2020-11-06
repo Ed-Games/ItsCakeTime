@@ -8,7 +8,7 @@ const styles = {
     },
 
     title: {
-        marginTop: 20,
+        marginTop: 40,
         marginBottom: 10,
         fontSize: 20,
         fontFamily: 'Archivo600_SemiBold',

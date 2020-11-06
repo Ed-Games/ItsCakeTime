@@ -1,7 +1,7 @@
 import { Poppins_300Light } from "@expo-google-fonts/poppins"
-import { Dimensions } from "react-native"
+import { Dimensions, StyleSheet } from "react-native"
 
-const styles = {
+const styles = StyleSheet.create({
     container : {
         backgroundColor: '#F5F5F5',
         flex: 1,
@@ -11,7 +11,7 @@ const styles = {
     waves : {
         width: Dimensions.get('screen').width,
         flex: 1,
-        height: 230,
+        height: 240,
         alignItems: 'center',
     },
 
@@ -119,6 +119,6 @@ const styles = {
 
     
 
-}
+})
 
 export default styles

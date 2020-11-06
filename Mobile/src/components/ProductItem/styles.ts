@@ -1,11 +1,12 @@
 import { Poppins_600SemiBold } from "@expo-google-fonts/poppins"
+import { Dimensions } from "react-native"
 
 const styles = {
     ProductItem : {
         marginTop: 30,
         backgroundColor: '#FFF',
-        width: 330,
-        height:300,
+        width: Dimensions.get('screen').width -30,
+        height:(Dimensions.get('screen').width + 320) - Dimensions.get('screen').width,
         borderRadius: 20,
 
     },
@@ -77,7 +78,8 @@ const styles = {
         Height:36,
         width:40,
         marginTop: -30,
-        marginLeft: 42
+        marginLeft: 42,
+        alignItems: 'center',
     },
 
     LinkText:{
