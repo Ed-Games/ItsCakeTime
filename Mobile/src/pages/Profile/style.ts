@@ -14,7 +14,8 @@ const styles = {
 
     Waves : {
         width: Dimensions.get('screen').width,
-        height:300
+        height:210,
+        alignItems: 'center',
     },
 
     Name :{
@@ -81,6 +82,15 @@ const styles = {
         marginLeft:10,
         alignItems: 'center',
     },
+
+    Avatar : {
+        marginLeft:101,
+        marginRight: 98,
+        marginTop: 18,
+        width:96,
+        height:96,
+        borderRadius: 50
+    }
 }
 
 export default styles
