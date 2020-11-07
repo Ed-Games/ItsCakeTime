@@ -4,12 +4,12 @@ import { createDrawerNavigator} from '@react-navigation/drawer';
 
 
 import Landing from './pages/Landing/Landing'
-import Profile from './pages/Profile/Profile'
-import Search from './pages/SearchProfiles/Search';
 import ProductScreen from './components/Screens/RouteScreens';
 import ProfileScreen from './components/Screens/ProfileScreen';
+import SearchScreen from './components/Screens/SearchScreen';
 
 import DrawerContent from './components/DrawerContent/DrawerContent'
+import ProfileProductsScreen from './components/Screens/ProfileProductsScreen';
 
 
 
@@ -32,8 +32,8 @@ export default function Routes() {
                 <Drawer.Screen name="Landing" component={Landing} />
                 <Drawer.Screen name="ProductsList" component={ProductScreen} />
                 <Drawer.Screen name="Profile" component={ProfileScreen} />
-                <Drawer.Screen name="ProfileProducts" component={ProfileScreen} />
-                <Drawer.Screen name="Search Profiles" component={Search} />
+                <Drawer.Screen name="ProfileProducts" component={ProfileProductsScreen} />
+                <Drawer.Screen name="Search Profiles" component={SearchScreen} />
             </Drawer.Navigator>
         </NavigationContainer>
     )
