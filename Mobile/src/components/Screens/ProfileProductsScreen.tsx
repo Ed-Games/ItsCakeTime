@@ -7,7 +7,7 @@ import Profile from '../../pages/Profile/Profile';
 const Stack = createStackNavigator()
 
 
-export default function ProfileScreen({navigation}) {
+export default function ProfileProductsScreen({navigation}) {
 
     function handleNavigateToPreviousPage(){
         navigation.goBack()
@@ -15,7 +15,7 @@ export default function ProfileScreen({navigation}) {
 
     return(
         <Stack.Navigator>
-             <Stack.Screen name="Profile" component={Profile} options={{
+             <Stack.Screen name="ProfileProducts" component={Profile} options={{
                 headerStyle: header,
                 headerTitleStyle: title,
                 title: '',
