@@ -8,13 +8,14 @@ import WhatsappButton from '../../components/WhatsappButton/WhatsappButton'
 import EmailButton from '../../components/EmailButton/EmailButton'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { FontAwesome } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import ProductItem from '../../components/ProductItem/ProductItem'
 
 export default function Profile() {
 
     const navigation = useNavigation()
     const [component,SetComponent] = useState('Info')
+    const route = useRoute()
 
     function handleNavigateToProfileProducts(){
         navigation.navigate('ProfileProducts')
@@ -28,7 +29,7 @@ export default function Profile() {
                         <Text style={styles.Name}>Alice Andrade Campus</Text>
                 </ImageBackground>
             </View>
-            {component == 'Info'?(
+            {route.name == 'Profile'?(
                 <View style={styles.InfoView}>
                     <Text style={styles.TopicText}>Biografia:</Text>
                     <Text style={styles.ContentText}>
@@ -48,7 +49,7 @@ export default function Profile() {
                         <EmailButton />
                     </View>
                     <View style={{alignItems:'center'}}>
-                    <RectButton onPress={()=> SetComponent('Products')} style={styles.ListButton} >
+                    <RectButton onPress={handleNavigateToProfileProducts} style={styles.ListButton} >
                         <View style={styles.FlexRowView}>
                             <FontAwesome name="birthday-cake" size={24} color='#FFF' style={{marginLeft: 5, marginTop: 5}} />
                             <Text style={styles.ButtonText}>Lista de produtos</Text>
