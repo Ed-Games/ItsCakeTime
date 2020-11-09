@@ -1,12 +1,11 @@
-import { StyleSheet } from "react-native"
+import { Dimensions, StyleSheet } from "react-native"
 
 const styles = StyleSheet.create({
     title:{
         fontSize: 20,
-        fontFamily: 'Archivo600_SemiBold',
+        fontFamily: 'Archivo600SemiBold',
         color: '#FFF',
-        marginLeft: 50,
-        marginRight: 50
+        width: Dimensions.get('screen').width -30
     },
 
     iconButton: {
@@ -14,12 +13,15 @@ const styles = StyleSheet.create({
         height: 24,
         borderRadius: 5,
         alignItems: 'center',
+        marginBottom: 70
     },
 
     FlexRowView : {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 67
+        marginTop: 67,
+        alignItems: 'center',
+        textAlign: 'center',
     },
 
     Avatar : {
