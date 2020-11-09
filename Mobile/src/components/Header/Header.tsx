@@ -7,7 +7,6 @@ import styles from './styles'
 
 interface Headerprops {
     title?: String,
-    image?: String
 }
 
 export default function Header(props:Headerprops) {
@@ -24,12 +23,6 @@ export default function Header(props:Headerprops) {
                 <Feather  name="arrow-left" size={24} color='#FFF' />
             </RectButton>
             {props.title && <Text style={styles.title}>{props.title}</Text> }
-            {props.image && 
-                <Image style={styles.Avatar} source={props.image} />
-            }
-            <RectButton>
-                <Feather  style={styles.iconButton} name="menu" size={24} color='#FFF' />
-            </RectButton>
         </View>
     )
 }
