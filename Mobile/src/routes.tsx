@@ -10,6 +10,7 @@ import SearchScreen from './components/Screens/SearchScreen';
 
 import DrawerContent from './components/DrawerContent/DrawerContent'
 import ProfileProductsScreen from './components/Screens/ProfileProductsScreen';
+import Register from './pages/Register/Register';
 
 
 
@@ -34,6 +35,7 @@ export default function Routes() {
                 <Drawer.Screen name="Profile" component={ProfileScreen} />
                 <Drawer.Screen name="ProfileProducts" component={ProfileProductsScreen} />
                 <Drawer.Screen name="Search Profiles" component={SearchScreen} />
+                <Drawer.Screen name="Register" component={Register} />
             </Drawer.Navigator>
         </NavigationContainer>
     )
