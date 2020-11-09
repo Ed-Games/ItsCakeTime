@@ -14,6 +14,10 @@ export default function Landing(){
         navigation.navigate('ProductsList')
     }
 
+    function handleNavigateToRegister(){
+        navigation.navigate('Register')
+    }
+
     return(
         <View style={styles.container} >
             <Text style={styles.title} >Seja bem vindo ao</Text>
@@ -23,7 +27,7 @@ export default function Landing(){
             <Text style={styles.actionText}>O que deseja fazer?</Text>
             <View style={styles.buttonsView}>
                 <RectButton onPress={handleNavigateToProductsList} style={styles.clientButton}><Text style={styles.ButtonText}>Fazer uma encomenda</Text></RectButton>
-                <RectButton style={styles.bakerButton}><Text style={styles.ButtonText}>Ver minha confeitaria</Text></RectButton>
+                <RectButton onPress={handleNavigateToRegister} style={styles.bakerButton}><Text style={styles.ButtonText}>Ver minha confeitaria</Text></RectButton>
             </View>
         </View>
     )
