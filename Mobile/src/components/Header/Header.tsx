@@ -18,11 +18,11 @@ export default function Header(props:Headerprops) {
     }
 
     return(
-        <View style={styles.FlexRowView}>
-            <RectButton onPress={handleNavigateToPreviousPage} style={styles.iconButton}>
-                <Feather  name="arrow-left" size={24} color='#FFF' />
+        <View style={styles.headerView}>
+            <RectButton onPress={handleNavigateToPreviousPage} style={{alignSelf:'flex-start'}}>
+                <Feather styles={styles.iconButton} name="arrow-left" size={24} color='#FFF'/>
             </RectButton>
-            {props.title && <Text style={styles.title}>{props.title}</Text> }
+            <Text style={styles.title}>{props.title}</Text>
         </View>
     )
 }
