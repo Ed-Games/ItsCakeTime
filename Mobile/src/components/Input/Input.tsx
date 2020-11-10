@@ -4,13 +4,19 @@ import styles from './styles'
 
 interface InputProps{
     name: string,
-    placeholder: string
+    placeholder: string,
+    titleMode?: string
 }
 
 export default function Input(props: InputProps){
     return(
         <>
-            <Text style={styles.InputText}>{props.name}</Text>
+            {props.titleMode =='Light'? 
+            (
+                <Text style={[styles.InputText, {color:"#FFF"}]}>{props.name}</Text>
+            ):(
+                <Text style={styles.InputText}>{props.name}</Text>
+            )}
                 <View style={styles.FormInputView}>
                     <TextInput style={styles.Input} placeholder={props.placeholder}>
                     </TextInput>
