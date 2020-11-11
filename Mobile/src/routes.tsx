@@ -12,6 +12,7 @@ import DrawerContent from './components/DrawerContent/DrawerContent'
 import ProfileProductsScreen from './components/Screens/ProfileProductsScreen';
 import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
+import Logout from './pages/Logout/Logout'
 
 
 
@@ -38,6 +39,7 @@ export default function Routes() {
                 <Drawer.Screen name="Search Profiles" component={SearchScreen} />
                 <Drawer.Screen name="Register" component={Register} />
                 <Drawer.Screen name="Login" component={Login} />
+                <Drawer.Screen name="Logout" component={Logout} />
             </Drawer.Navigator>
         </NavigationContainer>
     )
