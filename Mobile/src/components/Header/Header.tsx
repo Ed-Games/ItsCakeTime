@@ -6,7 +6,8 @@ import { RectButton } from 'react-native-gesture-handler'
 import styles from './styles'
 
 interface Headerprops {
-    title?: String,
+    title?: string,
+    color?: string
 }
 
 export default function Header(props:Headerprops) {
@@ -20,9 +21,19 @@ export default function Header(props:Headerprops) {
     return(
         <View style={styles.headerView}>
             <RectButton onPress={handleNavigateToPreviousPage} style={{alignSelf:'flex-start'}}>
-                <Feather styles={styles.iconButton} name="arrow-left" size={24} color='#FFF'/>
+                {props.color? (
+                    <Feather styles={styles.iconButton} name="arrow-left" size={24} color={props.color}/>
+                ):(
+                    <Feather styles={styles.iconButton} name="arrow-left" size={24} color='#FFF'/>
+                )}
             </RectButton>
-            <Text style={styles.title}>{props.title}</Text>
+            {props.color?(
+                <Text style={[styles.title, {
+                    color: props.color
+                }]}>{props.title}</Text>
+            ):(
+                <Text style={styles.title}>{props.title}</Text>
+            )}
         </View>
     )
 }
