@@ -13,6 +13,8 @@ import ProfileProductsScreen from './components/Screens/ProfileProductsScreen';
 import Register from './pages/Register/Register';
 import Login from './pages/Login/Login';
 import Logout from './pages/Logout/Logout'
+import ResetPasswd from './pages/ResetPasswd/ResetPasswd';
+import CreateNewPasswd from './pages/CreateNewPasswd/CreateNewPasswd';
 
 
 
@@ -40,6 +42,8 @@ export default function Routes() {
                 <Drawer.Screen name="Register" component={Register} />
                 <Drawer.Screen name="Login" component={Login} />
                 <Drawer.Screen name="Logout" component={Logout} />
+                <Drawer.Screen name="ResetPasswd" component={ResetPasswd} />
+                <Drawer.Screen name="CreateNewPasswd" component={CreateNewPasswd} />
             </Drawer.Navigator>
         </NavigationContainer>
     )
