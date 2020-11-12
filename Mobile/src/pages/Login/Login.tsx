@@ -18,13 +18,17 @@ export default function Login(){
         navigation.navigate('Profile')
     }
 
+    function handleNavigateToResetPasswd(){
+        navigation.navigate('ResetPasswd')
+    }
+
     return(
         <View style={styles.container}>
             <Header title="Faça Login para continuar" />
             <Image style={styles.Image} source={LoginBaker} />
             <Input name="Usuário :" placeholder="Seu nome de usuário" titleMode="Light" />
             <Input name="Senha :" placeholder="Informe sua senha" titleMode='Light' />
-            <RectButton style={{alignSelf: 'flex-end', marginRight:60}}>
+            <RectButton onPress={handleNavigateToResetPasswd} style={{alignSelf: 'flex-end', marginRight:60}}>
                 <Text style={styles.passwordText}>Esqueci minha senha</Text>
             </RectButton>
             <RectButton onPress={handleNavigateToProfile} style={styles.submitButton}>
