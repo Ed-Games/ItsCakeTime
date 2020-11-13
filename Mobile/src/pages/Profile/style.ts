@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
 
     ListButton:{
-        backgroundColor: '#9553A0',
+        backgroundColor: '#F782EC',
         width: 143,
         height:36,
         borderRadius: 10,
@@ -72,7 +72,9 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_600SemiBold',
         fontSize:10,
         marginTop: 10,
-        marginRight: 20
+        marginRight: 20,
+        width:102,
+        marginLeft: 10
 
     },
 
@@ -89,7 +91,20 @@ const styles = StyleSheet.create({
         marginTop: 18,
         width:96,
         height:96,
-        borderRadius: 50
+        borderRadius: 50,
+        alignSelf:'center'
+    },
+
+    EditButton:{
+        backgroundColor: '#F159E2',
+        width:31,
+        height:31,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 30,
+        marginRight:90,
+        marginLeft: -120
     }
 })
 
