@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('screen').width,
         height:80,
         alignItems: 'center',
-        marginTop: 30
+        marginTop: 30,
     }
 })
 
