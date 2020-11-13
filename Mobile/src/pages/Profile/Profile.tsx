@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Image, ImageBackground, Text, View } from 'react-native'
+import { Dimensions, Image, ImageBackground, Text, View } from 'react-native'
 import Waves from '../../images/waves.png'
 import styles from './style'
 
@@ -7,7 +7,7 @@ import Avatar from '../../images/avatar.png'
 import WhatsappButton from '../../components/WhatsappButton/WhatsappButton'
 import EmailButton from '../../components/EmailButton/EmailButton'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
-import { FontAwesome } from '@expo/vector-icons'
+import { Feather, FontAwesome } from '@expo/vector-icons'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import ProductItem from '../../components/ProductItem/ProductItem'
 
@@ -16,16 +16,33 @@ export default function Profile() {
     const navigation = useNavigation()
     const [component,SetComponent] = useState('Info')
     const route = useRoute()
+    const user = 'alguém'
+    
 
     function handleNavigateToProfileProducts(){
         navigation.navigate('ProfileProducts')
+    }
+
+    function handleNavigateToUpdateProfile(){
+        navigation.navigate('UpdateProfile')
     }
 
     return(
         <View style={styles.container}>
             <View>
                 <ImageBackground style={styles.Waves} source={Waves}>
-                        <Image source={Avatar} style={styles.Avatar}/>
+                        <View style={{flexDirection: 'row'}}>
+                            {user?(
+                                <>
+                                <Image source={Avatar} style={styles.Avatar}/>
+                                <RectButton style={styles.EditButton}>
+                                    <Feather name="camera" size={24} color="#FFF" />
+                                </RectButton>
+                                </>
+                            ):(
+                                <Image source={Avatar} style={styles.Avatar}/>
+                            )}
+                        </View>
                         <Text style={styles.Name}>Alice Andrade Campus</Text>
                 </ImageBackground>
             </View>
@@ -48,13 +65,32 @@ export default function Profile() {
                         <WhatsappButton />
                         <EmailButton />
                     </View>
-                    <View style={{alignItems:'center'}}>
-                    <RectButton onPress={handleNavigateToProfileProducts} style={styles.ListButton} >
-                        <View style={styles.FlexRowView}>
-                            <FontAwesome name="birthday-cake" size={24} color='#FFF' style={{marginLeft: 5, marginTop: 5}} />
-                            <Text style={styles.ButtonText}>Lista de produtos</Text>
-                        </View>
-                    </RectButton>
+                    <View style={{alignItems:'center', flexDirection: 'row'}}>
+                    { user?(
+                        <>
+                            <RectButton onPress={handleNavigateToProfileProducts} style={[styles.ListButton, {alignSelf: 'flex-start'}]} >
+                                <View style={styles.FlexRowView}>
+                                    <FontAwesome name="birthday-cake" size={24} color='#FFF' style={{marginLeft: 5, marginTop: 5}} />
+                                    <Text style={styles.ButtonText}>Lista de produtos</Text>
+                                </View>
+                            </RectButton>
+                            <RectButton onPress={handleNavigateToUpdateProfile} style={[styles.ListButton,{alignSelf:'flex-end', backgroundColor:'#9553A0'}]} >
+                            <View style={styles.FlexRowView}>
+                                <FontAwesome name="edit" size={24} color='#FFF' style={{marginLeft: 5, marginTop: 5}} />
+                                <Text style={styles.ButtonText}>Editar perfil</Text>
+                            </View>
+                            </RectButton>
+                        </>
+                        
+                    ):(
+                        <RectButton onPress={handleNavigateToProfileProducts} style={styles.ListButton} >
+                            <View style={styles.FlexRowView}>
+                                <FontAwesome name="birthday-cake" size={24} color='#FFF' style={{marginLeft: 5, marginTop: 5}} />
+                                <Text style={styles.ButtonText}>Lista de produtos</Text>
+                            </View>
+                        </RectButton>
+                    )}
+                    
                     </View>
                 </View>
             ):(
