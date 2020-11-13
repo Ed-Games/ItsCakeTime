@@ -15,6 +15,7 @@ import Login from './pages/Login/Login';
 import Logout from './pages/Logout/Logout'
 import ResetPasswd from './pages/ResetPasswd/ResetPasswd';
 import CreateNewPasswd from './pages/CreateNewPasswd/CreateNewPasswd';
+import UpdateProfile from './pages/UpdateProfile/UpdateProfile';
 
 
 
@@ -44,6 +45,7 @@ export default function Routes() {
                 <Drawer.Screen name="Logout" component={Logout} />
                 <Drawer.Screen name="ResetPasswd" component={ResetPasswd} />
                 <Drawer.Screen name="CreateNewPasswd" component={CreateNewPasswd} />
+                <Drawer.Screen name="UpdateProfile" component={UpdateProfile} />
             </Drawer.Navigator>
         </NavigationContainer>
     )
