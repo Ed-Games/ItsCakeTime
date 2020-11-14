@@ -19,8 +19,12 @@ export default function CreateNewPasswd(){
         <View style={styles.container}>
         <Header title="Digite uma nova senha segura" />
         <Image style={styles.Image} source={Security} />
-        <Input name="Nova senha :" placeholder="Nova senha" titleMode="Light" />
-        <Input name="Confirmar senha" placeholder="Confirme a nova senha" titleMode='Light' />
+        <Input name="Nova senha :" placeholder="Nova senha" options={{
+            titleMode:'Light'
+        }} />
+        <Input name="Confirmar senha" placeholder="Confirme a nova senha" options={{
+            titleMode: 'Light'
+        }} />
         <RectButton onPress={handleNavigateToProfile} style={styles.submitButton}>
             <Text style={styles.submitButtonText}>Salvar</Text>
         </RectButton>
