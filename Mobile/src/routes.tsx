@@ -38,7 +38,7 @@ export default function Routes() {
             </Navigator>*/}
             <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}  initialRouteName="Landing">
                 <Drawer.Screen name="Landing" component={Landing} />
-                <Drawer.Screen name="ProductsList" component={ProductScreen} />
+                <Drawer.Screen name="ProductList" component={ProductScreen} />
                 <Drawer.Screen name="Profile" component={ProfileScreen} />
                 <Drawer.Screen name="ProfileProducts" component={ProfileProductsScreen} />
                 <Drawer.Screen name="Search Profiles" component={SearchScreen} />
