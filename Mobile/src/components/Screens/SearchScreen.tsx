@@ -47,7 +47,7 @@ const header = {
 
 const title = {
     fontSize: 20,
-    fontFamily: 'Archivo600_SemiBold',
+    fontFamily: 'Archivo_600SemiBold',
     color: '#FFF',
     marginLeft: 14,
     marginRight: 50,

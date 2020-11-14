@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 
     Name :{
         fontSize: 20,
-        fontFamily: 'Archivo600_SemiBold',
+        fontFamily: 'Archivo_600SemiBold',
         color: '#FFF',
         marginLeft: 50,
         marginRight: 50,

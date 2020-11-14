@@ -1,4 +1,6 @@
-const styles = {
+import { StyleSheet } from "react-native"
+
+const styles = StyleSheet.create({
     container : {
         backgroundColor: '#9553A0',
         flex: 1,
@@ -11,7 +13,7 @@ const styles = {
         marginTop: 40,
         marginBottom: 10,
         fontSize: 20,
-        fontFamily: 'Archivo600_SemiBold',
+        fontFamily: 'Archivo_600SemiBold',
         color: '#FFF'
         
     },
@@ -65,6 +67,6 @@ const styles = {
         marginLeft: 10,
         marginTop: 50
     },
-}
+})
 
 export default styles
