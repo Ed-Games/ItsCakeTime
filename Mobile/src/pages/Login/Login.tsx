@@ -26,8 +26,12 @@ export default function Login(){
         <View style={styles.container}>
             <Header title="Faça Login para continuar" />
             <Image style={styles.Image} source={LoginBaker} />
-            <Input name="Usuário :" placeholder="Seu nome de usuário" titleMode="Light" />
-            <Input name="Senha :" placeholder="Informe sua senha" titleMode='Light' />
+            <Input name="Usuário :" placeholder="Seu nome de usuário" options={{
+                titleMode: 'Light'
+            }} />
+            <Input name="Senha :" placeholder="Informe sua senha" options={{
+                titleMode: 'Light'
+            }} />
             <RectButton onPress={handleNavigateToResetPasswd} style={{alignSelf: 'flex-end', marginRight:60}}>
                 <Text style={styles.passwordText}>Esqueci minha senha</Text>
             </RectButton>
