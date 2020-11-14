@@ -8,9 +8,11 @@ interface InputProps{
     options?: {
         titleMode?: string,
         customStyle?: object,
-        useAsTextArea?: boolean
+        useAsTextArea?: boolean,
+        TextInputStyle?: object
     }
 }
+
 
 export default function Input(props: InputProps){
     return(
@@ -22,7 +24,7 @@ export default function Input(props: InputProps){
                 <Text style={styles.InputText}>{props.name}</Text>
             )}
                 <View style={[styles.FormInputView,props.options?.customStyle]}>
-                    <TextInput multiline={props.options?.useAsTextArea} style={styles.Input} placeholder={props.placeholder}>
+                    <TextInput multiline={props.options?.useAsTextArea} style={[styles.Input,props.options?.TextInputStyle]} placeholder={props.placeholder}>
                     </TextInput>
                 </View>
         </>
