@@ -64,7 +64,7 @@ export default function ProductsList() {
                             <ProductItem />
                             <ProductItem />
                             <ProductItem />
-                        </ScrollView>
+                </ScrollView>
             </View>
             
         </View>
