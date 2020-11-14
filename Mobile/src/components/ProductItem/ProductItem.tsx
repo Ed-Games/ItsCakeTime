@@ -9,7 +9,8 @@ import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 
 interface ProductItemProps{
-    InfoButton?: boolean
+    InfoButton?: boolean,
+    EditButton?:boolean
 }
 
 export default function ProductItem(props:ProductItemProps) {
@@ -40,6 +41,11 @@ export default function ProductItem(props:ProductItemProps) {
                             </RectButton>
                         </View>
                     </View>
+                )} 
+                {props.EditButton!=false &&(
+                    <RectButton style={styles.EditButton}>
+                        <Feather name="settings" size={24} color="#FFF"/>
+                    </RectButton>
                 )}
             </View>
             <Text style={styles.ProductDescription}>Bolo de creme com calda de morango, perfeito para aniversarios infantis. Entregas ocorrem em até um dia após o pedido.</Text>
