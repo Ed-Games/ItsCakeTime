@@ -20,7 +20,12 @@ export default function Profile() {
     
 
     function handleNavigateToProfileProducts(){
-        navigation.navigate('ProfileProducts')
+        if(user){
+            navigation.navigate('ViewYourProducts')
+        }else{
+            navigation.navigate('ProfileProducts')
+        }
+
     }
 
     function handleNavigateToUpdateProfile(){
