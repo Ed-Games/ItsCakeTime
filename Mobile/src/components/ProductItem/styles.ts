@@ -92,6 +92,17 @@ const styles = {
         
     },
 
+    EditButton: {
+        width:31,
+        height:31,
+        borderRadius:50,
+        backgroundColor: '#9553A0',
+        marginLeft: 50,
+        marginTop: -10,
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
+
 }
 
 export default styles
