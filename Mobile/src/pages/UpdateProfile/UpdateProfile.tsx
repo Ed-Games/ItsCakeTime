@@ -29,8 +29,12 @@ export default function UpdateProfile(){
                 <Input 
                 name="Descrição" 
                 options={{
-                    customStyle:{height:115},
-                    useAsTextArea: true
+                    customStyle:{height:115,alignItems:'flex-start'},
+                    useAsTextArea: true,
+                    TextInputStyle: {
+                        height:115,
+                        alignSelf: 'flex-start',
+                    }
                 }} 
                 />
 
