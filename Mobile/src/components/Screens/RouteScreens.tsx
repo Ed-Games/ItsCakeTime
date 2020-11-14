@@ -15,7 +15,7 @@ export default function ProductScreen({navigation}) {
 
     return(
         <Stack.Navigator>
-             <Stack.Screen name="ProductList" component={ProductsList} options={{
+             <Stack.Screen name="ProductsList" component={ProductsList} options={{
                 headerStyle: header,
                 headerTitleStyle: title,
                 title: "Produtos disponíveis",
@@ -47,7 +47,7 @@ const header = {
 
 const title = {
     fontSize: 20,
-    fontFamily: 'Archivo600_SemiBold',
+    fontFamily: 'Archivo_600SemiBold',
     color: '#FFF',
     marginLeft: 14,
     marginRight: 50,
