@@ -4,10 +4,19 @@ import Header from '../../components/Header/Header'
 
 import styles from './styles'
 import Waves from '../../images/waves.png'
-import { ScrollView } from 'react-native-gesture-handler'
+import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import ProductItem from '../../components/ProductItem/ProductItem'
+import { Feather } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 
 export default function ViewYourProducts(){
+
+    const navigation = useNavigation()
+
+    function handleNavigationToRegisterProducts(){
+        navigation.navigate('ProductRegister')
+    }
+
     return(
         <View style={styles.container}>
             <View style={{height:210}}>
@@ -16,7 +25,7 @@ export default function ViewYourProducts(){
                 </ImageBackground>
             </View>
             <View style={styles.ProductsList}>
-                <ScrollView contentContainerStyle={{
+                <ScrollView  contentContainerStyle={{
                     alignItems: 'center',
                     paddingTop: 40,
                     paddingBottom:180,
@@ -29,6 +38,9 @@ export default function ViewYourProducts(){
                     <ProductItem InfoButton={false} />
 
                 </ScrollView>
+                <RectButton onPress={handleNavigationToRegisterProducts} style={styles.plusButton}>
+                    <Feather name="plus" size={24} color='#FFF'/>
+                </RectButton>
             </View>
         </View>
     )
