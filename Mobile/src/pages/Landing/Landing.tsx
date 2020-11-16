@@ -11,7 +11,7 @@ export default function Landing(){
     const navigation = useNavigation()
 
     function handleNavigateToProductsList(){
-        navigation.navigate('ProductsList')
+        navigation.navigate('ProductList')
     }
 
     function handleNavigateToLogin(){
