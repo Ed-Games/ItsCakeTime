@@ -28,6 +28,7 @@ export default function DrawerContent(props:DrawerContentComponentProps<DrawerCo
                 <ButtonLink icon="user" title="Seu Perfil" drawerProps={props} navigateTO='Profile' />
                 <ButtonLink icon="shopping-cart" title="Lista de Produtos" drawerProps={props} navigateTO='ProductList' />
                 <ButtonLink icon="search" title="Pesquisar Padeiros" drawerProps={props} navigateTO='Search Profiles' />
+                <ButtonLink icon="plus-circle" title="Novo Produto" drawerProps={props} navigateTO='ProductRegister' />
             </View>
             <View style={styles.BottomContainer}>
                 <RectButton onPress={handleNavigateToLogout} style={styles.SignOutButton}>
