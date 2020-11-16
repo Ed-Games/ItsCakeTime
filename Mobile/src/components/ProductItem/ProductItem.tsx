@@ -44,7 +44,7 @@ export default function ProductItem(props:ProductItemProps) {
                 )} 
                 {props.EditButton!=false &&(
                     <RectButton style={styles.EditButton}>
-                        <Feather name="settings" size={24} color="#FFF"/>
+                        <Feather name="edit" size={24} color="#FFF"/>
                     </RectButton>
                 )}
             </View>
