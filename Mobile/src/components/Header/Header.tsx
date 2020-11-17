@@ -7,7 +7,8 @@ import styles from './styles'
 
 interface Headerprops {
     title?: string,
-    color?: string
+    color?: string,
+    titleStyle?: object
 }
 
 export default function Header(props:Headerprops) {
@@ -32,7 +33,7 @@ export default function Header(props:Headerprops) {
                     color: props.color
                 }]}>{props.title}</Text>
             ):(
-                <Text style={styles.title}>{props.title}</Text>
+                <Text style={[styles.title,props.titleStyle]}>{props.title}</Text>
             )}
         </View>
     )
