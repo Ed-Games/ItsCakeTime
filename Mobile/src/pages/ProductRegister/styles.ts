@@ -71,6 +71,25 @@ const styles = StyleSheet.create({
     selectImg : {
         marginTop: 3
     },
+
+    UploadButton:{
+        backgroundColor: '#E6E6E6',
+        width:45,
+        height:45,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius:10,
+        marginBottom:10
+    },
+
+    UploadedImage:{
+        width:45,
+        height:45,
+        borderRadius:10,
+        marginBottom: 10,
+        marginRight:5, 
+        alignItems: 'flex-start'
+    }
 })
 
 export default styles
