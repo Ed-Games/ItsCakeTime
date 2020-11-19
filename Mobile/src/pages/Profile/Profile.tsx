@@ -10,11 +10,12 @@ import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { Feather, FontAwesome } from '@expo/vector-icons'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import ProductItem from '../../components/ProductItem/ProductItem'
+import handleSelectImages from '../../utils/ImageUpload'
 
 export default function Profile() {
 
     const navigation = useNavigation()
-    const [component,SetComponent] = useState('Info')
+    const [images,setImages] = useState<string[]>([])
     const route = useRoute()
     const user = 'alguém'
     
@@ -39,10 +40,28 @@ export default function Profile() {
                         <View style={{flexDirection: 'row'}}>
                             {user?(
                                 <>
-                                <Image source={Avatar} style={styles.Avatar}/>
-                                <RectButton style={styles.EditButton}>
-                                    <Feather name="camera" size={24} color="#FFF" />
-                                </RectButton>
+                                {images.length>0?(
+                                    images.map((image,i,arr)=>{
+                                        if(arr.length -1 ===i){
+                                            {console.log({uri:image})}
+                                            return(
+                                                <>
+                                                    <Image key={image} source={{uri: image}} style={styles.Avatar}/>
+                                                    <RectButton key={image + 'button'} onPress={()=>setImages([])} style={styles.Savebutton}>
+                                                        <Text style={styles.SavebuttonText}>Salvar</Text>
+                                                    </RectButton>
+                                                </>
+                                            )
+                                        }
+                                    })
+                                ):(
+                                    <>
+                                        <Image source={Avatar} style={styles.Avatar}/>
+                                        <RectButton onPress={()=>handleSelectImages(images,setImages)} style={styles.EditButton}>
+                                            <Feather name="camera" size={24} color="#FFF" />
+                                        </RectButton>
+                                    </>
+                                )}
                                 </>
                             ):(
                                 <Image source={Avatar} style={styles.Avatar}/>
