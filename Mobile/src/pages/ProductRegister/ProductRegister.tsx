@@ -7,9 +7,20 @@ import Input from '../../components/Input/Input'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { Picker } from '@react-native-community/picker'
 import selectImg from '../../images/select.png'
+import * as ImagePicker from 'expo-image-picker'
+import { Feather } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
+import handleSelectImages from '../../utils/ImageUpload'
 
 export default function ProductRegister(){
     const [value, setValue] = useState("0")
+    const [images,setImages] = useState<string[]>([])
+
+    const navigation = useNavigation()
+
+    function handleNavigateToYourProducts(){
+        navigation.navigate('ViewYourProducts')
+    }
 
     return(
         <View style={styles.container}>
@@ -26,7 +37,18 @@ export default function ProductRegister(){
                     paddingBottom: 100
                 }} >
                     <Input name="Nome: " placeholder="" />
-                    <Input name="Foto: " placeholder="" />
+                    
+                    <Text style={styles.InputText}>Fotos</Text>
+                    <View style={{flexDirection: 'row',width:253}}>
+                        {images.map(image=> (
+                            <Image key={image} source={{uri: image}} style={styles.UploadedImage} />
+                        ))}
+                    <RectButton onPress={()=> handleSelectImages(images,setImages)} style={styles.UploadButton}>
+                        <Feather name="plus" size={24} color='#FFF'/>
+                    </RectButton>
+                    </View>
+
+
                     <Input name="Detalhes: " placeholder="" options={{
                         useAsTextArea: true,
                         customStyle:{
@@ -56,7 +78,7 @@ export default function ProductRegister(){
                         <Image style={styles.selectImg} source={selectImg} />
                     </View>
                     <Input name="Preço: " placeholder="" />
-                    <RectButton style={styles.SubmitButton}>
+                    <RectButton onPress={handleNavigateToYourProducts} style={styles.SubmitButton}>
                         <Text style={styles.SubmitButtonText}>Finalizar cadastro</Text>
                     </RectButton>
                 </ScrollView>
