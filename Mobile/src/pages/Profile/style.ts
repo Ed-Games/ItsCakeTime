@@ -105,6 +105,25 @@ const styles = StyleSheet.create({
         marginTop: 30,
         marginRight:90,
         marginLeft: -120
+    },
+
+    Savebutton:{
+        backgroundColor: '#2BAF80',
+        width:55,
+        height:25,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 55,
+        marginRight:90,
+        marginLeft: -110,
+    },
+
+    SavebuttonText:{
+        color: '#FFF',
+        fontSize: 15,
+        fontFamily: 'Poppins_500Medium',
+
     }
 })
 
