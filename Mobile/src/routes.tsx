@@ -18,6 +18,7 @@ import CreateNewPasswd from './pages/CreateNewPasswd/CreateNewPasswd';
 import UpdateProfile from './pages/UpdateProfile/UpdateProfile';
 import ProductRegister from './pages/ProductRegister/ProductRegister';
 import ViewYourProducts from './pages/ViewYourProducts/ViewYourProducts';
+import EditProduct from './pages/EditProduct/EditProduct';
 
 
 
@@ -50,6 +51,7 @@ export default function Routes() {
                 <Drawer.Screen name="UpdateProfile" component={UpdateProfile} />
                 <Drawer.Screen name="ViewYourProducts" component={ViewYourProducts} />
                 <Drawer.Screen name="ProductRegister" component={ProductRegister} />
+                <Drawer.Screen name="EditProduct" component={EditProduct} />
             </Drawer.Navigator>
         </NavigationContainer>
     )
