@@ -21,6 +21,10 @@ export default function ProductItem(props:ProductItemProps) {
         navigation.navigate('Profile')
     }
 
+    function handleNavigateToEditProduct(){
+        navigation.navigate('EditProduct')
+    }
+
     return(
         <View style={styles.ProductItem}>
             <View style={styles.FlexRowView}>
@@ -43,7 +47,7 @@ export default function ProductItem(props:ProductItemProps) {
                     </View>
                 )} 
                 {props.EditButton!=false &&(
-                    <RectButton style={styles.EditButton}>
+                    <RectButton onPress={handleNavigateToEditProduct} style={styles.EditButton}>
                         <Feather name="edit" size={24} color="#FFF"/>
                     </RectButton>
                 )}
