@@ -10,10 +10,17 @@ import selectImg from '../../images/select.png'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import handleSelectImages from '../../utils/ImageUpload'
+import { useNavigation } from '@react-navigation/native'
 
 export default function EditProduct(){
     const [value, setValue] = useState("0")
     const [images,setImages] = useState<string[]>([])
+
+    const navigation = useNavigation()
+
+    function goBack(){
+        navigation.goBack()
+    }
 
     return(
         <View style={styles.container}> 
@@ -64,13 +71,13 @@ export default function EditProduct(){
             </ScrollView>
 
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <RectButton style={[styles.actionButton,{backgroundColor:'#2BAF80'}]}>
+                <RectButton onPress={goBack} style={[styles.actionButton,{backgroundColor:'#2BAF80'}]}>
                     <Text style={styles.actionButtonText}>Salvar</Text>
                 </RectButton>
-                <RectButton style={[styles.actionButton,{backgroundColor:'#455A64'}]}>
+                <RectButton onPress={goBack} style={[styles.actionButton,{backgroundColor:'#455A64'}]}>
                     <Text style={styles.actionButtonText}>Cancelar</Text>
                 </RectButton>
-                <RectButton style={[styles.actionButton,{backgroundColor:'#FF0909'}]}>
+                <RectButton onPress={goBack} style={[styles.actionButton,{backgroundColor:'#FF0909'}]}>
                     <Text style={styles.actionButtonText}>Deletar</Text>
                 </RectButton>
             </View>
