@@ -5,8 +5,16 @@ import styles from './styles'
 import Header from '../../components/Header/Header'
 import { RectButton, ScrollView, TextInput } from 'react-native-gesture-handler'
 import Input from '../../components/Input/Input'
+import { useNavigation } from '@react-navigation/native'
 
 export default function Register(){
+
+    const navigation = useNavigation()
+    
+    function handleNavigateToLogin(){
+        navigation.navigate('Login')
+    }
+
     return(
         <View style={styles.container}>
             <View style={{height:230}}>
@@ -32,7 +40,7 @@ export default function Register(){
                     <Input name="Senha: " placeholder="Informe uma boa senha" />
                     <Input name="Confirmar senha: " placeholder="Repita a senha anterior " />
                     <Input name="Whatsapp: " placeholder="Seu numero de whatsapp" />
-                    <RectButton style={styles.submitButton}>
+                    <RectButton onPress={handleNavigateToLogin} style={styles.submitButton}>
                         <Text style={styles.submitButtonText}>Finalizar Cadastro</Text>
                     </RectButton>
                     
