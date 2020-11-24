@@ -12,7 +12,9 @@ interface InputProps{
         TextInputStyle?: object
     },
 
-    defaultValue?: string
+    defaultValue?: string,
+    value?:string,
+    setData?:  React.Dispatch<React.SetStateAction<string>>
 }
 
 
@@ -26,7 +28,7 @@ export default function Input(props: InputProps){
                 <Text style={styles.InputText}>{props.name}</Text>
             )}
                 <View style={[styles.FormInputView,props.options?.customStyle]}>
-                    <TextInput defaultValue={props?.defaultValue} multiline={props.options?.useAsTextArea} style={[styles.Input,props.options?.TextInputStyle]} placeholder={props.placeholder}>
+                    <TextInput onChangeText={props.setData} value={props.value} defaultValue={props?.defaultValue} multiline={props.options?.useAsTextArea} style={[styles.Input,props.options?.TextInputStyle]} placeholder={props.placeholder}>
                     </TextInput>
                 </View>
         </>
