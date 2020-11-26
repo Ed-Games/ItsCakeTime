@@ -1,39 +1,48 @@
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { Alert, Button, Image,Text, View} from 'react-native'
-import { RectButton, TouchableHighlight } from 'react-native-gesture-handler'
+import {Image,Text, View} from 'react-native'
+import { RectButton} from 'react-native-gesture-handler'
 import Header from '../../components/Header/Header'
 import styles from './styles'
 import LoginBaker from '../../images/LoginBaker.png'
 import Input from '../../components/Input/Input'
 import api from '../../services/api'
 import { Modal } from 'react-native-paper'
-
+import AsyncStorage from '@react-native-community/async-storage'
 
 export default function Login(){
+
+    const navigation = useNavigation()
+
 
     const [user,setuser] = useState("")
     const [passwd, setPasswd] = useState("") 
     const [modalVisible, setModalVisible] = useState(false);
 
-    const navigation = useNavigation()
 
     function handleNavigateToRegister(){
         navigation.navigate('Register')
     }
 
-    async function handleNavigateToProfile(){
-        const data = {
+    function SaveUserToken(Token: string){
+        AsyncStorage.setItem('@Key:userToken', Token)
+    }
+
+    async function SignIn(){
+        const credentials = {
             userName: user,
             password: passwd
         }
 
-        console.log(data)
-
         try {
-            await api.post('login',data)
+
+            const response = await api.post('login',credentials)
             navigation.navigate('Profile') 
+            console.log(response.data)
+            SaveUserToken(response.data.accessToken)
+
         } catch (err) {
+            
             if(err.response.status == 400){
                 console.log(err.response.status)
                 setModalVisible(true)
@@ -85,7 +94,7 @@ export default function Login(){
             <RectButton onPress={handleNavigateToResetPasswd} style={{alignSelf: 'flex-end', marginRight:60}}>
                 <Text style={styles.passwordText}>Esqueci minha senha</Text>
             </RectButton>
-            <RectButton onPress={handleNavigateToProfile} style={styles.submitButton}>
+            <RectButton onPress={SignIn} style={styles.submitButton}>
                 <Text style={styles.submitButtonText}>Entrar</Text>
             </RectButton>
             <RectButton style={{marginTop:28, flexDirection: 'row'}} onPress={handleNavigateToRegister}>
