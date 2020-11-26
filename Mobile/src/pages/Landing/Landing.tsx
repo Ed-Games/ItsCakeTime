@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-community/async-storage'
 import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { Image, Text, View } from 'react-native'
@@ -14,8 +15,9 @@ export default function Landing(){
         navigation.navigate('ProductList')
     }
 
-    function handleNavigateToLogin(){
-        navigation.navigate('Login')
+    async function handleNavigateToNext(){
+        const userToken = await AsyncStorage.getItem('@Key:userToken')
+        navigation.navigate(userToken?'Profile':'Login')
     }
 
     return(
@@ -27,7 +29,7 @@ export default function Landing(){
             <Text style={styles.actionText}>O que deseja fazer?</Text>
             <View style={styles.buttonsView}>
                 <RectButton onPress={handleNavigateToProductsList} style={styles.clientButton}><Text style={styles.ButtonText}>Fazer uma encomenda</Text></RectButton>
-                <RectButton onPress={handleNavigateToLogin} style={styles.bakerButton}><Text style={styles.ButtonText}>Ver minha confeitaria</Text></RectButton>
+                <RectButton onPress={handleNavigateToNext} style={styles.bakerButton}><Text style={styles.ButtonText}>Ver minha confeitaria</Text></RectButton>
             </View>
         </View>
     )
