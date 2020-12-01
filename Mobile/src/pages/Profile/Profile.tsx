@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dimensions, Image, ImageBackground, Text, View } from 'react-native'
 import Waves from '../../images/waves.png'
 import styles from './style'
@@ -8,9 +8,20 @@ import WhatsappButton from '../../components/WhatsappButton/WhatsappButton'
 import EmailButton from '../../components/EmailButton/EmailButton'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { Feather, FontAwesome } from '@expo/vector-icons'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native'
 import ProductItem from '../../components/ProductItem/ProductItem'
 import handleSelectImages from '../../utils/ImageUpload'
+import api from '../../services/api'
+import AsyncStorage from '@react-native-community/async-storage'
+
+interface Data{
+    description : string,
+    id: number,
+    image: string,
+    specialty: string,
+    user_id: number,
+    whatsapp: string
+}
 
 export default function Profile() {
 
@@ -18,10 +29,23 @@ export default function Profile() {
     const [images,setImages] = useState<string[]>([])
     const route = useRoute()
     const user = 'alguém'
+    const [data,setData] = useState<Data>()
+
+    useEffect(()=>{
+
+        async function GetProfileData() {
+            const response = await api.get('/profile/show')
+            setData(response.data[0])
+            console.log(response.data[0])
+        }
+
+        GetProfileData()
+    }, [])
+
     
 
     function handleNavigateToProfileProducts(){
-        if(user){
+        if(AsyncStorage.getItem('@Key:user')){
             navigation.navigate('ViewYourProducts')
         }else{
             navigation.navigate('ProfileProducts')
@@ -74,15 +98,11 @@ export default function Profile() {
                 <View style={styles.InfoView}>
                     <Text style={styles.TopicText}>Biografia:</Text>
                     <Text style={styles.ContentText}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Ut at varius dolor. Curabitur dignissim, neque vitae condimentum 
-                    accumsan, lacus massa ultricies augue, vel tincidunt eros quam non 
-                    sapien. Duis feugiat.
+                    {data?.description}
                     </Text>
                     <Text style={styles.TopicText}>Especialidades:</Text>
                     <Text style={styles.ContentText}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Ut at varius dolor. Curabitur dignissim, 
+                    {data?.specialty} 
                     </Text>
                     <Text style={styles.TopicText}>Contato:</Text>
                     <View style={styles.ButtonsView}>
