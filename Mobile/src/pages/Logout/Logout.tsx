@@ -5,6 +5,7 @@ import styles from './styles'
 import Question from '../../images/Question.png'
 import { RectButton } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
+import AsyncStorage from '@react-native-community/async-storage'
 
 export default function Logout(){
 
@@ -15,6 +16,11 @@ export default function Logout(){
     }
 
     function handleNavigateToLandingPage(){
+        try {
+            AsyncStorage.removeItem('@Key:userToken')
+        } catch (error) {
+            console.log(error)
+        }
         navigation.navigate('Landing')
     }
 
