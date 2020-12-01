@@ -16,8 +16,8 @@ export default function Landing(){
     }
 
     async function handleNavigateToNext(){
-        const userToken = await AsyncStorage.getItem('@Key:userToken')
-        navigation.navigate(userToken?'Profile':'Login')
+        const user = await AsyncStorage.getItem('@Key:user')
+        navigation.navigate(user?'Profile':'Login')
     }
 
     return(
