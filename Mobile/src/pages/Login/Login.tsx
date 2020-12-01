@@ -24,8 +24,9 @@ export default function Login(){
         navigation.navigate('Register')
     }
 
-    function SaveUserToken(Token: string){
-        AsyncStorage.setItem('@Key:userToken', Token)
+    function SaveUser(user: string){
+        AsyncStorage.setItem('@Key:user', JSON.stringify(user))
+        console.log(user)
     }
 
     async function SignIn(){
@@ -38,8 +39,7 @@ export default function Login(){
 
             const response = await api.post('login',credentials)
             navigation.navigate('Profile') 
-            console.log(response.data)
-            SaveUserToken(response.data.accessToken)
+            SaveUser(response.data)
 
         } catch (err) {
             
