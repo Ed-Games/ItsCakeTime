@@ -34,7 +34,8 @@ module.exports = {
             const accessToken = generateAccessToken(userName)
             const refreshToken = jwt.sign(userauth,''+process.env.REFRESH_TOKEN_SECRET)
             await connection('user').where('user.userName','=',userName).update({refreshToken})
-            return response.json({accessToken : accessToken, refreshToken:refreshToken})  
+            const email = await connection('user').select('email').where('user.userName',userName)
+            return response.json({accessToken : accessToken, refreshToken:refreshToken,userName,email:email[0]['email']})  
 
         } catch (error) {
             console.log(error)
