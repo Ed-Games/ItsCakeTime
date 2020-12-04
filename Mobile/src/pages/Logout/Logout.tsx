@@ -15,9 +15,9 @@ export default function Logout(){
         navigation.goBack()
     }
 
-    function handleNavigateToLandingPage(){
+    async function handleNavigateToLandingPage(){
         try {
-            AsyncStorage.removeItem('@Key:userToken')
+            await AsyncStorage.removeItem('@Key:user')
         } catch (error) {
             console.log(error)
         }
