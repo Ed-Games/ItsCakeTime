@@ -1,30 +1,68 @@
 import axios from 'axios'
+import { Alert } from 'react-native'
 import GetUser from '../utils/GetUser'
+import DeleteUser from '../utils/DeleteUser'
+import NavigationService from './navigationService'
 
 
 const api = axios.create({
-    baseURL: 'http://10.0.0.103:3333'
+    baseURL: 'http://10.0.0.103:3333',
+    headers: {
+        'Content-Type': 'application/json',
+        Acept: 'application/json',
+    }
 })
+
+api.interceptors.response.use(
+    response => {
+        return response
+    },
+
+    error => {
+        if(error.request._hasError=== true && error.response.includes('connect')){
+            Alert.alert('Aviso', 
+            'Não foi possível conectar, sem internet',
+            [{text: 'Ok'}],
+            {cancelable:false}
+            )
+        }
+
+        /*if(error.response.status===401|| error.response.status===403){
+            const requestConfig = error.config
+
+            DeleteUser().then(()=>{
+                NavigationService('Login')
+            })
+
+            return axios(requestConfig)
+        }*/
+
+        return Promise.reject(error)
+    },
+          
+
+)
 
 api.interceptors.request.use(
     config => {
-        return GetUser().then(user => {
-            if(user){
-                const userData = JSON.parse(user);
-                if(userData || userData.accessToken){
-                    config.headers.authorization = `Bearer ${userData.accessToken}`
-                    return Promise.resolve(config)
-                }
-            }
-        }).catch(error => {
-            console.log(error)
+        return GetUser().then(user =>{
+            if(user && user.accessToken)
+                console.log("authorization:",user.accessToken)
+                console.log('')
+                config.headers.authorization = `Bearer ${user.accessToken}` 
             return Promise.resolve(config)
-          })
+
+        }).catch(err =>{
+            console.log(err)
+
+            return Promise.resolve(config)
+        } )
     },
+
     error => {
-        console.log(error)
         return Promise.reject(error)
     }
 )
+
 
 export default api
