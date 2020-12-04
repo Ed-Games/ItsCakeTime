@@ -24,10 +24,12 @@ export default function Login(){
         navigation.navigate('Register')
     }
 
-    function SaveUser(user: string){
-        AsyncStorage.setItem('@Key:user', JSON.stringify(user))
-        console.log(user)
+    async function SaveUser(user:object){
+        await AsyncStorage.setItem('@Key:user', JSON.stringify(user))
+        const exists = await AsyncStorage.getItem('@Key:user')
+        if(exists)console.log("sera que tem um user?", JSON.parse(exists))
     }
+
 
     async function SignIn(){
         const credentials = {
@@ -36,19 +38,23 @@ export default function Login(){
         }
 
         try {
-
-            const response = await api.post('login',credentials)
+            await api.post('login',credentials).then(response =>{
+                console.log(response.data)
+                SaveUser(response.data)
+            })
             navigation.navigate('Profile') 
-            SaveUser(response.data)
+            
 
         } catch (err) {
-            
+            console.log(err)
             if(err.response.status == 400){
                 console.log(err.response.status)
                 setModalVisible(true)
                 setuser('')
                 setPasswd('')
                 return
+            } else{
+                console.log(err)
             }
         }
 
