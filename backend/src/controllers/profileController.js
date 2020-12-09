@@ -36,7 +36,14 @@ module.exports = {
             .select('*')
             .where('profile.user_id','=',id[0]['id'])
 
-            return response.json(profile)
+            console.log(profile.image)
+
+            const serealizedProfile = {
+                ...profile[0],
+                imageUrl: `http://10.0.0.105:3333/uploads/${profile[0]['image']}`
+            }
+
+            return response.json({profile:serealizedProfile})
         } catch (error) {
             console.log(error)
             return response.sendStatus(500)
@@ -56,8 +63,8 @@ module.exports = {
             if(user!=profileUser[0]['userName']) return response.sendStatus(403)
 
             if(request.file){
-                const path = request.file.path
-                await connection('profile').select('*').where("profile.id", "=", id).update(requestData).update({image:path})
+                const imageName = request.file.filename
+                await connection('profile').select('*').where("profile.id", "=", id).update(requestData).update({image:imageName})
         } else {
                 await connection('profile').select('*').where("profile.id", "=", id).update(requestData)
         }
