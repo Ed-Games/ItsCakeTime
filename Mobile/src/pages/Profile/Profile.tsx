@@ -20,7 +20,8 @@ interface Data{
     image: string,
     specialty: string,
     user_id: number,
-    whatsapp: string
+    whatsapp: string,
+    imageUrl: string
 }
 
 export default function Profile() {
@@ -28,15 +29,15 @@ export default function Profile() {
     const navigation = useNavigation()
     const [images,setImages] = useState<string[]>([])
     const route = useRoute()
-    const user = 'alguém'
     const [data,setData] = useState<Data>()
+    const [user, setUser]= useState({})
 
     useEffect(()=>{
 
         async function GetProfileData() {
             const response = await api.get('/profile/show')
-            setData(response.data[0])
-            console.log(response.data[0])
+            setData(response.data.profile)
+            console.log(response.data.profile)
         }
 
         GetProfileData()
@@ -46,6 +47,7 @@ export default function Profile() {
 
     function handleNavigateToProfileProducts(){
         if(AsyncStorage.getItem('@Key:user')){
+            
             navigation.navigate('ViewYourProducts')
         }else{
             navigation.navigate('ProfileProducts')
@@ -62,33 +64,36 @@ export default function Profile() {
             <View>
                 <ImageBackground style={styles.Waves} source={Waves}>
                         <View style={{flexDirection: 'row'}}>
-                            {user?(
-                                <>
-                                {images.length>0?(
-                                    images.map((image,i,arr)=>{
-                                        if(arr.length -1 ===i){
-                                            {console.log({uri:image})}
-                                            return(
-                                                <>
-                                                    <Image key={image} source={{uri: image}} style={styles.Avatar}/>
-                                                    <RectButton key={image + 'button'} onPress={()=>setImages([])} style={styles.Savebutton}>
-                                                        <Text style={styles.SavebuttonText}>Salvar</Text>
-                                                    </RectButton>
-                                                </>
-                                            )
-                                        }
-                                    })
+                            {images.length>0?(
+                                images.map((image,i,arr)=>{
+                                    if(arr.length -1 ===i){
+                                        {console.log({uri:image})}
+                                        return(
+                                            <>
+                                                <Image key={image} source={{uri: image}} style={styles.Avatar}/>
+                                                <RectButton key={image + 'button'} onPress={()=>setImages([])} style={styles.Savebutton}>
+                                                    <Text style={styles.SavebuttonText}>Salvar</Text>
+                                                </RectButton>
+                                            </>
+                                        )
+                                    }
+                                })
+                            ):(
+                                data?.image?(
+                                    <>
+                                        <Image source={{uri: data.imageUrl}} style={styles.Avatar}/>
+                                        <RectButton onPress={()=>handleSelectImages(images,setImages)} style={styles.EditButton}>
+                                            <Feather name="camera" size={24} color="#FFF" />
+                                        </RectButton>
+                                    </>
                                 ):(
                                     <>
                                         <Image source={Avatar} style={styles.Avatar}/>
                                         <RectButton onPress={()=>handleSelectImages(images,setImages)} style={styles.EditButton}>
                                             <Feather name="camera" size={24} color="#FFF" />
-                                        </RectButton>
+                                         </RectButton>
                                     </>
-                                )}
-                                </>
-                            ):(
-                                <Image source={Avatar} style={styles.Avatar}/>
+                                )
                             )}
                         </View>
                         <Text style={styles.Name}>Alice Andrade Campus</Text>
