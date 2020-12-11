@@ -13,6 +13,7 @@ import ProductItem from '../../components/ProductItem/ProductItem'
 import handleSelectImages from '../../utils/ImageUpload'
 import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
+import GetUser from '../../utils/GetUser'
 
 interface Data{
     description : string,
@@ -59,6 +60,27 @@ export default function Profile() {
         navigation.navigate('UpdateProfile')
     }
 
+    async function handleImageUpload(){
+        const imageData = new FormData()
+        let id = null
+
+        await GetUser().then((user) => {
+            id = user.id
+        })
+
+        console.log("dados da imagem:", images[images.length - 1])
+
+        imageData.append('image',{
+            type: 'image/jpg',
+            uri: images[images.length - 1],
+            name: 'profileImage',
+        } as any)
+
+        await api.put(`profile/update/${id}`, imageData).catch(err => console.log(err))
+
+        setImages([])
+    }
+
     return(
         <View style={styles.container}>
             <View>
@@ -70,8 +92,8 @@ export default function Profile() {
                                         {console.log({uri:image})}
                                         return(
                                             <>
-                                                <Image key={image} source={{uri: image}} style={styles.Avatar}/>
-                                                <RectButton key={image + 'button'} onPress={()=>setImages([])} style={styles.Savebutton}>
+                                                <Image key={image + 'image'} source={{uri: image}} style={styles.Avatar}/>
+                                                <RectButton key={image + 'button'} onPress={handleImageUpload} style={styles.Savebutton}>
                                                     <Text style={styles.SavebuttonText}>Salvar</Text>
                                                 </RectButton>
                                             </>
