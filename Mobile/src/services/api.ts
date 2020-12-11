@@ -47,8 +47,6 @@ api.interceptors.request.use(
     config => {
         return GetUser().then(user =>{
             if(user && user.accessToken)
-                console.log("authorization:",user.accessToken)
-                console.log('')
                 config.headers.authorization = `Bearer ${user.accessToken}` 
             return Promise.resolve(config)
 
