@@ -1,4 +1,6 @@
-const styles={
+import { StyleSheet } from "react-native"
+
+const styles= StyleSheet.create({
     EmailButton: {
         backgroundColor: '#F159E2',
         width: 143,
@@ -19,6 +21,6 @@ const styles={
     FlexRowView: {
         flexDirection: "row",
     },
-}
+})
 
 export default styles

@@ -1,4 +1,6 @@
-const styles = {
+import { StyleSheet } from "react-native"
+
+const styles = StyleSheet.create({
     WhatsappButton:{
         backgroundColor: '#9553A0',
         width: 143,
@@ -20,7 +22,7 @@ const styles = {
     FlexRowView: {
         flexDirection: "row",
     },
-}
+})
 
 
 export default styles

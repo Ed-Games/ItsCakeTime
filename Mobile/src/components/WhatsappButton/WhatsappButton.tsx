@@ -1,12 +1,21 @@
 import { FontAwesome } from '@expo/vector-icons'
 import React from 'react'
-import { Text, View } from 'react-native'
+import { Linking, Text, View } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
 import styles from './styles'
 
-export default function WhatsappButton() {
+interface WhatsappProps{
+    number: string|undefined
+}
+
+export default function WhatsappButton(props:WhatsappProps) {
+
+    function sendWhatsapp(){
+        Linking.openURL(`whatsapp://send?phone=${props.number}`)
+    }
+
     return(
-        <RectButton onPress={() => console.log("funciona")} style={styles.WhatsappButton}>
+        <RectButton onPress={sendWhatsapp} style={styles.WhatsappButton}>
             <View style={styles.FlexRowView}>
                 <FontAwesome name="whatsapp" size={24} color='#FFF' style={{marginLeft: 5, marginTop: 5}} />
                 <Text style={styles.ButtonText}>Whatsapp</Text>
