@@ -32,8 +32,16 @@ module.exports = {
             .select('id')
             .where('user.userName','=',userName)
 
-            const profile = await connection('profile')
-            .select('*')
+            const profile = await connection('profile').join('user','user.id','profile.user_id')
+            .select('profile.id',
+            'profile.user_id', 
+            'profile.description',
+            'profile.whatsapp',
+            'profile.image',
+            'profile.specialty',
+            'user.userName',
+            'user.email',
+            'user.userName')
             .where('profile.user_id','=',id[0]['id'])
 
             console.log(profile.image)
