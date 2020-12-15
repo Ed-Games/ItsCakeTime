@@ -22,7 +22,9 @@ interface Data{
     specialty: string,
     user_id: number,
     whatsapp: string,
-    imageUrl: string
+    imageUrl: string,
+    email: string,
+    userName:string,
 }
 
 export default function Profile() {
@@ -31,7 +33,16 @@ export default function Profile() {
     const [images,setImages] = useState<string[]>([])
     const route = useRoute()
     const [data,setData] = useState<Data>()
-    const [user, setUser]= useState({})
+    const [user, SetUser] = useState({})
+    
+
+    useEffect(() => {
+        GetUser().then((user) => {
+            SetUser(user.id)
+        })
+
+        console.log(user)
+    },[])
 
     useEffect(()=>{
 
@@ -118,7 +129,7 @@ export default function Profile() {
                                 )
                             )}
                         </View>
-                        <Text style={styles.Name}>Alice Andrade Campus</Text>
+                        <Text style={styles.Name}>{data?.userName}</Text>
                 </ImageBackground>
             </View>
             {route.name == 'Profile'?(
@@ -133,11 +144,11 @@ export default function Profile() {
                     </Text>
                     <Text style={styles.TopicText}>Contato:</Text>
                     <View style={styles.ButtonsView}>
-                        <WhatsappButton />
-                        <EmailButton />
+                        <WhatsappButton number={data?.whatsapp} />
+                        <EmailButton address={data?.email as string} />
                     </View>
                     <View style={{alignItems:'center', flexDirection: 'row'}}>
-                    { user?(
+                    { user ==data?.user_id?(
                         <>
                             <RectButton onPress={handleNavigateToProfileProducts} style={[styles.ListButton, {alignSelf: 'flex-start'}]} >
                                 <View style={styles.FlexRowView}>
