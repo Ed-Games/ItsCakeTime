@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import {Image,Text, View} from 'react-native'
+import {Image,KeyboardAvoidingView,Text, View} from 'react-native'
 import { RectButton} from 'react-native-gesture-handler'
 import Header from '../../components/Header/Header'
 import styles from './styles'
@@ -72,51 +72,55 @@ export default function Login(){
     },[])
 
     return(
-        <View style={styles.container}>
-            <Header title="Faça Login para continuar" />
-            <Image style={styles.Image} source={LoginBaker} />
+        <KeyboardAvoidingView  behavior='position' style={styles.container}>
+            <View style={{alignItems: 'center'}}>
+                <Header title="Faça Login para continuar" />
+                <Image style={styles.Image} source={LoginBaker} />
+                
+                <Input
+                captalize='none' 
+                value={user}
+                setData={setuser}
+                name="Usuário :" 
+                placeholder="Seu nome de usuário" 
+                options={{
+                    titleMode: 'Light'
+                }} 
+                />
 
-            <Input 
-            value={user}
-            setData={setuser}
-            name="Usuário :" 
-            placeholder="Seu nome de usuário" 
-            options={{
-                titleMode: 'Light'
-            }} 
-            />
 
+                <Input 
+                captalize='none'
+                value={passwd}
+                setData={setPasswd}
+                name="Senha :" 
+                placeholder="Informe sua senha" 
+                options={{
+                    titleMode: 'Light',
+                }} 
+                />
 
-            <Input 
-            value={passwd}
-            setData={setPasswd}
-            name="Senha :" 
-            placeholder="Informe sua senha" 
-            options={{
-                titleMode: 'Light'
-            }} 
-            />
+                <RectButton onPress={handleNavigateToResetPasswd} style={{alignSelf: 'flex-end', marginRight:60}}>
+                    <Text style={styles.passwordText}>Esqueci minha senha</Text>
+                </RectButton>
+                <RectButton onPress={SignIn} style={styles.submitButton}>
+                    <Text style={styles.submitButtonText}>Entrar</Text>
+                </RectButton>
+                <RectButton style={{marginTop:28, flexDirection: 'row'}} onPress={handleNavigateToRegister}>
+                    <Text style={styles.GoToRegisterText}>Não possui uma Conta? </Text><Text style={styles.GoToRegisterTextLink}>Clique aqui</Text>
+                </RectButton>
 
-            <RectButton onPress={handleNavigateToResetPasswd} style={{alignSelf: 'flex-end', marginRight:60}}>
-                <Text style={styles.passwordText}>Esqueci minha senha</Text>
-            </RectButton>
-            <RectButton onPress={SignIn} style={styles.submitButton}>
-                <Text style={styles.submitButtonText}>Entrar</Text>
-            </RectButton>
-            <RectButton style={{marginTop:28, flexDirection: 'row'}} onPress={handleNavigateToRegister}>
-                <Text style={styles.GoToRegisterText}>Não possui uma Conta? </Text><Text style={styles.GoToRegisterTextLink}>Clique aqui</Text>
-            </RectButton>
+                <Modal
+                    visible={modalVisible}
+                >
+                    <View style={styles.ModalView} >
+                        <Text style={styles.ModalTitleText}>Erro!</Text>
+                        <Text style={styles.ModalText}>Verifique se o usuario e senha estam corretos e tente novamente</Text>
+                        <RectButton style={styles.ModalButton} onPress={()=>setModalVisible(false)} ><Text style={styles.ModalButtonText} >Ok</Text></RectButton>
+                    </View>
+                </Modal>
+            </View>
 
-            <Modal
-                visible={modalVisible}
-            >
-                <View style={styles.ModalView} >
-                    <Text style={styles.ModalTitleText}>Erro!</Text>
-                    <Text style={styles.ModalText}>Verifique se o usuario e senha estam corretos e tente novamente</Text>
-                    <RectButton style={styles.ModalButton} onPress={()=>setModalVisible(false)} ><Text style={styles.ModalButtonText} >Ok</Text></RectButton>
-                </View>
-            </Modal>
-
-        </View>
+        </KeyboardAvoidingView>
     )
 }
