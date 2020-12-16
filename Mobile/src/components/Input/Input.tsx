@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, TextInput, View } from 'react-native'
+import {Text, TextInput, View } from 'react-native'
 import styles from './styles'
 
 interface InputProps{
@@ -14,7 +14,8 @@ interface InputProps{
 
     defaultValue?: string,
     value?:string,
-    setData?:  React.Dispatch<React.SetStateAction<string>>
+    setData?:  React.Dispatch<React.SetStateAction<string>>,
+    captalize?: any
 }
 
 
@@ -28,7 +29,13 @@ export default function Input(props: InputProps){
                 <Text style={styles.InputText}>{props.name}</Text>
             )}
                 <View style={[styles.FormInputView,props.options?.customStyle]}>
-                    <TextInput onChangeText={props.setData} value={props.value} defaultValue={props?.defaultValue} multiline={props.options?.useAsTextArea} style={[styles.Input,props.options?.TextInputStyle]} placeholder={props.placeholder}>
+                    <TextInput autoCapitalize={props.captalize} 
+                    onChangeText={props.setData} 
+                    value={props.value} 
+                    defaultValue={props?.defaultValue} 
+                    multiline={props.options?.useAsTextArea} 
+                    style={[styles.Input,props.options?.TextInputStyle]} 
+                    placeholder={props.placeholder}>
                     </TextInput>
                 </View>
         </>

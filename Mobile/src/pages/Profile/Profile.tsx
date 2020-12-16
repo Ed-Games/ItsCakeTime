@@ -8,7 +8,7 @@ import WhatsappButton from '../../components/WhatsappButton/WhatsappButton'
 import EmailButton from '../../components/EmailButton/EmailButton'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { Feather, FontAwesome } from '@expo/vector-icons'
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native'
+import { useFocusEffect, useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
 import ProductItem from '../../components/ProductItem/ProductItem'
 import handleSelectImages from '../../utils/ImageUpload'
 import api from '../../services/api'
@@ -45,17 +45,17 @@ export default function Profile() {
     },[])
 
     useEffect(()=>{
+        const unsubricribed =navigation.addListener('focus',()=>{
+            GetProfileData()
+            console.log('Refreshing...')
+        })
+    }, [navigation])
 
-        async function GetProfileData() {
-            const response = await api.get('/profile/show')
-            setData(response.data.profile)
-            console.log(response.data.profile)
-        }
-
-        GetProfileData()
-    }, [])
-
-    
+    async function GetProfileData() {
+        const response = await api.get('/profile/show')
+        setData(response.data.profile)
+        console.log(response.data.profile)
+    }
 
     function handleNavigateToProfileProducts(){
         if(AsyncStorage.getItem('@Key:user')){
