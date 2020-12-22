@@ -1,7 +1,7 @@
 import { Poppins_600SemiBold } from "@expo-google-fonts/poppins"
-import { Dimensions } from "react-native"
+import { Dimensions, StyleSheet } from "react-native"
 
-const styles = {
+const styles = StyleSheet.create({
     ProductItem : {
         marginTop: 30,
         backgroundColor: '#FFF',
@@ -59,6 +59,7 @@ const styles = {
         width: 220,
         fontFamily: 'Poppins_300Light',
         fontSize: 15,
+        height: 120
     },
 
     LinkButton:{
@@ -67,7 +68,7 @@ const styles = {
         backgroundColor: '#F782EC',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 20
+        borderRadius: 20,
 
     },
 
@@ -75,11 +76,11 @@ const styles = {
         borderTopRightRadius: 20,
         borderBottomLeftRadius: 20,
         backgroundColor: '#F782EC',
-        Height:36,
+        height:36,
         width:40,
-        marginTop: -30,
-        marginLeft: 42,
         alignItems: 'center',
+        position: 'absolute',
+        marginLeft: Dimensions.get('screen').width - Dimensions.get('screen').width * 0.730555556
     },
 
     LinkText:{
@@ -87,9 +88,9 @@ const styles = {
         height:30,
         fontSize: 10,
         fontFamily: 'Poppins_600SemiBold',
-        marginLeft: -30,
-        color: '#9330AC'
-        
+        color: '#9330AC',
+        position: 'absolute',
+        marginLeft: Dimensions.get('screen').width -340
     },
 
     EditButton: {
@@ -97,12 +98,40 @@ const styles = {
         height:31,
         borderRadius:50,
         backgroundColor: '#9553A0',
-        marginLeft: 50,
-        marginTop: -10,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        position: 'absolute',
+        marginLeft:Dimensions.get('screen').width - Dimensions.get('screen').width * 0.180555556
+        
+    },
+
+    InfoButton:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 40,
+        flexDirection: 'row',
+        position: 'absolute',
+        marginLeft: Dimensions.get('screen').width - (Dimensions.get('screen').width * 0.383333333)
+    },
+
+    InfoText:{
+        width:65,
+        fontSize:10,
+        fontFamily: 'Poppins_600SemiBold',
+        color:'#9330AC',
+        marginRight:3
+    },
+
+    InfoView:{
+        backgroundColor:'#F782EC',
+        height:40,
+        width:40,
+        alignItems:'center',
+        justifyContent: 'center',
+        borderTopRightRadius:20,
+        borderBottomLeftRadius:20
     }
 
-}
+})
 
 export default styles
