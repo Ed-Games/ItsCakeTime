@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { ImageBackground, Text, View } from 'react-native'
 import Header from '../../components/Header/Header'
 
@@ -8,14 +8,37 @@ import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import ProductItem from '../../components/ProductItem/ProductItem'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
+import api from '../../services/api'
+
+export interface Data{
+    category: string,
+    detail: string,
+    image: string,
+    name: string,
+    price: number,
+}
 
 export default function ViewYourProducts(){
 
     const navigation = useNavigation()
+    const [data,setData] = useState<Data[]>()
 
     function handleNavigationToRegisterProducts(){
         navigation.navigate('ProductRegister')
     }
+
+    function GetProductListForLogedUser() {
+        api.get('product/myproducts').then(response=>{
+            setData(response.data)
+        })
+    }
+
+    useEffect(()=>{
+        const unsubricribed =navigation.addListener('focus',()=>{
+            GetProductListForLogedUser()
+            console.log('Refreshing...')
+        })
+    }, [navigation])
 
     return(
         <View style={styles.container}>
@@ -31,11 +54,12 @@ export default function ViewYourProducts(){
                     paddingBottom:180,
                     marginTop: -60
                 }}>
-                    <ProductItem InfoButton={false} />
-                    <ProductItem InfoButton={false} />
-                    <ProductItem InfoButton={false} />
-                    <ProductItem InfoButton={false} />
-                    <ProductItem InfoButton={false} />
+                    {data?.map((product,i) => {
+                        console.log("eis o fulano:", product);
+                        return (
+                            <ProductItem Data={product} InfoButton={false} />
+                        )
+                    })}
 
                 </ScrollView>
                 <RectButton onPress={handleNavigationToRegisterProducts} style={styles.plusButton}>
