@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import {Image,KeyboardAvoidingView,Text, View} from 'react-native'
+import {Image,Keyboard,KeyboardAvoidingView,Text, View} from 'react-native'
 import { RectButton} from 'react-native-gesture-handler'
 import Header from '../../components/Header/Header'
 import styles from './styles'
@@ -36,6 +36,8 @@ export default function Login(){
             userName: user,
             password: passwd
         }
+        
+        Keyboard.dismiss()
 
         try {
             await api.post('login',credentials).then(response =>{
