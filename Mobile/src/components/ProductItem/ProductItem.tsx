@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, Text, View } from 'react-native'
+import { Dimensions, Image, Text, View } from 'react-native'
 import EmailButton from '../EmailButton/EmailButton'
 import WhatsappButton from '../WhatsappButton/WhatsappButton'
 import styles from './styles'
@@ -7,13 +7,16 @@ import Cake from '../../images/cake.jpg'
 import { RectButton } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
+import { Data } from '../../pages/ViewYourProducts/ViewYourProducts'
 
 interface ProductItemProps{
     InfoButton?: boolean,
-    EditButton?:boolean
+    EditButton?:boolean,
+    Data: Data,
 }
 
 export default function ProductItem(props:ProductItemProps) {
+
 
     const navigation = useNavigation()
 
@@ -28,23 +31,21 @@ export default function ProductItem(props:ProductItemProps) {
     return(
         <View style={styles.ProductItem}>
             <View style={styles.FlexRowView}>
-                <Image style={styles.ProductImage} source={Cake} />
+                <Image style={styles.ProductImage} source={{uri:`http://10.0.0.105:3333/${props.Data.image}`}} />
                 <View style={styles.FlexColumnView}>
-                    <Text style={styles.CategoryText}>#Bolos</Text>
-                    <Text style={styles.ProductTitle}>Bolo de aniversario</Text>
+                    <Text style={styles.CategoryText}>{`#${props.Data.category}`}</Text>
+                    <Text style={styles.ProductTitle}>{props.Data.name}</Text>
                     <View style={styles.FlexRowView}>
-                        <Text style={styles.ProductPriceLabel}>Preço: </Text><Text style={styles.ProductPriceValue}>R$ 35,00</Text>
+                        <Text style={styles.ProductPriceLabel}>Preço: </Text><Text style={styles.ProductPriceValue}>{`${props.Data.price} R$`}</Text>
                     </View>
                 </View>
                 {props.InfoButton!=false && (
-                    <View style={{alignItems:'flex-start',marginRight:0}}>
-                        <Text style={styles.LinkText}>Informações do vendedor</Text>
-                        <View style={styles.LinkView}>
-                            <RectButton onPress={handleNavigateToProfile} style={styles.LinkButton}>
-                                <Feather name="arrow-right" size={24} color='#FFF' />
-                            </RectButton>
+                    <RectButton onPress={handleNavigateToProfile} style={styles.InfoButton}>
+                        <Text style={styles.InfoText}>Informações do vendedor</Text>
+                        <View style={styles.InfoView}>
+                            <Feather name="arrow-right" size={24} color='#FFF'/>
                         </View>
-                    </View>
+                    </RectButton>
                 )} 
                 {props.EditButton!=false &&(
                     <RectButton onPress={handleNavigateToEditProduct} style={styles.EditButton}>
@@ -52,7 +53,7 @@ export default function ProductItem(props:ProductItemProps) {
                     </RectButton>
                 )}
             </View>
-            <Text style={styles.ProductDescription}>Bolo de creme com calda de morango, perfeito para aniversarios infantis. Entregas ocorrem em até um dia após o pedido.</Text>
+            <Text style={styles.ProductDescription}>{props.Data.detail}</Text>
             <View style={styles.FlexRowView}>
                 <WhatsappButton />
                 <EmailButton />
