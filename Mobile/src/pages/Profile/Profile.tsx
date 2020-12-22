@@ -90,6 +90,7 @@ export default function Profile() {
         await api.put(`profile/update/${id}`, imageData).catch(err => console.log(err))
 
         setImages([])
+        GetProfileData()
     }
 
     return(
