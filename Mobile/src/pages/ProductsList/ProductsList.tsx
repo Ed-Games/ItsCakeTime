@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { SetStateAction, useEffect, useState } from 'react'
 import { Text, View,TextInput, Image, ImageBackground, ScrollView} from 'react-native'
 import {Picker} from '@react-native-community/picker'
 import styles from './styles'
@@ -9,15 +9,31 @@ import { RectButton } from 'react-native-gesture-handler'
 import ProductItem from '../../components/ProductItem/ProductItem'
 import { useNavigation } from '@react-navigation/native'
 import Header from '../../components/Header/Header'
+import api from '../../services/api'
+import { Data } from '../ViewYourProducts/ViewYourProducts'
 
 export default function ProductsList() {
     const [value, setValue] = useState("0")
-
+    const [data, setData] = useState<Data[]>()
     const navigation = useNavigation()
 
     function handleNavigateToLandingPage(){
         navigation.navigate('Landing')
     }
+
+    function GetListOfProducts(){
+        api.get('products').then((response => {
+            console.log("api response: ", response.data)
+            setData(response.data)
+        }))
+    }
+
+    useEffect(() => {
+        const unsubricribed =navigation.addListener('focus',()=>{
+            GetListOfProducts()
+            console.log('Refreshing...')
+        })
+    },[navigation])
 
     return(
         <View style={styles.container}>
@@ -33,7 +49,7 @@ export default function ProductsList() {
                         <View style={styles.pickerView}>
                             <Picker 
                             selectedValue={value} 
-                            onValueChange={value => setValue(value)} 
+                            onValueChange={value => setValue(value as SetStateAction<string> )} 
                             style={[styles.FilterViewSelect,{
                                 fontFamily: 'Poppins_300Light'
                             }]}>
@@ -60,10 +76,11 @@ export default function ProductsList() {
                             paddingBottom:180,
                             marginTop: -70
                         }}>
-                            <ProductItem />
-                            <ProductItem />
-                            <ProductItem />
-                            <ProductItem />
+                            {data?.map(product=>{
+                                return (
+                                    <ProductItem Data={product} EditButton={false} />
+                                )
+                            })}
                 </ScrollView>
             </View>
             
