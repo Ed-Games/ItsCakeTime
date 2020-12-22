@@ -5,7 +5,7 @@ const connection = require('../database/connection');
 module.exports = {
     async index(request,response){
         try {
-            const products = await connection('product').select('name','price','category','image');
+            const products = await connection('product').select('name','price','category','image','detail');
             return response.json(products)
         } catch (error) {
             console.log(error)
