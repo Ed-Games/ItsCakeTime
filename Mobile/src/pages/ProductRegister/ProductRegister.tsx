@@ -11,15 +11,47 @@ import * as ImagePicker from 'expo-image-picker'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import handleSelectImages from '../../utils/ImageUpload'
+import api from '../../services/api'
 
 export default function ProductRegister(){
     const [value, setValue] = useState("0")
     const [images,setImages] = useState<string[]>([])
+    const [name, setName] = useState<string>('')
+    const [details,setDetails] = useState<string>('')
+    const [category,setCategory] = useState<string>('')
+    const [price,setPrice] = useState<string>('')
+    const categories = ['Não categorizado','Bolos','Tortas','Salgados','Biscoitos', 'Doces', 'Outros']
 
     const navigation = useNavigation()
 
     function handleNavigateToYourProducts(){
         navigation.navigate('ViewYourProducts')
+    }
+
+    async function handleSubmitMultipartForm(){
+        const data = new FormData()
+        const index = value as unknown as number
+        setCategory(categories[index])
+
+        data.append('name',name)
+        data.append('detail',details)
+        data.append('price',price)
+        data.append('category',category)
+
+        images.forEach((image, index)=>{
+            data.append('image',{
+                name:`image_${index}.jpg`,
+                type:'image/jpg',
+                uri:image,
+
+            } as any )
+        })
+
+        await api.post('products/create',data).then(response =>{
+            console.log(response)
+        }).catch(err => console.log(err))
+        navigation.navigate('ViewYourProducts')
+        console.log(data)
     }
 
     return(
@@ -36,8 +68,7 @@ export default function ProductRegister(){
                     alignItems: 'center',
                     paddingBottom: 100
                 }} >
-                    <Input name="Nome: " placeholder="" />
-                    
+                    <Input value={name} setData={setName} name="Nome: " placeholder="" />
                     <Text style={styles.InputText}>Fotos</Text>
                     <View style={{flexDirection: 'row',width:253}}>
                         {images.map(image=> (
@@ -49,7 +80,7 @@ export default function ProductRegister(){
                     </View>
 
 
-                    <Input name="Detalhes: " placeholder="" options={{
+                    <Input value={details} setData={setDetails} name="Detalhes: " placeholder="" options={{
                         useAsTextArea: true,
                         customStyle:{
                             height:115
@@ -62,8 +93,8 @@ export default function ProductRegister(){
                     <Text style={styles.InputText}>Categoria: </Text>
                     <View style={styles.pickerView}>
                         <Picker 
-                            selectedValue={value} 
-                            onValueChange={value => setValue(value)} 
+                            selectedValue={category} 
+                            onValueChange={value => setValue((value as string))} 
                             style={[styles.CategoryInput,{
                                 fontFamily: 'Poppins_300Light'
                             }]}>
@@ -77,8 +108,8 @@ export default function ProductRegister(){
                         </Picker>
                         <Image style={styles.selectImg} source={selectImg} />
                     </View>
-                    <Input name="Preço: " placeholder="" />
-                    <RectButton onPress={handleNavigateToYourProducts} style={styles.SubmitButton}>
+                    <Input value={price} setData={setPrice} name="Preço: " placeholder="" />
+                    <RectButton onPress={handleSubmitMultipartForm} style={styles.SubmitButton}>
                         <Text style={styles.SubmitButtonText}>Finalizar cadastro</Text>
                     </RectButton>
                 </ScrollView>
