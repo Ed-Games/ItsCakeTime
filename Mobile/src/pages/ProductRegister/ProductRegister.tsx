@@ -18,25 +18,20 @@ export default function ProductRegister(){
     const [images,setImages] = useState<string[]>([])
     const [name, setName] = useState<string>('')
     const [details,setDetails] = useState<string>('')
-    const [category,setCategory] = useState<string>('')
     const [price,setPrice] = useState<string>('')
     const categories = ['Não categorizado','Bolos','Tortas','Salgados','Biscoitos', 'Doces', 'Outros']
 
     const navigation = useNavigation()
 
-    function handleNavigateToYourProducts(){
-        navigation.navigate('ViewYourProducts')
-    }
-
     async function handleSubmitMultipartForm(){
         const data = new FormData()
         const index = value as unknown as number
-        setCategory(categories[index])
+        console.log("categoria: ", categories[index])
 
         data.append('name',name)
         data.append('detail',details)
         data.append('price',price)
-        data.append('category',category)
+        data.append('category',categories[index])
 
         images.forEach((image, index)=>{
             data.append('image',{
@@ -52,6 +47,11 @@ export default function ProductRegister(){
         }).catch(err => console.log(err))
         navigation.navigate('ViewYourProducts')
         console.log(data)
+
+        setImages([])
+        setPrice('')
+        setName('')
+        setDetails('')
     }
 
     return(
@@ -69,14 +69,16 @@ export default function ProductRegister(){
                     paddingBottom: 100
                 }} >
                     <Input value={name} setData={setName} name="Nome: " placeholder="" />
-                    <Text style={styles.InputText}>Fotos</Text>
+                    <Text style={styles.InputText}>Foto:</Text>
                     <View style={{flexDirection: 'row',width:253}}>
                         {images.map(image=> (
                             <Image key={image} source={{uri: image}} style={styles.UploadedImage} />
                         ))}
-                    <RectButton onPress={()=> handleSelectImages(images,setImages)} style={styles.UploadButton}>
-                        <Feather name="plus" size={24} color='#FFF'/>
-                    </RectButton>
+                    {!images.length && (
+                        <RectButton onPress={()=> handleSelectImages(images,setImages)} style={styles.UploadButton}>
+                            <Feather name="plus" size={24} color='#FFF'/>
+                        </RectButton>
+                    )}
                     </View>
 
 
@@ -93,7 +95,7 @@ export default function ProductRegister(){
                     <Text style={styles.InputText}>Categoria: </Text>
                     <View style={styles.pickerView}>
                         <Picker 
-                            selectedValue={category} 
+                            selectedValue={value} 
                             onValueChange={value => setValue((value as string))} 
                             style={[styles.CategoryInput,{
                                 fontFamily: 'Poppins_300Light'
