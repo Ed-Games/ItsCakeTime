@@ -1,7 +1,7 @@
 import React from 'react'
 import * as ImagePicker from 'expo-image-picker'
 
-export default async function handleSelectImages(images: string[], setImages:(value: React.SetStateAction<string[]>) => void){
+export default async function handleSelectImages(images: string|string[], setImages:(value: React.SetStateAction<string[]>) => void){
     const {status} = await ImagePicker.requestCameraRollPermissionsAsync()
 
     if(status != 'granted'){
