@@ -25,11 +25,13 @@ export default function ProductItem(props:ProductItemProps) {
     }
 
     function handleNavigateToEditProduct(){
-        navigation.navigate('EditProduct')
+        navigation.navigate('EditProduct', {
+            productId: props.Data.id
+        })
     }
 
     return(
-        <View style={styles.ProductItem}>
+        <View key={props.Data.name+props.Data.image.length} style={styles.ProductItem}>
             <View style={styles.FlexRowView}>
                 <Image style={styles.ProductImage} source={{uri:`http://10.0.0.105:3333/${props.Data.image}`}} />
                 <View style={styles.FlexColumnView}>
