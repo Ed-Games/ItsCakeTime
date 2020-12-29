@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dimensions, Image, ImageBackground, Text, View } from 'react-native'
 
 import styles from './styles'
@@ -10,11 +10,20 @@ import selectImg from '../../images/select.png'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import handleSelectImages from '../../utils/ImageUpload'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import api from '../../services/api'
+
+interface RouteProps{
+    productId: number
+}
 
 export default function EditProduct(){
     const [value, setValue] = useState("0")
     const [images,setImages] = useState<string[]>([])
+    const [productdata,setProductdata] = useState<object>({})
+
+    const route = useRoute()
+    const params = route.params as RouteProps
 
     const navigation = useNavigation()
 
@@ -22,12 +31,26 @@ export default function EditProduct(){
         navigation.goBack()
     }
 
+    useEffect(()=>{
+        const unsubricribed =navigation.addListener('focus',()=>{
+            GetProductData()
+            console.log('Refreshing...')
+        })
+    }, [navigation])
+
+    function GetProductData(){
+        api.get(`products/${params.productId}`).then(response => {
+            setProductdata(response.data)
+            console.log("dados:", response.data[0])
+        })
+    }
+
     return(
         <View style={styles.container}> 
             <View style={{height:160}}>
                 <ImageBackground source={Waves} style={styles.waves}>
                     <View style={{marginBottom:60}} />
-                    <Header titleStyle={{width:315,textAlign: 'center'}} title="Preencha os dados e cadastre seu produto" />
+                    <Header titleStyle={{width:315,textAlign: 'center'}} title="Preencha os dados para atualizar seu produto" />
                 </ImageBackground>
             </View>
 
