@@ -5,7 +5,7 @@ const connection = require('../database/connection');
 module.exports = {
     async index(request,response){
         try {
-            const products = await connection('product').select('name','price','category','image','detail');
+            const products = await connection('product').select('name','price','category','image','detail','id');
             return response.json(products)
         } catch (error) {
             console.log(error)
@@ -69,6 +69,7 @@ module.exports = {
                 'product.category',
                 'product.image',
                 'product.name',
+                'product.id'
                 )
             .where("product.price","=",price)
             .andWhere("product.category","=",category)
@@ -138,6 +139,7 @@ module.exports = {
         'product.category',
         'product.image',
         'product.price',
+        'product.id'
         ).where('user.userName','=', user)
     
         return response.json(products)
