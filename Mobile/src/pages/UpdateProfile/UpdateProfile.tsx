@@ -29,10 +29,10 @@ export default function UpdateProfile(){
 
         const user = await GetUser()
 
-        data.append('description', description)
-        data.append('specialty', specialty)
-        data.append('whatsapp', whatsapp)
-
+        if(description!='')data.append('description', description)
+        if(specialty!='')data.append('specialty', specialty)
+        if(whatsapp!='')data.append('whatsapp', whatsapp)
+        
         image.forEach((image, index)=>{
             data.append('image',{
                 name:`image_${index}.jpg`,
