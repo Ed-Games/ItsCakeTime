@@ -29,14 +29,6 @@ const Drawer = createDrawerNavigator()
 export default function Routes() {
     return(
         <NavigationContainer>
-            {/*<Navigator screenOptions={{
-                headerShown: false
-            }}>
-                <Screen name="Landing" component={Landing} />
-                <Screen name="ProductsList" component={ProductsList} />
-                <Screen name="Profile" component={Profile} />
-                <Screen name="ProfileProducts" component={Profile} />
-            </Navigator>*/}
             <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}  initialRouteName="Landing">
                 <Drawer.Screen name="Landing" component={Landing} />
                 <Drawer.Screen name="ProductList" component={ProductScreen} />
