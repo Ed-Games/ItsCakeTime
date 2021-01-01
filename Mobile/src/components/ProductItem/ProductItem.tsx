@@ -8,6 +8,7 @@ import { RectButton } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import { Data } from '../../pages/ViewYourProducts/ViewYourProducts'
+import AsyncStorage from '@react-native-community/async-storage'
 
 interface ProductItemProps{
     InfoButton?: boolean,
@@ -20,11 +21,13 @@ export default function ProductItem(props:ProductItemProps) {
 
     const navigation = useNavigation()
 
+
     function handleNavigateToProfile(){
         navigation.navigate('Profile')
     }
 
     function handleNavigateToEditProduct(){
+        AsyncStorage.setItem('@Key:tempId',JSON.stringify(props.Data.id))
         navigation.navigate('EditProduct', {
             productId: props.Data.id
         })
