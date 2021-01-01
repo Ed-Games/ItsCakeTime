@@ -16,7 +16,7 @@ export interface Data{
     image: string,
     name: string,
     price: number,
-    id: number
+    id: string
 }
 
 export default function ViewYourProducts(){
@@ -37,7 +37,7 @@ export default function ViewYourProducts(){
     useEffect(()=>{
         const unsubricribed =navigation.addListener('focus',()=>{
             GetProductListForLogedUser()
-            console.log('Refreshing...')
+            //console.log('Refreshing...')
         })
     }, [navigation])
 
@@ -56,7 +56,7 @@ export default function ViewYourProducts(){
                     marginTop: -60
                 }}>
                     {data?.map((product,i) => {
-                        console.log("eis o fulano:", product);
+                        //console.log("eis o fulano:", product);
                         return (
                             <ProductItem Data={product} InfoButton={false} />
                         )
