@@ -12,18 +12,26 @@ import { Feather } from '@expo/vector-icons'
 import handleSelectImages from '../../utils/ImageUpload'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import api from '../../services/api'
+import AsyncStorage from '@react-native-community/async-storage'
 
-interface RouteProps{
+export interface RouteProps{
     productId: number
+}
+
+export interface ProductDataProps{
+    category?: string,
+    detail?: string,
+    email?: string,
+    image?: string,
+    name?: string,
+    price?: number,
+    userName?: string,
 }
 
 export default function EditProduct(){
     const [value, setValue] = useState("0")
     const [images,setImages] = useState<string[]>([])
-    const [productdata,setProductdata] = useState<object>({})
-
-    const route = useRoute()
-    const params = route.params as RouteProps
+    const [productdata,setProductdata] = useState<ProductDataProps>()
 
     const navigation = useNavigation()
 
@@ -32,16 +40,16 @@ export default function EditProduct(){
     }
 
     useEffect(()=>{
-        const unsubricribed =navigation.addListener('focus',()=>{
+        navigation.addListener('focus',()=>{
             GetProductData()
-            console.log('Refreshing...')
         })
     }, [navigation])
 
-    function GetProductData(){
-        api.get(`products/${params.productId}`).then(response => {
-            setProductdata(response.data)
-            console.log("dados:", response.data[0])
+    async function GetProductData(){
+        const id = await AsyncStorage.getItem('@Key:tempId')
+        if(id)await api.get(`products/${JSON.parse(id)}`).then(response => {
+            setProductdata(response.data[0])
+            console.log(response.data[0])
         })
     }
 
@@ -55,7 +63,7 @@ export default function EditProduct(){
             </View>
 
             <ScrollView contentContainerStyle={{alignItems: 'center', width:Dimensions.get('screen').width}}>
-                <Input name="Nome: " defaultValue="Bolo de aniversario" />
+                <Input name="Nome: " defaultValue={productdata?.name} />
 
                 <Text style={styles.InputText}>Fotos</Text>
                         <View style={{flexDirection: 'row',width:253}}>
@@ -70,13 +78,13 @@ export default function EditProduct(){
                 <Input options={{
                     useAsTextArea: true,
                     customStyle: {height:115}
-                }} name="Detalhes: " defaultValue="Bolo de creme com calda de morango, perfeito para aniversarios infantis. Entregas ocorrem em até um dia após o pedido." />
+                }} name="Detalhes: " defaultValue={productdata?.detail} />
 
                 <Text style={styles.InputText}>Categoria: </Text>
                         <View style={styles.pickerView}>
                             <Picker 
                                 selectedValue={value} 
-                                onValueChange={value => setValue(value)} 
+                                onValueChange={value => setValue(value as string)} 
                                 style={[styles.CategoryInput,{
                                     fontFamily: 'Poppins_300Light'
                                 }]}>
@@ -90,7 +98,7 @@ export default function EditProduct(){
                             </Picker>
                             <Image style={styles.selectImg} source={selectImg} />
                         </View>
-                <Input name="Preço: " defaultValue="35,00" />
+                <Input name="Preço: " defaultValue={productdata?.price as unknown as string} />
             </ScrollView>
 
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
