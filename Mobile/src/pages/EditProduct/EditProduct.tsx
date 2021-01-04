@@ -22,21 +22,32 @@ export interface ProductDataProps{
     category?: string,
     detail?: string,
     email?: string,
-    image?: string,
-    name?: string,
-    price?: number,
+    image: string,
+    name: string,
+    price: string,
     userName?: string,
 }
 
 export default function EditProduct(){
-    const [value, setValue] = useState("0")
     const [images,setImages] = useState<string[]>([])
     const [productdata,setProductdata] = useState<ProductDataProps>()
-
+    const [value, setValue] = useState('0')
+    const categories = ['Não categorizado','Bolos','Tortas','Salgados','Biscoitos', 'Doces', 'Outros']
+    
     const navigation = useNavigation()
 
     function goBack(){
         navigation.goBack()
+    }
+
+    function handleSetcategory(){
+        categories.forEach((category, i)=>{
+            if(productdata?.category == category){
+                let index = i as unknown as string
+                setValue(index)
+                console.log("valor para select: ", value)
+            }
+        })
     }
 
     useEffect(()=>{
@@ -50,6 +61,8 @@ export default function EditProduct(){
         if(id)await api.get(`products/${JSON.parse(id)}`).then(response => {
             setProductdata(response.data[0])
             console.log(response.data[0])
+
+            handleSetcategory()
         })
     }
 
@@ -98,7 +111,7 @@ export default function EditProduct(){
                             </Picker>
                             <Image style={styles.selectImg} source={selectImg} />
                         </View>
-                <Input name="Preço: " defaultValue={productdata?.price as unknown as string} />
+                <Input name="Preço: " defaultValue={JSON.stringify(productdata?.price)} />
             </ScrollView>
 
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
