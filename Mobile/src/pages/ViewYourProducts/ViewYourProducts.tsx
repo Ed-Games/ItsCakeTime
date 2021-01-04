@@ -15,7 +15,7 @@ export interface Data{
     detail: string,
     image: string,
     name: string,
-    price: number,
+    price: string,
     id: string
 }
 
