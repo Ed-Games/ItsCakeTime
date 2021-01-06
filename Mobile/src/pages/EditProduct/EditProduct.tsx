@@ -19,10 +19,10 @@ export interface RouteProps{
 }
 
 export interface ProductDataProps{
-    category?: string,
-    detail?: string,
-    email?: string,
-    image: string,
+    category: string,
+    detail: string,
+    email: string,
+    image: string,  
     name: string,
     price: string,
     userName?: string,
@@ -32,7 +32,7 @@ export default function EditProduct(){
     const [images,setImages] = useState<string[]>([])
     const [productdata,setProductdata] = useState<ProductDataProps>()
     const [value, setValue] = useState('0')
-    const categories = ['Não categorizado','Bolos','Tortas','Salgados','Biscoitos', 'Doces', 'Outros']
+    const categories = ["Não categorizado","Bolos","Tortas","Salgados","Biscoitos", "Doces", "Outros"]
     
     const navigation = useNavigation()
 
@@ -41,32 +41,35 @@ export default function EditProduct(){
     }
 
     function handleSetcategory(){
-        categories.forEach((category, i)=>{
-            if(productdata?.category == category){
-                let index = i as unknown as string
-                setValue(index)
-                console.log("valor para select: ", value)
-            }
-        })
+        categories.forEach(category => {
+          if(category == productdata?.category){
+              console.log(productdata?.category)
+          }
+      })
     }
 
     useEffect(()=>{
-        navigation.addListener('focus',()=>{
+        const unsubricribed =navigation.addListener('focus',()=>{
             GetProductData()
         })
     }, [navigation])
 
     async function GetProductData(){
         const id = await AsyncStorage.getItem('@Key:tempId')
-        if(id)await api.get(`products/${JSON.parse(id)}`).then(response => {
-            setProductdata(response.data[0])
-            console.log(response.data[0])
+        if(id){
+            await api.get(`products/${JSON.parse(id)}`).then(async response => {
+                setProductdata(response.data)
+                console.log("Dados: ",productdata)
+                handleSetcategory()
+    
+            })
+        }
 
-            handleSetcategory()
-        })
+        await AsyncStorage.removeItem('@Key:tempId')
     }
 
     return(
+        
         <View style={styles.container}> 
             <View style={{height:160}}>
                 <ImageBackground source={Waves} style={styles.waves}>
