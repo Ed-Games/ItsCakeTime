@@ -51,7 +51,7 @@ module.exports = {
         'user.email',
         'user.userName',
         ).where('product.id','=',id)
-        return response.json(product)
+        return response.json(product[0])
        } catch (error) {
            console.log(error)
            return response.sendStatus(404)
