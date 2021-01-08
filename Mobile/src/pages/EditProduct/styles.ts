@@ -57,10 +57,29 @@ const styles= StyleSheet.create({
         borderRadius:10,
         marginBottom:10
     },
+    CloseButton:{
+        backgroundColor: '#FF0909',
+        width:20,
+        height:20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius:5,
+        position: 'absolute',
+        marginLeft: 80
+    },
 
     UploadedImage:{
         width:45,
         height:45,
+        borderRadius:10,
+        marginBottom: 10,
+        marginRight:5, 
+        alignItems: 'flex-start',
+    },
+
+    EditUploadedImage:{
+        width:100,
+        height:100,
         borderRadius:10,
         marginBottom: 10,
         marginRight:5, 
