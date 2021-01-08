@@ -32,6 +32,7 @@ export default function EditProduct(){
     const [images,setImages] = useState<string[]>([])
     const [productdata,setProductdata] = useState<ProductDataProps>()
     const [value, setValue] = useState('0')
+    const [changeImage, setChangeImage] = useState(0)
     const categories = ["Não categorizado","Bolos","Tortas","Salgados","Biscoitos", "Doces", "Outros"]
     
     const navigation = useNavigation()
@@ -40,17 +41,16 @@ export default function EditProduct(){
         navigation.goBack()
     }
 
-    function handleSetcategory(){
-        categories.forEach(category => {
-          if(category == productdata?.category){
-              console.log(productdata?.category)
-          }
-      })
+    function handleSetcategory(category:string){
+        setValue(categories.indexOf(category) as unknown as string)
+        console.log("value: ", value, "na categoria: ", category)
     }
 
     useEffect(()=>{
         const unsubricribed =navigation.addListener('focus',()=>{
+            setImages([])
             GetProductData()
+            setChangeImage(0)
         })
     }, [navigation])
 
@@ -59,8 +59,8 @@ export default function EditProduct(){
         if(id){
             await api.get(`products/${JSON.parse(id)}`).then(async response => {
                 setProductdata(response.data)
-                console.log("Dados: ",productdata)
-                handleSetcategory()
+                console.log("Dados: ",response.data.category)
+                handleSetcategory(response.data.category)
     
             })
         }
@@ -86,9 +86,22 @@ export default function EditProduct(){
                             {images.map(image=> (
                                 <Image key={image} source={{uri: image}} style={styles.UploadedImage} />
                             ))}
-                        <RectButton onPress={()=> handleSelectImages(images,setImages)} style={styles.UploadButton}>
-                            <Feather name="plus" size={24} color='#FFF'/>
-                        </RectButton>
+                        {images.length == 0 && (
+                            <>
+                                {changeImage == 0?(
+                                    <>
+                                    <Image source={{uri:`http://10.0.0.105:3333/${productdata?.image}`}} style={styles.EditUploadedImage} />
+                                    <RectButton onPress={()=> setChangeImage(1)} style={styles.CloseButton}>
+                                        <Feather name="x" size={18} color='#FFF'/>
+                                    </RectButton>
+                                    </>
+                                ):(
+                                    <RectButton onPress={()=> handleSelectImages(images,setImages)} style={styles.UploadButton}>
+                                        <Feather name="plus" size={18} color='#FFF'/>
+                                    </RectButton>
+                                )}
+                            </>
+                        )}
                         </View>
 
                 <Input options={{
