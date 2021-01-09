@@ -104,9 +104,9 @@ module.exports = {
 
     async update(request,response){
        try {
-        if(!request.params.id || !request.body.product) return response.sendStatus(400)
+        if(!request.params.id || !request.body) return response.sendStatus(400)
         const {id} = request.params
-        const product = request.body
+        const data = request.body
         const user = request.user.name
 
         const productUser = await connection('product')
@@ -114,15 +114,26 @@ module.exports = {
         .select('user.userName')
         .where('product.id','=',id)
 
-        console.log(user, productUser)
+        //console.log(user, productUser[0]['userName'])
+        console.log(data)
         if(productUser[0]['userName']!=user) return response.sendStatus(403)
 
-        await connection('product')
-        .select('*')
-        .where('product.id','=',id)
-        .update(product)
+        if(request.file){
+            const imageName = request.file.filename
 
-        return response.json(product)
+            await connection('product')
+            .select('*')
+            .where('id','=',id)
+            .update(data).update(imageName)
+        } else{
+
+            await connection('product')
+            .select('*')
+            .where('id','=',id)
+            .update(data)
+        }
+
+        return response.json(data)
        } catch (error) {
            console.log(error)
            return response.sendStatus(500)
