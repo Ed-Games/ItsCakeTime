@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Dimensions, Image, ImageBackground, Text, View } from 'react-native'
+import { Alert, Dimensions, Image, ImageBackground, Text, View } from 'react-native'
 
 import styles from './styles'
 import Waves from '../../images/waves.png'
@@ -33,6 +33,9 @@ export default function EditProduct(){
     const [productdata,setProductdata] = useState<ProductDataProps>()
     const [value, setValue] = useState('0')
     const [changeImage, setChangeImage] = useState(0)
+    const [name, setName] = useState<string>('')
+    const [detail, setDetail] = useState<string>('')
+    const [price, setPrice] = useState<string>('')
     const categories = ["Não categorizado","Bolos","Tortas","Salgados","Biscoitos", "Doces", "Outros"]
     
     const navigation = useNavigation()
@@ -65,7 +68,42 @@ export default function EditProduct(){
             })
         }
 
-        await AsyncStorage.removeItem('@Key:tempId')
+        //await AsyncStorage.removeItem('@Key:tempId')
+    }
+
+    async function handleUpdateProduct(){
+        const id = await AsyncStorage.getItem('@Key:tempId')
+        if(id){
+
+            const data = new FormData()
+
+            if(name!='') data.append('name', name)
+            if(price!='') data.append('price', price)
+            if(detail!='') data.append('detail', detail)
+
+            if(value!='0'){
+                data.append('category', categories[value as any])
+            }
+
+            data.append('image',{
+                type: 'image/jpg',
+                uri: images[images.length - 1],
+                name: 'profileImage',
+            } as any)
+            
+
+            console.log("olha os dados aqui: ",data)
+
+            await api.put(`products/update/${id}`,data).then(response => {
+                console.log(response.data)
+            }).catch(error => {
+                console.log(error)
+                Alert.alert('Ops! um erro ocorreu, tente novamente mais tarde')
+            })
+
+            goBack()
+        }
+
     }
 
     return(
@@ -79,7 +117,7 @@ export default function EditProduct(){
             </View>
 
             <ScrollView contentContainerStyle={{alignItems: 'center', width:Dimensions.get('screen').width}}>
-                <Input name="Nome: " defaultValue={productdata?.name} />
+                <Input name="Nome: " defaultValue={productdata?.name} setData={setName} />
 
                 <Text style={styles.InputText}>Fotos</Text>
                         <View style={{flexDirection: 'row',width:253}}>
@@ -107,7 +145,7 @@ export default function EditProduct(){
                 <Input options={{
                     useAsTextArea: true,
                     customStyle: {height:115}
-                }} name="Detalhes: " defaultValue={productdata?.detail} />
+                }} name="Detalhes: " defaultValue={productdata?.detail} setData={setDetail} />
 
                 <Text style={styles.InputText}>Categoria: </Text>
                         <View style={styles.pickerView}>
@@ -127,11 +165,11 @@ export default function EditProduct(){
                             </Picker>
                             <Image style={styles.selectImg} source={selectImg} />
                         </View>
-                <Input name="Preço: " defaultValue={JSON.stringify(productdata?.price)} />
+                <Input name="Preço: " defaultValue={JSON.stringify(productdata?.price)} setData={setPrice} />
             </ScrollView>
 
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <RectButton onPress={goBack} style={[styles.actionButton,{backgroundColor:'#2BAF80'}]}>
+                <RectButton onPress={handleUpdateProduct} style={[styles.actionButton,{backgroundColor:'#2BAF80'}]}>
                     <Text style={styles.actionButtonText}>Salvar</Text>
                 </RectButton>
                 <RectButton onPress={goBack} style={[styles.actionButton,{backgroundColor:'#455A64'}]}>
