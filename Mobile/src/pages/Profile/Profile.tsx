@@ -8,7 +8,7 @@ import WhatsappButton from '../../components/WhatsappButton/WhatsappButton'
 import EmailButton from '../../components/EmailButton/EmailButton'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { Feather, FontAwesome } from '@expo/vector-icons'
-import { useFocusEffect, useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
+import {useNavigation, useRoute } from '@react-navigation/native'
 import ProductItem from '../../components/ProductItem/ProductItem'
 import handleSelectImages from '../../utils/ImageUpload'
 import api from '../../services/api'
@@ -79,13 +79,13 @@ export default function Profile() {
             id = user.id
         })
 
-        console.log("dados da imagem:", images[images.length - 1])
-
         imageData.append('image',{
             type: 'image/jpg',
             uri: images[images.length - 1],
             name: 'profileImage',
         } as any)
+
+        console.log(imageData)
 
         await api.put(`profile/update/${id}`, imageData).catch(err => console.log(err))
 
