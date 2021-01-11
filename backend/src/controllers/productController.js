@@ -119,12 +119,12 @@ module.exports = {
         if(productUser[0]['userName']!=user) return response.sendStatus(403)
 
         if(request.file){
-            const imageName = request.file.filename
+            const imageName = request.file.path
 
             await connection('product')
             .select('*')
             .where('id','=',id)
-            .update(data).update(imageName)
+            .update(data).update({image:imageName})
         } else{
 
             await connection('product')
