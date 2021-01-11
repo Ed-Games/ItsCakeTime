@@ -46,7 +46,6 @@ export default function EditProduct(){
 
     function handleSetcategory(category:string){
         setValue(categories.indexOf(category) as unknown as string)
-        console.log("value: ", value, "na categoria: ", category)
     }
 
     useEffect(()=>{
@@ -62,7 +61,6 @@ export default function EditProduct(){
         if(id){
             await api.get(`products/${JSON.parse(id)}`).then(async response => {
                 setProductdata(response.data)
-                console.log("Dados: ",response.data.category)
                 handleSetcategory(response.data.category)
     
             })
@@ -85,11 +83,16 @@ export default function EditProduct(){
                 data.append('category', categories[value as any])
             }
 
-            data.append('image',{
-                type: 'image/jpg',
-                uri: images[images.length - 1],
-                name: 'profileImage',
-            } as any)
+            images.forEach((image, index)=>{
+                data.append('image',{
+                    name:`image_${index}.jpg`,
+                    type:'image/jpg',
+                    uri:image,
+    
+                } as any )
+            })
+
+            setImages([])
             
 
             console.log("olha os dados aqui: ",data)
