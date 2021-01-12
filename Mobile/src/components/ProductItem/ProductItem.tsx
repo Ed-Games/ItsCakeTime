@@ -14,6 +14,7 @@ interface ProductItemProps{
     InfoButton?: boolean,
     EditButton?:boolean,
     Data: Data,
+    key?: string
 }
 
 export default function ProductItem(props:ProductItemProps) {

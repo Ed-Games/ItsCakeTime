@@ -56,9 +56,8 @@ export default function ViewYourProducts(){
                     marginTop: -60
                 }}>
                     {data?.map((product,i) => {
-                        //console.log("eis o fulano:", product);
                         return (
-                            <ProductItem Data={product} InfoButton={false} />
+                            <ProductItem key={product.name+product.id+i} Data={product} InfoButton={false} />
                         )
                     })}
 
