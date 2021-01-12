@@ -104,6 +104,7 @@ export default function EditProduct(){
             await api.put(`products/update/${id}`,data).then(response => {
                 console.log(response.data)
             }).catch(error => {
+                if(error.message=="undefined is not an object (evaluating 'error.response.includes')") return
                 console.log(error)
                 Alert.alert('Ops! um erro ocorreu, tente novamente mais tarde')
             })
