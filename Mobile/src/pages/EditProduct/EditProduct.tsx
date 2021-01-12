@@ -10,9 +10,10 @@ import selectImg from '../../images/select.png'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import handleSelectImages from '../../utils/ImageUpload'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
+import ReactPicker from '../../components/ReactPicker/ReactPicker'
 
 export interface RouteProps{
     productId: number
@@ -31,7 +32,8 @@ export interface ProductDataProps{
 export default function EditProduct(){
     const [images,setImages] = useState<string[]>([])
     const [productdata,setProductdata] = useState<ProductDataProps>()
-    const [value, setValue] = useState('0')
+    const [value, setValue] = useState<number>()
+    const [initialCategory, setInitialCategory] = useState<number>()
     const [changeImage, setChangeImage] = useState(0)
     const [name, setName] = useState<string>('')
     const [detail, setDetail] = useState<string>('')
@@ -45,7 +47,9 @@ export default function EditProduct(){
     }
 
     function handleSetcategory(category:string){
-        setValue(categories.indexOf(category) as unknown as string)
+        setInitialCategory(categories.indexOf(category))
+        console.log("Category: ",categories.indexOf(category))
+        console.log("VALUE: ",value)
     }
 
     useEffect(()=>{
@@ -55,6 +59,7 @@ export default function EditProduct(){
             setChangeImage(0)
         })
     }, [navigation])
+
 
     async function GetProductData(){
         const id = await AsyncStorage.getItem('@Key:tempId')
@@ -66,7 +71,6 @@ export default function EditProduct(){
             })
         }
 
-        //await AsyncStorage.removeItem('@Key:tempId')
     }
 
     async function handleUpdateProduct(){
@@ -79,7 +83,7 @@ export default function EditProduct(){
             if(price!='') data.append('price', price)
             if(detail!='') data.append('detail', detail)
 
-            if(value!='0'){
+            if(value){
                 data.append('category', categories[value as any])
             }
 
@@ -152,20 +156,12 @@ export default function EditProduct(){
 
                 <Text style={styles.InputText}>Categoria: </Text>
                         <View style={styles.pickerView}>
-                            <Picker 
-                                selectedValue={value} 
-                                onValueChange={value => setValue(value as string)} 
-                                style={[styles.CategoryInput,{
-                                    fontFamily: 'Poppins_300Light'
-                                }]}>
-                                <Picker.Item label="Selecionar" value="0" />
-                                    <Picker.Item label="Bolos" value="1" />
-                                    <Picker.Item label="Tortas" value="2" />
-                                    <Picker.Item label="Salgados" value="3" />
-                                    <Picker.Item label="Biscoitos" value="4" />
-                                    <Picker.Item label="Doces" value="5" />
-                                    <Picker.Item label="Outros" value="6" />
-                            </Picker>
+                            { value==0 || value==undefined || value==null?(
+                                <ReactPicker value={initialCategory as number} setValue={setValue} />
+                            ):(
+                                <ReactPicker value={value as number} setValue={setValue} />
+                            )}
+                            {/* PRECISO RESOLVER ISSO COM URGÊNCIA!!!  */}
                             <Image style={styles.selectImg} source={selectImg} />
                         </View>
                 <Input name="Preço: " defaultValue={JSON.stringify(productdata?.price)} setData={setPrice} />
