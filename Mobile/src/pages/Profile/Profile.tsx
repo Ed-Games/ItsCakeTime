@@ -47,14 +47,14 @@ export default function Profile() {
     useEffect(()=>{
         const unsubricribed =navigation.addListener('focus',()=>{
             GetProfileData()
-            console.log('Refreshing...')
+           // console.log('Refreshing...')
         })
     }, [navigation])
 
     async function GetProfileData() {
         const response = await api.get('/profile/show')
         setData(response.data.profile)
-        console.log(response.data.profile)
+        //
     }
 
     function handleNavigateToProfileProducts(){
@@ -68,7 +68,7 @@ export default function Profile() {
     }
 
     function handleNavigateToUpdateProfile(){
-        navigation.navigate('UpdateProfile')
+        navigation.navigate('UpdateProfile',{Data: data})
     }
 
     async function handleImageUpload(){
@@ -85,7 +85,7 @@ export default function Profile() {
             name: 'profileImage',
         } as any)
 
-        console.log(imageData)
+        //console.log(imageData)
 
         await api.put(`profile/update/${id}`, imageData).catch(err => console.log(err))
 
@@ -101,7 +101,7 @@ export default function Profile() {
                             {images.length>0?(
                                 images.map((image,i,arr)=>{
                                     if(arr.length -1 ===i){
-                                        {console.log({uri:image})}
+                                        {/*console.log({uri:image})*/}
                                         return(
                                             <>
                                                 <Image key={image + 'image'} source={{uri: image}} style={styles.Avatar}/>
