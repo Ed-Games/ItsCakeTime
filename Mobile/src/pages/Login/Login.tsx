@@ -7,8 +7,8 @@ import styles from './styles'
 import LoginBaker from '../../images/LoginBaker.png'
 import Input from '../../components/Input/Input'
 import api from '../../services/api'
-import { Modal } from 'react-native-paper'
 import AsyncStorage from '@react-native-community/async-storage'
+import ModalView from '../../components/Modal/Modal'
 
 export default function Login(){
 
@@ -112,15 +112,13 @@ export default function Login(){
                     <Text style={styles.GoToRegisterText}>Não possui uma Conta? </Text><Text style={styles.GoToRegisterTextLink}>Clique aqui</Text>
                 </RectButton>
 
-                <Modal
-                    visible={modalVisible}
-                >
-                    <View style={styles.ModalView} >
-                        <Text style={styles.ModalTitleText}>Erro!</Text>
-                        <Text style={styles.ModalText}>Verifique se o usuario e senha estam corretos e tente novamente</Text>
-                        <RectButton style={styles.ModalButton} onPress={()=>setModalVisible(false)} ><Text style={styles.ModalButtonText} >Ok</Text></RectButton>
-                    </View>
-                </Modal>
+                <ModalView 
+                modalVisible={modalVisible} 
+                setModalVisible={setModalVisible} 
+                title="Erro!" 
+                contentText="Verifique se o usuario e senha estam corretos e tente novamente"
+                actionText="Ok"
+                />
             </View>
 
         </KeyboardAvoidingView>
