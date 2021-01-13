@@ -1,22 +1,39 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Dimensions, Image, ImageBackground, Text, View } from 'react-native'
 import styles from './styles'
 import Waves from '../../images/waves.png'
 import Header from '../../components/Header/Header'
 import Input from '../../components/Input/Input'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { Feather } from '@expo/vector-icons'
 import handleSelectImages from '../../utils/ImageUpload'
 import api from '../../services/api'
 import GetUser from '../../utils/GetUser'
 
-export default function UpdateProfile(){
 
-    const [description,setDescription] = useState('')
-    const [specialty, setSpecialty] = useState('')
-    const [image, setImage] = useState<string[]>([])
-    const [whatsapp, setWhatsapp] = useState('')
+interface Data{
+    Data : {
+        description : string,
+        id: number,
+        image: string,
+        specialty: string,
+        user_id: number,
+        whatsapp: string,
+        imageUrl: string,
+        email: string,
+        userName:string,
+    }
+}
+
+export default function UpdateProfile(){
+    
+    const profileData = useRoute().params as Data
+    console.log(profileData)
+    const [description,setDescription] = useState<string>('')
+    const [specialty, setSpecialty] = useState<string>('')
+    const [whatsapp, setWhatsapp] = useState<string>('')
+
 
     const navigation = useNavigation()
 
@@ -33,15 +50,6 @@ export default function UpdateProfile(){
         if(specialty!='') data.append('specialty', specialty)
         if(whatsapp!='') data.append('whatsapp', whatsapp)
         
-        image.forEach((image, index)=>{
-            data.append('image',{
-                name:`image_${index}.jpg`,
-                type:'image/jpg',
-                uri:image,
-
-            } as any )
-        })
-
         console.log("dados:", data)
 
         await api.put(`/profile/update/${user.id}/`, data).then((response) =>{
@@ -64,46 +72,56 @@ export default function UpdateProfile(){
 
             <View style={styles.FormView}>
 
-                <Input
-                value={description}
-                setData={setDescription} 
-                name="Descrição" 
-                options={{
-                    customStyle:{height:115,alignItems:'flex-start'},
-                    useAsTextArea: true,
-                    TextInputStyle: {
-                        height:115,
-                        alignSelf: 'flex-start',
-                    }
-                }} 
-                />
-
-                <Input 
-                value={specialty}
-                setData={setSpecialty}
-                name="Especialidade"
-                />
-
-
-                {image.length==0 && (
-                    <RectButton 
-                    onPress={()=> handleSelectImages(image,setImage)}
-                    style={styles.UploadButton}>
-                        <Feather name="plus" size={24} color='#FFF'/>
-                    </RectButton>
-                )}
-                {image.map(image => (
+                {profileData && (
                     <>
-                    <Text style={styles.formText} >Foto:</Text>
-                    <Image style={styles.Imagebackground} source={{uri: image}}/>
-                    </>
-                ))}
+                    <Input
+                    defaultValue={profileData.Data.description}
+                    setData={setDescription} 
+                    name="Descrição" 
+                    options={{
+                        customStyle:{height:115,alignItems:'flex-start'},
+                        useAsTextArea: true,
+                        TextInputStyle: {
+                            height:115,
+                            alignSelf: 'flex-start',
+                        }
+                    }} 
+                    />
 
-                <Input 
-                value={whatsapp}
-                setData={setWhatsapp}
-                name="Whatsapp"
-                />
+                    {console.log(profileData.Data.description)}
+    
+                    <Input 
+                    defaultValue={profileData?.Data.specialty}
+                    setData={setSpecialty}
+                    name="Especialidade"
+                    />
+    
+    
+                    {/* UPLOAD DE IMAGENS (TIRADO POR SER REDUNDANTE, UMA VEZ QUE O USUÀRIO PODE FAZER ISSO NA PÁGINA DE PERFIL)
+    
+                        {image.length==0 && (
+                        <RectButton 
+                        onPress={()=> handleSelectImages(image,setImage)}
+                        style={styles.UploadButton}>
+                            <Feather name="plus" size={24} color='#FFF'/>
+                        </RectButton>
+                    )}
+                    {image.map(image => (
+                        <>
+                        <Text style={styles.formText} >Foto:</Text>
+                        <Image style={styles.Imagebackground} source={{uri: image}}/>
+                        </>
+                    ))}
+                    */}
+    
+                    <Input 
+                    defaultValue={profileData?.Data.whatsapp}
+                    setData={setWhatsapp}
+                    name="Whatsapp"
+                    />
+
+                    </>
+                )}
 
                 <RectButton
                 onPress={handleUpdateProfile} 
