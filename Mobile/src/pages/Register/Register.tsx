@@ -7,6 +7,7 @@ import { RectButton, ScrollView} from 'react-native-gesture-handler'
 import Input from '../../components/Input/Input'
 import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
+import ModalView from '../../components/Modal/Modal'
 
 export default function Register(){
 
@@ -15,6 +16,8 @@ export default function Register(){
     const [password, setPassword] = useState<string>('')
     const[confirmPassword, setConfirmPassword] = useState<string>('')
     const [whatsapp,setWhatsapp] = useState<string>('')
+    const [modalVisible, setModalVisible] = useState<boolean>(false)
+    const [message, setMessage] = useState<string>()
     const info = [name,email,password, whatsapp]
 
 
@@ -24,9 +27,11 @@ export default function Register(){
     async function createUser(){
 
         if(!name || !email || !password || !whatsapp){
-            Alert.alert('Por favor, precisamos que você preencha todos os dados para criarmos a sua conta')
+            setModalVisible(true)
+            setMessage("Por favor, precisamos que você preencha todos os dados para criarmos a sua conta")
         } else if(password != confirmPassword){
-            Alert.alert('senha e confirmar senha precisam ser iguais')
+            setModalVisible(true)
+            setMessage("senha e confirmar senha precisam ser iguais")
         } else {
             const data = {
                 userName : name,
@@ -78,6 +83,13 @@ export default function Register(){
                    </ScrollView>
                 </View>
             </View>
+            <ModalView 
+            title="Erro!" 
+            contentText={message as string} 
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            actionText="Ok"
+            />
             
         </View>
     )
