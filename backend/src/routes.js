@@ -59,4 +59,6 @@ routes.get('/token',authenticateToken,refreshToken)
 
 routes.delete('/logout',authenticateToken, userController.logout)
 
+routes.post('/requestNewPassword', userController.requestNewPassword)
+
 module.exports = routes
