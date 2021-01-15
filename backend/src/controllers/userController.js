@@ -2,6 +2,7 @@ require('dotenv').config()
 const connection = require('../database/connection')
 const jwt = require('jsonwebtoken')
 const {generateAccessToken} = require('../services/authorization')
+const sendMail = require('../services/nodeMailerConfig')
 
 module.exports = {
     async index(request, response){
@@ -131,6 +132,18 @@ module.exports = {
         } catch (error) {
             console.log(error)
             return response.sendStatus(400)
+        }
+    },
+
+    async requestNewPassword(request, response) {
+        try {
+            const email = request.body.email
+            sendMail(email)
+            return response.sendStatus(200)
+
+        } catch (error) {
+            console.log(error)
+            response.sendStatus(error.status)
         }
     }
 }
