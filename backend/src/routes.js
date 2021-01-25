@@ -27,8 +27,6 @@ routes.post('/users/register/', userController.create)
 
 routes.delete('/users/delete/:id/',authenticateToken, userController.delete)
 
-routes.put('/users/resetPassword/:id/',authenticateToken, userController.resetPassword)
-
 routes.delete('/profile/delete/:id/',profileController.delete) //NOT TO USE IN PRODUCTION
 
 routes.get('/profile/', profileController.index) //NOT TO USE IN PRODUCTION
@@ -60,5 +58,7 @@ routes.get('/token',authenticateToken,refreshToken)
 routes.delete('/logout',authenticateToken, userController.logout)
 
 routes.post('/requestNewPassword', userController.requestNewPassword)
+
+routes.put('/users/resetPassword/:token/', userController.resetPassword)
 
 module.exports = routes
