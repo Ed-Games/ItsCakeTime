@@ -3,6 +3,7 @@ const connection = require('../database/connection')
 const jwt = require('jsonwebtoken')
 const {generateAccessToken} = require('../services/authorization')
 const sendMail = require('../services/nodeMailerConfig')
+const crypto = require('crypto')
 
 module.exports = {
     async index(request, response){
@@ -114,31 +115,53 @@ module.exports = {
 
     async resetPassword(request,response){
         try {
-            const {password} = request.body
-            const {id} = request.params
-            const user = request.user.name
-
-            console.log(user)
-
-            const userName = await connection('user').select('user.userName').where('user.id','=',id)
-            if(userName[0]['userName']!=user){
-                return response.sendStatus(403)
-            }
+            const {password, email} = request.body
+            const {token} = request.params
             
+            const user = await connection('user').select('expirationDate','requestPasswdToken').where('email','=', email)
+
+            if(!user) return response.status(404).send("user not found")
+
+            console.log("token: ",user[0].requestPasswdToken)
+
+            if(user[0].requestPasswdToken != token) return response.status(404).send("token invalid")
+
+            const now = new Date()
+
+            if( now > user[0].expirationDate) return response.status(400).send("this token is no longer valid, request a new one")
+    
             const passwdField = await connection('user')
-            .select('user.password').where("user.id", "=",id)
-            .update({'password':`${password}`})
+            .select('password').where("requestPasswdToken", "=",token)
+            .update({password})
             return response.json(passwdField)
         } catch (error) {
             console.log(error)
-            return response.sendStatus(400)
+            return response.sendStatus(error)
         }
     },
 
     async requestNewPassword(request, response) {
+        const email = request.body.email
+
         try {
-            const email = request.body.email
-            sendMail(email)
+
+            const user =  await connection('user').select('userName').where('email', '=', email)
+
+            if(!user) return response.sendStatus(404)
+
+            const token = crypto.randomBytes(20).toString('hex')
+
+            const now = new Date()
+            now.setHours(now.getHours() + 1)
+
+            data = {
+                requestPasswdToken: token, 
+                expirationDate: now
+            }
+
+            await connection('user').select('*').where('email','=', email).update(data)
+
+            sendMail(email, token)
             return response.sendStatus(200)
 
         } catch (error) {
