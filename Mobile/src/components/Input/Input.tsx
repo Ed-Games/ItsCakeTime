@@ -13,6 +13,7 @@ interface InputProps{
     },
 
     defaultValue?: string,
+    secureTextEntry?: boolean,
     value?:string,
     setData?:  React.Dispatch<React.SetStateAction<string>>,
     captalize?: any
@@ -30,6 +31,7 @@ export default function Input(props: InputProps){
             )}
                 <View style={[styles.FormInputView,props.options?.customStyle]}>
                     <TextInput autoCapitalize={props.captalize} 
+                    secureTextEntry={props.secureTextEntry}
                     onChangeText={props.setData} 
                     value={props.value} 
                     defaultValue={props?.defaultValue} 
