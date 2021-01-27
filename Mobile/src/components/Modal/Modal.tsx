@@ -11,6 +11,10 @@ interface ModalProps{
     title:string, 
     contentText: string,
     actionText: string,
+    ContentBlock?: JSX.Element,
+    actionTextStyle?:object,
+    executeOnClose?: Function,
+    
 }
 
 export default function ModalView(props:ModalProps){
@@ -21,7 +25,12 @@ export default function ModalView(props:ModalProps){
             <View style={styles.ModalView} >
                 <Text style={styles.ModalTitleText}>{props.title}</Text>
                 <Text style={styles.ModalText}>{props.contentText}</Text>
-                <RectButton style={styles.ModalButton} onPress={()=>props.setModalVisible(false)} ><Text style={styles.ModalButtonText} >{props.actionText}</Text></RectButton>
+                {props.ContentBlock && (
+                    props.ContentBlock
+                )}
+                <RectButton style={styles.ModalButton} onPress={()=> {()=>props.setModalVisible(false);props.executeOnClose}} >
+                    <Text style={[styles.ModalButtonText,props.actionTextStyle]} >{props.actionText}</Text>
+                </RectButton>
             </View>
         </Modal>
     )
