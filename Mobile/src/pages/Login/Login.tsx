@@ -17,7 +17,9 @@ export default function Login(){
 
     const [user,setuser] = useState("")
     const [passwd, setPasswd] = useState("") 
-    const [modalVisible, setModalVisible] = useState(false);
+    const [loginModalVisible, setLoginModalVisible] = useState(false);
+    const [forgotPasswdmodalVisible, setForgotPasswdModalVisible] = useState(false);
+    const [email, setEmail] = useState('')
 
 
     function handleNavigateToRegister(){
@@ -51,7 +53,7 @@ export default function Login(){
             console.log(err)
             if(err.response.status == 400){
                 console.log(err.response.status)
-                setModalVisible(true)
+                setLoginModalVisible(true)
                 setuser('')
                 setPasswd('')
                 return
@@ -63,14 +65,19 @@ export default function Login(){
     }
 
     function handleNavigateToResetPasswd(){
-        navigation.navigate('ResetPasswd')
+        if(email && email!=''){
+            navigation.navigate('ResetPasswd')
+            setEmail('')
+        }
     }
+
 
 
     useEffect(() => {
         setuser('')
         setPasswd('')
-        setModalVisible(false)
+        setLoginModalVisible(false)
+        setForgotPasswdModalVisible(false)
     },[])
 
     return(
@@ -96,13 +103,14 @@ export default function Login(){
                 value={passwd}
                 setData={setPasswd}
                 name="Senha :" 
+                secureTextEntry={true}
                 placeholder="Informe sua senha" 
                 options={{
                     titleMode: 'Light',
                 }} 
                 />
 
-                <RectButton onPress={handleNavigateToResetPasswd} style={{alignSelf: 'flex-end', marginRight:60}}>
+                <RectButton onPress={()=> setForgotPasswdModalVisible(true)} style={{alignSelf: 'flex-end', marginRight:60}}>
                     <Text style={styles.passwordText}>Esqueci minha senha</Text>
                 </RectButton>
                 <RectButton onPress={SignIn} style={styles.submitButton}>
@@ -113,11 +121,37 @@ export default function Login(){
                 </RectButton>
 
                 <ModalView 
-                modalVisible={modalVisible} 
-                setModalVisible={setModalVisible} 
+                modalVisible={loginModalVisible} 
+                setModalVisible={setLoginModalVisible} 
                 title="Erro!" 
                 contentText="Verifique se o usuario e senha estam corretos e tente novamente"
                 actionText="Ok"
+                actionTextStyle={{borderRadius: 50}}
+                />
+
+                <ModalView
+                ContentBlock={
+                   <View style={{marginTop:20, alignItems: 'center'}}>
+                        <Input
+                        captalize="none" 
+                        name="Email: "
+                        setData={setEmail}
+                        options={{
+                            customStyle: {
+                                alignSelf: "center",
+                                marginBottom: 0
+                            }
+                        }}
+                        />
+                   </View>
+                }
+                modalVisible={forgotPasswdmodalVisible} 
+                setModalVisible={setForgotPasswdModalVisible} 
+                executeOnClose={handleNavigateToResetPasswd}
+                title="Esqueceu sua senha?" 
+                contentText="Sem problema, informe seu email para te ajudarmos a criar uma nova"
+                actionText="Enviar"
+                actionTextStyle = {{width:60, borderRadius:0}}
                 />
             </View>
 
