@@ -64,15 +64,7 @@ export default function Login(){
 
     }
 
-    function handleNavigateToResetPasswd(){
-        if(email && email!=''){
-            navigation.navigate('ResetPasswd')
-            setEmail('')
-        }
-    }
-
-
-
+    
     useEffect(() => {
         setuser('')
         setPasswd('')
@@ -80,7 +72,15 @@ export default function Login(){
         setForgotPasswdModalVisible(false)
     },[])
 
+    useEffect(() => {
+        if(email && email!='' && forgotPasswdmodalVisible==false){
+            navigation.navigate('ResetPasswd')
+            setEmail('')
+        }
+    },[forgotPasswdmodalVisible])
+
     return(
+        <>
         <KeyboardAvoidingView  behavior='position' style={styles.container}>
             <View style={{alignItems: 'center'}}>
                 <Header title="Faça Login para continuar" />
@@ -120,41 +120,43 @@ export default function Login(){
                     <Text style={styles.GoToRegisterText}>Não possui uma Conta? </Text><Text style={styles.GoToRegisterTextLink}>Clique aqui</Text>
                 </RectButton>
 
-                <ModalView 
-                modalVisible={loginModalVisible} 
-                setModalVisible={setLoginModalVisible} 
-                title="Erro!" 
-                contentText="Verifique se o usuario e senha estam corretos e tente novamente"
-                actionText="Ok"
-                actionTextStyle={{borderRadius: 50}}
-                />
-
-                <ModalView
-                ContentBlock={
-                   <View style={{marginTop:20, alignItems: 'center'}}>
-                        <Input
-                        captalize="none" 
-                        name="Email: "
-                        setData={setEmail}
-                        options={{
-                            customStyle: {
-                                alignSelf: "center",
-                                marginBottom: 0
-                            }
-                        }}
-                        />
-                   </View>
-                }
-                modalVisible={forgotPasswdmodalVisible} 
-                setModalVisible={setForgotPasswdModalVisible} 
-                executeOnClose={handleNavigateToResetPasswd}
-                title="Esqueceu sua senha?" 
-                contentText="Sem problema, informe seu email para te ajudarmos a criar uma nova"
-                actionText="Enviar"
-                actionTextStyle = {{width:60, borderRadius:0}}
-                />
+                
             </View>
 
         </KeyboardAvoidingView>
+
+        <ModalView 
+        modalVisible={loginModalVisible} 
+        setModalVisible={setLoginModalVisible} 
+        title="Erro!" 
+        contentText="Verifique se o usuario e senha estam corretos e tente novamente"
+        actionText="Ok"
+        actionTextStyle={{borderRadius: 50}}
+        />
+
+        <ModalView
+        ContentBlock={
+        <View style={{marginTop:20, alignItems: 'center'}}>
+                <Input
+                captalize="none" 
+                name="Email: "
+                setData={setEmail}
+                options={{
+                    customStyle: {
+                        alignSelf: "center",
+                        marginBottom: 0
+                    }
+                }}
+                />
+        </View>
+        }
+        modalVisible={forgotPasswdmodalVisible} 
+        setModalVisible={setForgotPasswdModalVisible} 
+        title="Esqueceu sua senha?" 
+        contentText="Sem problema, informe seu email para te ajudarmos a criar uma nova"
+        actionText="Enviar"
+        actionTextStyle = {{width:60, borderRadius:0}}
+        />
+        </>
     )
 }

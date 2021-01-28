@@ -28,7 +28,7 @@ export default function ModalView(props:ModalProps){
                 {props.ContentBlock && (
                     props.ContentBlock
                 )}
-                <RectButton style={styles.ModalButton} onPress={()=> {()=>props.setModalVisible(false);props.executeOnClose}} >
+                <RectButton style={styles.ModalButton} onPress={()=>{props.setModalVisible(false);props.executeOnClose}} >
                     <Text style={[styles.ModalButtonText,props.actionTextStyle]} >{props.actionText}</Text>
                 </RectButton>
             </View>
