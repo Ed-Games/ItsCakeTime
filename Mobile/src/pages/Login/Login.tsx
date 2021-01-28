@@ -74,6 +74,11 @@ export default function Login(){
 
     useEffect(() => {
         if(email && email!='' && forgotPasswdmodalVisible==false){
+
+            api.post('requestNewPassword',{email:email}).then(response => {
+                console.log(response.data)
+            }).catch(err => console.log(err))
+    
             navigation.navigate('ResetPasswd')
             setEmail('')
         }
