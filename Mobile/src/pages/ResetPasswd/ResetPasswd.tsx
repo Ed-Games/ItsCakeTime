@@ -11,7 +11,7 @@ export default function ResetPasswd(){
     const navigation = useNavigation()
     
     function handleNavigateToLandingPage(){
-        navigation.navigate('CreateNewPasswd')
+        navigation.navigate('Landing')
     }
 
     return(
