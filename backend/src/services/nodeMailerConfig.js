@@ -24,8 +24,7 @@ module.exports= async function sendMail(email, token){
             subject: 'Email teste no nodemailer',
             from:'Django guy <djangoguy2@gmail.com>',
             to: [email],
-            html: `<span>Olá, para redefinir sua senha clique no link abaixo</span><br/><a src="35533660cc53c3d5d99ce3d6c5f5d4fce9e9c61a
-            ">http://localhost:3333/users/resetPassword/${token}</a>`
+            html: `<span>Olá, para redefinir sua senha clique no link abaixo <a href="exp://expo.io/@community/with-webbrowser-redirect">exp://expo.io/@community/with-webbrowser-redirect</a>`
         }) 
     
         console.log(mailSent)
