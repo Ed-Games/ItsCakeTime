@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
 import ReactPicker from '../../components/ReactPicker/ReactPicker'
+import ModalView from '../../components/Modal/Modal'
 
 export interface RouteProps{
     productId: number
@@ -39,6 +40,7 @@ export default function EditProduct(){
     const [detail, setDetail] = useState<string>('')
     const [price, setPrice] = useState<string>('')
     const categories = ["Não categorizado","Bolos","Tortas","Salgados","Biscoitos", "Doces", "Outros"]
+    const [modalVisible, setModalVisible] = useState<boolean>(false)
     
     const navigation = useNavigation()
 
@@ -186,10 +188,35 @@ export default function EditProduct(){
                 <RectButton onPress={goBack} style={[styles.actionButton,{backgroundColor:'#455A64'}]}>
                     <Text style={styles.actionButtonText}>Cancelar</Text>
                 </RectButton>
-                <RectButton onPress={deleteProduct} style={[styles.actionButton,{backgroundColor:'#FF0909'}]}>
+                <RectButton onPress={()=>setModalVisible(true)} style={[styles.actionButton,{backgroundColor:'#FF0909'}]}>
                     <Text style={styles.actionButtonText}>Deletar</Text>
                 </RectButton>
             </View>
+
+            <ModalView
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+            title="Atenção"
+            contentText=" Deseja realmente apagar esse produto?"
+            actionText="Não"
+            ContentBlock={
+                <RectButton 
+                onPress={deleteProduct} 
+                style={{
+                    flexDirection: 'column',
+                    width: 50,
+                    position: 'absolute',
+                    marginTop: 145,
+                }}>
+                    <Text style={{
+                        fontFamily:'Poppins_500Medium',
+                        fontSize: 18,
+                        color: '#9553A0',
+                        alignSelf:'flex-end',
+                    }}>Sim</Text>
+                </RectButton>
+            }
+            />
             
         </View>
     )
