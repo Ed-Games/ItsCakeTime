@@ -12,7 +12,7 @@ export default function ReactPicker(props:PickerProps){
     return(
         <Picker 
             selectedValue={props.value} 
-            onValueChange={value => props.setValue(props.value)} 
+            onValueChange={value => props.setValue(value as number)} 
             style={[styles.CategoryInput,{
                 fontFamily: 'Poppins_300Light'
             }]}>
