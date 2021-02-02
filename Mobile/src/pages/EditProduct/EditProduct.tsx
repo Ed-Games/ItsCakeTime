@@ -46,6 +46,17 @@ export default function EditProduct(){
         navigation.goBack()
     }
 
+    async function deleteProduct(){
+        const id = await AsyncStorage.getItem('@Key:tempId')
+        if(id){
+            await api.delete(`products/delete/${JSON.parse(id)}`).then(async response => {
+                console.log(response.data)
+                goBack()
+    
+            })
+        }
+    }
+
     function handleSetcategory(category:string){
         setInitialCategory(categories.indexOf(category))
         console.log("Category: ",categories.indexOf(category))
@@ -175,7 +186,7 @@ export default function EditProduct(){
                 <RectButton onPress={goBack} style={[styles.actionButton,{backgroundColor:'#455A64'}]}>
                     <Text style={styles.actionButtonText}>Cancelar</Text>
                 </RectButton>
-                <RectButton onPress={goBack} style={[styles.actionButton,{backgroundColor:'#FF0909'}]}>
+                <RectButton onPress={deleteProduct} style={[styles.actionButton,{backgroundColor:'#FF0909'}]}>
                     <Text style={styles.actionButtonText}>Deletar</Text>
                 </RectButton>
             </View>
