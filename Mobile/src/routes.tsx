@@ -1,34 +1,40 @@
 import React from 'react'
 import {NavigationContainer} from '@react-navigation/native'
-import { createDrawerNavigator} from '@react-navigation/drawer';
+import { createDrawerNavigator} from '@react-navigation/drawer'
 
 
 import Landing from './pages/Landing/Landing'
-import ProductScreen from './components/Screens/RouteScreens';
-import ProfileScreen from './components/Screens/ProfileScreen';
-import SearchScreen from './components/Screens/SearchScreen';
+import ProductScreen from './components/Screens/RouteScreens'
+import ProfileScreen from './components/Screens/ProfileScreen'
+import SearchScreen from './components/Screens/SearchScreen'
 
 import DrawerContent from './components/DrawerContent/DrawerContent'
-import ProfileProductsScreen from './components/Screens/ProfileProductsScreen';
-import Register from './pages/Register/Register';
-import Login from './pages/Login/Login';
+import ProfileProductsScreen from './components/Screens/ProfileProductsScreen'
+import Register from './pages/Register/Register'
+import Login from './pages/Login/Login'
 import Logout from './pages/Logout/Logout'
-import ResetPasswd from './pages/ResetPasswd/ResetPasswd';
-import CreateNewPasswd from './pages/CreateNewPasswd/CreateNewPasswd';
-import UpdateProfile from './pages/UpdateProfile/UpdateProfile';
-import ProductRegister from './pages/ProductRegister/ProductRegister';
-import ViewYourProducts from './pages/ViewYourProducts/ViewYourProducts';
-import EditProduct from './pages/EditProduct/EditProduct';
-
-
+import ResetPasswd from './pages/ResetPasswd/ResetPasswd'
+import CreateNewPasswd from './pages/CreateNewPasswd/CreateNewPasswd'
+import UpdateProfile from './pages/UpdateProfile/UpdateProfile'
+import ProductRegister from './pages/ProductRegister/ProductRegister'
+import ViewYourProducts from './pages/ViewYourProducts/ViewYourProducts'
+import EditProduct from './pages/EditProduct/EditProduct'
+import * as Linking from 'expo-linking'
 
 const Drawer = createDrawerNavigator()
+const prefix = Linking.createURL('/');
 
 
 
 export default function Routes() {
+    const linking = {
+        prefixes: [prefix],
+      }
+
+      console.log('url: ',linking)
+
     return(
-        <NavigationContainer>
+        <NavigationContainer linking={linking}>
             <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}  initialRouteName="Landing">
                 <Drawer.Screen name="Landing" component={Landing} />
                 <Drawer.Screen name="ProductList" component={ProductScreen} />
