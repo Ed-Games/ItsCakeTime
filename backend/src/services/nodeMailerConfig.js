@@ -2,6 +2,8 @@ const nodemailer = require('nodemailer')
 
 const SMTP_CONFIG = require('./smtp')
 
+const { pugEngine } = require("nodemailer-pug-engine")
+
 
 module.exports= async function sendMail(email, token){
     const transporter = await nodemailer.createTransport({
@@ -17,6 +19,10 @@ module.exports= async function sendMail(email, token){
             rejectUnauthorized: false,
         }
     })
+
+    transporter.use('compile',pugEngine({
+        templateDir:'./views',
+    }))
     
     async function run() {
         const mailSent = await transporter.sendMail({
@@ -24,7 +30,7 @@ module.exports= async function sendMail(email, token){
             subject: 'Email teste no nodemailer',
             from:'Django guy <djangoguy2@gmail.com>',
             to: [email],
-            html: `<span>Olá, para redefinir sua senha clique <a href="10.0.0.105:3333/app/redirect">Aqui</a>`
+            template: 'requestNewPasswd'
         }) 
     
         console.log(mailSent)
