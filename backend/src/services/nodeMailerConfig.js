@@ -21,7 +21,7 @@ module.exports= async function sendMail(email, token){
     })
 
     transporter.use('compile',pugEngine({
-        templateDir:'./views',
+        templateDir:'./resources/mail',
     }))
     
     async function run() {
