@@ -18,7 +18,7 @@
         }
 
         .container{
-            width: 100vw;
+            max-width: 100vw;
             height: 100vh;
             align-items: center;
         }
@@ -80,11 +80,12 @@
             margin-left: 16px;
             margin-right: 16px;
             margin-bottom: 26px;
-            margin-top: -80px;
+            top: -80px;
             padding: 12px;
             align-self: center;
             align-items: center;
             padding-bottom: 40px;
+            position: relative;
             
 
         }
@@ -149,9 +150,9 @@
         <div class="content">
             <div class="messageContainer">
                 <span class="messageTitle">Esqueci a minha senha, e agora?</span>
-                <p class="contentText">Olá, caro usuário. Se você perdeu a sua senha, basta clicar no Botão abaixo para criar uma nova. 
+                <p class="contentText">Olá, caro usuário. Se você perdeu a sua senha, basta clicar no Botão abaixo para criar uma nova.
                 </p>
-                <a style='text-decoration:none !important; text-decoration:none;' class="purpleButton" href="#">Criar nova Senha</a>
+                <a style='text-decoration:none !important; text-decoration:none;' class="purpleButton" href="http://10.0.0.105:3333/app/redirect/#{token}">Criar nova Senha</a>
             </div>
             <p class="obs">Obs: Após uma hora esse método não será mais valido para recuperar sua senha e será necessário realizar outro pedido.</p>
             <span class="contentText">Para outras informações, sinta-se livre para enviar um email: <strong>contact@koldev.com.br</strong></span>
