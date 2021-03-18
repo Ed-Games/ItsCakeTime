@@ -30,7 +30,13 @@ module.exports= async function sendMail(email, token){
             subject: 'Email teste no nodemailer',
             from:'Django guy <djangoguy2@gmail.com>',
             to: [email],
-            template: 'requestNewPasswd'
+            template: 'requestNewPasswd',
+            ctx: {
+                token
+            }
+
+        }, (err, response)=>{
+            console.log("erro: ",err)
         }) 
     
         console.log(mailSent)
