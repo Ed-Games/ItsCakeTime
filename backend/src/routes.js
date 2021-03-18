@@ -61,6 +61,6 @@ routes.post('/requestNewPassword', userController.requestNewPassword)
 
 routes.put('/users/resetPassword/:token/', userController.resetPassword)
 
-routes.get('/app/redirect',(request,response)=> {response.redirect(`exp://10.0.0.105:19000/--/CreateNewPasswd/`)})
+routes.get('/app/redirect/:token',(request,response)=> {response.redirect(`exp://10.0.0.105:19000/--/CreateNewPasswd/`)})
 
 module.exports = routes
