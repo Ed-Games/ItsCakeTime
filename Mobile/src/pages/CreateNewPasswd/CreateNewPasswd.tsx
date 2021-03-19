@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import React from 'react'
 import { Image, Text, View } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
@@ -8,6 +8,9 @@ import Security from '../../images/Security.png'
 import styles from './styles'
 
 export default function CreateNewPasswd(){
+
+     const route = useRoute().params
+    console.log(route?.params.token)
 
     const navigation = useNavigation()
 
