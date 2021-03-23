@@ -27,8 +27,27 @@ const prefix = Linking.createURL('/');
 
 
 export default function Routes() {
+
+    const config= {
+        screens :{
+            CreateNewPasswd :{
+                path: 'CreateNewPasswd/:token/:email',
+                parse: {
+                    token: (token : string) =>  `${token}`,
+                    email: (email : string) =>  `${email}`,
+                },
+
+                stringify:{
+                    token: (token : string) => token.replace(/^CreateNewPasswd/,''),
+                    email: (email : string) => email.replace(/^CreateNewPasswd/,'')
+                }
+            }
+        }
+    }
+
     const linking = {
         prefixes: [prefix],
+        config
       }
 
       console.log('url: ',linking)
