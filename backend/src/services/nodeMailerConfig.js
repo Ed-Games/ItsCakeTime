@@ -32,7 +32,8 @@ module.exports= async function sendMail(email, token){
             to: [email],
             template: 'requestNewPasswd',
             ctx: {
-                token
+                token,
+                email
             }
 
         }, (err, response)=>{
