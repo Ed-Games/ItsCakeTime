@@ -49,6 +49,7 @@ export default function EditProduct(){
     }
 
     async function deleteProduct(){
+        setModalVisible(false)
         const id = await AsyncStorage.getItem('@Key:tempId')
         if(id){
             await api.delete(`products/delete/${JSON.parse(id)}`).then(async response => {
