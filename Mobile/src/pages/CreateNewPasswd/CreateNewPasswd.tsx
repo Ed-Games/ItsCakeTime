@@ -10,13 +10,8 @@ import api from '../../services/api'
 import styles from './styles'
 
 interface ParamsProps{
-    "initial": boolean,
-    params: {
-        "token": string,
-        "email": string,
-    },
-    "screen" : string,
-    "state": any
+    email:string,
+    token:string,
 }
 
 export default function CreateNewPasswd(){
@@ -27,21 +22,22 @@ export default function CreateNewPasswd(){
     const navigation = useNavigation()
 
     const route = useRoute()
-    const routeParams = route.params as ParamsProps
-    const token = routeParams.params.token
-    const email = routeParams.params.email
-    console.log(token, email)
+    const {email, token} = route.params as ParamsProps
+
+    console.log("email: ",email,"token: ",token)
 
     function handleNavigateToProfile(){
         if(password == confirmPassword){
             handleResetPassword()
             navigation.navigate('Profile')
+        } else{
+            console.log('Precisam ser iguais')
         }
 
     }
 
     async function handleResetPassword(){
-        await api.put(`http://10.0.0.105:3333/users/resetPasswd/${token}`, {email,password }).then(response => {
+        await api.put(`users/resetPassword/${token}`, {email:email,password:password }).then(response => {
             return console.log(response.data)
         })
     }
