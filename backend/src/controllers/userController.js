@@ -120,11 +120,17 @@ module.exports = {
             
             const user = await connection('user').select('expirationDate','requestPasswdToken').where('email','=', email)
 
-            if(!user) return response.status(404).send("user not found")
 
+            if(!user) {
+                console.log("user not found")
+                return response.status(404).send("user not found")
+            }
             console.log("token: ",user[0].requestPasswdToken)
 
-            if(user[0].requestPasswdToken != token) return response.status(404).send("token invalid")
+            if(user[0].requestPasswdToken != token) {
+                console.log("token invalid")
+                return response.status(404).send("token invalid")
+            }
 
             const now = new Date()
 
@@ -135,7 +141,7 @@ module.exports = {
             .update({password})
             return response.json(passwdField)
         } catch (error) {
-            console.log(error)
+            console.log("erro: ",error)
             return response.sendStatus(error)
         }
     },
