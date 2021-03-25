@@ -16,6 +16,10 @@ export default function ProductsList() {
     const [value, setValue] = useState("0")
     const [data, setData] = useState<Data[]>()
     const navigation = useNavigation()
+    const [price, setPrice] = useState('')
+    const [category, setCategory] = useState('')
+    const categories = ['Selecionar', 'Bolos','Tortas','Salgados','Biscoitos','Doces','Outros']
+
 
     function handleNavigateToLandingPage(){
         navigation.navigate('Landing')
@@ -28,12 +32,34 @@ export default function ProductsList() {
         }))
     }
 
+    function handleFilterResults(){
+        api.get('product/filter/',{
+            params: {
+                price,
+                category
+            }
+        }).then((response => {
+            console.log(response.data)
+            setData(response.data)
+        })).catch((error) => {
+            console.log(error)
+        })
+    }
+
     useEffect(() => {
         const unsubricribed =navigation.addListener('focus',()=>{
             GetListOfProducts()
             console.log('Refreshing...')
         })
     },[navigation])
+
+    useEffect(() => {
+        const index = value as unknown as number
+        setCategory(categories[index])
+        console.log(categories[index])
+        console.log(price)
+
+    }, [value])
 
     return(
         <View style={styles.container}>
@@ -43,7 +69,7 @@ export default function ProductsList() {
 
                     <View style={styles.FilterView}>
                         <Text style={styles.FilterViewText}>Preço</Text>
-                        <TextInput placeholder='R$ 00,00' style={styles.FilterViewInput} />
+                        <TextInput onChangeText={text=> setPrice(text)} placeholder='R$ 00,00' style={styles.FilterViewInput} />
                         <Text style={styles.FilterViewText}>Categoria</Text>
 
                         <View style={styles.pickerView}>
@@ -64,7 +90,7 @@ export default function ProductsList() {
                             <Image style={styles.selectImg} source={selectImg} />
                         </View>
                     </View>
-                        <RectButton style={styles.filterButton}>
+                        <RectButton onPress={handleFilterResults} style={styles.filterButton}>
                             <Feather name="filter" size={25} color='#FFF' />
                         </RectButton>
                 </ImageBackground>
