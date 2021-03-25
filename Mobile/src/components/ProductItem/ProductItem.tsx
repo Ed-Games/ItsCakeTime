@@ -59,8 +59,8 @@ export default function ProductItem(props:ProductItemProps) {
             </View>
             <Text style={styles.ProductDescription}>{props.Data.detail}</Text>
             <View style={styles.FlexRowView}>
-                <WhatsappButton />
-                <EmailButton />
+                <WhatsappButton number ={props.Data.whatsapp} />
+                <EmailButton address ={props.Data.email}/>
             </View>
         </View>
     )
