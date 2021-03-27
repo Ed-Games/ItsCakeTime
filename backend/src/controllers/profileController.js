@@ -17,7 +17,17 @@ module.exports = {
 
     async index(request,response){
         try {
-            const profiles =await connection('profile').select('*')
+            const profiles =await connection('profile')
+            .join('user','user.id','profile.user_id')
+            .select(
+                'profile.id',
+                'profile.description',
+                'profile.whatsapp',
+                'profile.user_id',
+                'profile.image',
+                'profile.specialty',
+                'user.userName'
+                )
             return response.status(200).json(profiles)
         } catch (error) {
             console.log(error)
@@ -86,7 +96,7 @@ module.exports = {
 
     async search(request,response){
        try {
-            const {search} = request.body
+            const {search} = request.query
             const users = await connection('profile')
             .join('user','user.id','profile.user_id')
             .select('user.userName','profile.image','profile.specialty').where('user.userName','=',search)
