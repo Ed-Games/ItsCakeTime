@@ -13,6 +13,7 @@ interface ProfileProps{
     userName: string,
     image:string,
     specialty: string,
+    id:string,
 }
 
 export default function Search(){
@@ -21,8 +22,13 @@ export default function Search(){
 
     const navigation = useNavigation()
 
-    function handleNavigateToProfile(){
-        navigation.navigate('Profile')
+    function handleNavigateToProfile(id: string, userName:string){
+         navigation.navigate('Profile',{
+             screen:"Profile",
+             params: {
+                 id
+             }
+         })
     }
 
     async function GetAllProfiles(){
@@ -65,7 +71,7 @@ export default function Search(){
                 <ScrollView>
                 {profiles?.map(profile => {
                     return(
-                        <RectButton  key={profile.userName} onPress={handleNavigateToProfile}>
+                        <RectButton  key={profile.userName} onPress={()=> handleNavigateToProfile(profile.id, profile.userName)}>
                         <View style={styles.AvatarView}>
                             <Image style={styles.Avatar} source={{uri:`http://10.0.0.105:3333/uploads/${profile.image}`}} />
                             <View>
