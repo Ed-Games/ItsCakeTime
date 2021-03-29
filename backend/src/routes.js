@@ -31,6 +31,8 @@ routes.delete('/profile/delete/:id/',profileController.delete) //NOT TO USE IN P
 
 routes.get('/profile/', profileController.index) //NOT TO USE IN PRODUCTION
 
+routes.get('/profile/:id', profileController.detail)
+
 routes.get('/profile/show',authenticateToken, profileController.show)
 
 routes.put('/profile/update/:id/',authenticateToken,upload.single('image') ,profileController.update)
