@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
     Avatar : {
         width:53,
         height:53,
+        borderRadius: 53
     },
 
     avatarname:{
@@ -61,17 +62,22 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins_700Bold',
         lineHeight: 16.34,
         marginLeft:10,
-        marginRight: 4
+        marginRight: 4,
     },
 
     avatarSpecialty : {
         color: '#9553A0',
         fontSize:12,
         fontFamily: 'Poppins_500Medium',
-        lineHeight: 16.34
+        lineHeight: 16.34,
+        fontWeight: '500',
     },
 
     AvatarView:{
+        backgroundColor: '#FFFFFF',
+        height:100,
+        alignItems: 'center',
+        padding:10,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -81,7 +87,8 @@ const styles = StyleSheet.create({
         shadowRadius: 1.41,
         elevation: 2,
         flexDirection:'row', 
-        margin:15
+        margin:10,
+        borderRadius: 5
     }
 })
 

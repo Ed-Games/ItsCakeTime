@@ -27,14 +27,21 @@ interface Data{
     userName:string,
 }
 
+interface RouteParamsProps{
+    id: string
+}
+
 export default function Profile() {
 
     const navigation = useNavigation()
     const [images,setImages] = useState<string[]>([])
-    const route = useRoute()
     const [data,setData] = useState<Data>()
     const [user, SetUser] = useState({})
     
+
+    const route = useRoute()
+    const {id} = route.params as RouteParamsProps
+    console.log("ID: ", id)
 
     useEffect(() => {
         GetUser().then((user) => {
