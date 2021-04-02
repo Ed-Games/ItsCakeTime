@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, Text, View } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
 import { set } from 'react-native-reanimated'
@@ -14,6 +14,15 @@ interface ParamsProps{
     token:string,
 }
 
+interface RouteParamsProps{
+    params:{
+        params:{
+            email:string,
+            token:string,
+        }
+    }
+}
+
 export default function CreateNewPasswd(){
 
     const [password,setPassword]= useState('')
@@ -21,10 +30,11 @@ export default function CreateNewPasswd(){
 
     const navigation = useNavigation()
 
-    const route = useRoute()
-    const {email, token} = route.params as ParamsProps
+   // const route = useRoute().params as ParamsProps
 
-    console.log("email: ",email,"token: ",token)
+    const route = useRoute() as RouteParamsProps
+
+    console.log("testing: ", route.params?.params.token)
 
     function handleNavigateToProfile(){
         if(password == confirmPassword){
@@ -37,10 +47,19 @@ export default function CreateNewPasswd(){
     }
 
     async function handleResetPassword(){
-        await api.put(`users/resetPassword/${token}`, {email:email,password:password }).then(response => {
+        console.log(route)
+        console.log("token: ", route.params.params.token, "email: ", route.params.params.email)
+        await api.put(`users/resetPassword/${route.params.params.token}`, {email:route.params.params.email,password:password }).then(response => {
             return console.log(response.data)
         })
     }
+
+    /*useEffect(() => {
+        navigation.addListener('focus',()=>{
+          setRoute(useRoute().params as ParamsProps)
+          console.log(route) 
+        })
+    }, [navigation])*/
 
     return(
         <View style={styles.container}>
