@@ -17,7 +17,17 @@ module.exports = {
 
     async index(request,response){
         try {
-            const profiles =await connection('profile').select('*')
+            const profiles =await connection('profile')
+            .join('user','user.id','profile.user_id')
+            .select(
+                'profile.id',
+                'profile.description',
+                'profile.whatsapp',
+                'profile.user_id',
+                'profile.image',
+                'profile.specialty',
+                'user.userName'
+                )
             return response.status(200).json(profiles)
         } catch (error) {
             console.log(error)
@@ -58,6 +68,40 @@ module.exports = {
         }
     },
 
+    async detail(request, response) {
+        const {id} = request.params
+
+        console.log('............................................')
+
+        try {
+            const profile = await connection('profile')
+            .join('user','user.id','profile.user_id')
+            .select(
+                'profile.id',
+                'profile.description',
+                'profile.user_id',
+                'profile.image',
+                'profile.whatsapp',
+                'profile.specialty',
+                'user.email',
+                'user.userName'
+                )
+            .where('profile.id','=', id).first()
+
+            if(!profile) return response.sendStatus(404)
+
+            const serializedProfile = {
+                ...profile,
+                imageUrl: `http://10.0.0.105:3333/uploads/${profile.image}`
+            }
+
+            return response.json(serializedProfile).status(200)
+        } catch (error) {
+            console.log(error)
+            return response.sendStatus(500)
+        }
+    },
+
     async update(request,response){
         try {
             const {id} = request.params
@@ -86,10 +130,10 @@ module.exports = {
 
     async search(request,response){
        try {
-            const {search} = request.body
+            const {search} = request.query
             const users = await connection('profile')
             .join('user','user.id','profile.user_id')
-            .select('user.userName','profile.image','profile.specialty').where('user.userName','=',search)
+            .select('user.userName','profile.image','profile.specialty','profile.id').where('user.userName','=',search)
 
             return response.json(users)
        } catch (error) {

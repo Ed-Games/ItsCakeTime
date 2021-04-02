@@ -96,24 +96,6 @@ export default function UpdateProfile(){
                     name="Especialidade"
                     />
     
-    
-                    {/* UPLOAD DE IMAGENS (TIRADO POR SER REDUNDANTE, UMA VEZ QUE O USUÀRIO PODE FAZER ISSO NA PÁGINA DE PERFIL)
-    
-                        {image.length==0 && (
-                        <RectButton 
-                        onPress={()=> handleSelectImages(image,setImage)}
-                        style={styles.UploadButton}>
-                            <Feather name="plus" size={24} color='#FFF'/>
-                        </RectButton>
-                    )}
-                    {image.map(image => (
-                        <>
-                        <Text style={styles.formText} >Foto:</Text>
-                        <Image style={styles.Imagebackground} source={{uri: image}}/>
-                        </>
-                    ))}
-                    */}
-    
                     <Input 
                     defaultValue={profileData?.Data.whatsapp}
                     setData={setWhatsapp}

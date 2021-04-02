@@ -16,7 +16,9 @@ export interface Data{
     image: string,
     name: string,
     price: string,
-    id: string
+    id: string,
+    whatsapp: string,
+    email: string,
 }
 
 export default function ViewYourProducts(){

@@ -1,11 +1,22 @@
-const { response } = require('express');
 const connection = require('../database/connection');
 
 
 module.exports = {
     async index(request,response){
         try {
-            const products = await connection('product').select('name','price','category','image','detail','id');
+            const products = await connection('product')
+            .join('user','user.id','product.user_id')
+            .join('profile','profile.user_id','product.user_id')
+            .select('product.name',
+            'product.price',
+            'product.category',
+            'product.image',
+            'product.detail',
+            'product.id',
+            'user.email',
+            'profile.whatsapp'
+            )
+
             return response.json(products)
         } catch (error) {
             console.log(error)
@@ -60,7 +71,10 @@ module.exports = {
 
     async filter(request,response){
         try {
-            const {price, category} = request.body
+            const {price, category} = request.query
+
+            console.log(request.body)
+
             const products = await connection('product')
             .join('user','user.id','=',"product.user_id")
             .join('profile','profile.user_id','=','product.user_id')
@@ -69,7 +83,9 @@ module.exports = {
                 'product.category',
                 'product.image',
                 'product.name',
-                'product.id'
+                'product.id',
+                'profile.whatsapp',
+                'user.email'
                 )
             .where("product.price","=",price)
             .andWhere("product.category","=",category)
