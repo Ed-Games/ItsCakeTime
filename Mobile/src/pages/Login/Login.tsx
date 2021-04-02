@@ -64,6 +64,18 @@ export default function Login(){
 
     }
 
+    async function requestPassword(){
+        const data = {
+            "email": email
+        }
+        const response= await api.post('requestNewPassword',data).then(response =>{
+            console.log(data)
+            console.log(response.data)
+        }).catch(err => console.log(err))
+        navigation.navigate('ResetPasswd')
+        setEmail('')
+    }
+
     
     useEffect(() => {
         setuser('')
@@ -72,15 +84,11 @@ export default function Login(){
         setForgotPasswdModalVisible(false)
     },[])
 
+
     useEffect(() => {
         if(email && email!='' && forgotPasswdmodalVisible==false){
 
-            api.post('requestNewPassword',{email:email}).then(response => {
-                console.log(response.data)
-            }).catch(err => console.log(err))
-    
-            navigation.navigate('ResetPasswd')
-            setEmail('')
+            requestPassword()
         }
     },[forgotPasswdmodalVisible])
 
