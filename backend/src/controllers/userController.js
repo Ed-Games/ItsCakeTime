@@ -125,7 +125,7 @@ module.exports = {
                 console.log("user not found")
                 return response.status(404).send("user not found")
             }
-            console.log("token: ",user[0].requestPasswdToken)
+            console.log("token on database: ",user[0].requestPasswdToken)
 
             if(user[0].requestPasswdToken != token) {
                 console.log("token invalid")
@@ -151,7 +151,7 @@ module.exports = {
 
         try {
 
-            const user =  await connection('user').select('userName').where('email', '=', email)
+            const user =  await connection('user').where('email', '=', email).select('userName').first()
 
             if(!user) return response.sendStatus(404)
 
@@ -160,15 +160,11 @@ module.exports = {
             const now = new Date()
             now.setHours(now.getHours() + 1)
 
-            data = {
-                requestPasswdToken: token, 
-                expirationDate: now
-            }
-
-            await connection('user').select('*').where('email','=', email).update(data)
-
+            console.log("EMAIL: ",email)
+            const answer = await connection('user').select('*').where('email','=', email).update({requestPasswdToken:token,expirationDate: now})
+            console.log("TOKEN: ",token)
             sendMail(email, token)
-            return response.sendStatus(200)
+            return response.json(answer).status(200)
 
         } catch (error) {
             console.log(error)
