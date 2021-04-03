@@ -40,8 +40,8 @@ export default function Profile() {
     
 
     const route = useRoute()
-    const {id} = route.params as RouteParamsProps
-    console.log("ID: ", id)
+    //const {id} = route.params as RouteParamsProps
+    //console.log("ID: ", id)
 
     useEffect(() => {
         GetUser().then((user) => {
@@ -60,6 +60,7 @@ export default function Profile() {
 
     async function GetProfileData() {
         const response = await api.get('/profile/show')
+        console.log("getting data...")
         setData(response.data.profile)
         //
     }
