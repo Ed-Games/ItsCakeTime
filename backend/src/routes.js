@@ -29,11 +29,11 @@ routes.delete('/users/delete/:id/',authenticateToken, userController.delete)
 
 routes.delete('/profile/delete/:id/',profileController.delete) //NOT TO USE IN PRODUCTION
 
-routes.get('/profile/', profileController.index) //NOT TO USE IN PRODUCTION
-
-routes.get('/profile/:id', profileController.detail)
+routes.get('/profile/', profileController.index) 
 
 routes.get('/profile/show',authenticateToken, profileController.show)
+
+routes.get('/profile/:id', profileController.detail)
 
 routes.put('/profile/update/:id/',authenticateToken,upload.single('image') ,profileController.update)
 
