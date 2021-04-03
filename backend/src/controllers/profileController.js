@@ -36,8 +36,9 @@ module.exports = {
     },
 
     async show(request,response){
+        
         try {
-            const userName = GetRequestUser().name
+            const userName = request.user.name
             const id = await connection('user')
             .select('id')
             .where('user.userName','=',userName)
