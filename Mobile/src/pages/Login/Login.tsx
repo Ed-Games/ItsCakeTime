@@ -9,6 +9,10 @@ import Input from '../../components/Input/Input'
 import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
 import ModalView from '../../components/Modal/Modal'
+import { Formik } from 'formik'
+import * as yup from 'yup'
+import { Button } from 'react-native-paper'
+import { loginValidationSchema } from '../../Schema/loginSchema'
 
 export default function Login(){
 
@@ -29,21 +33,21 @@ export default function Login(){
     async function SaveUser(user:object){
         await AsyncStorage.setItem('@Key:user', JSON.stringify(user))
         const exists = await AsyncStorage.getItem('@Key:user')
-        if(exists)console.log("sera que tem um user?", JSON.parse(exists))
+       // if(exists)console.log("sera que tem um user?", JSON.parse(exists))
     }
 
 
-    async function SignIn(){
+    async function SignIn(values:{user:string, password:string}){
         const credentials = {
-            userName: user,
-            password: passwd
+            userName: values.user.trim(),
+            password: values.password.trim(),
         }
         
         Keyboard.dismiss()
 
         try {
             await api.post('login',credentials).then(response =>{
-                console.log(response.data)
+                //console.log(response.data)
                 SaveUser(response.data)
             })
             navigation.navigate('Profile') 
@@ -99,39 +103,61 @@ export default function Login(){
                 <Header title="Faça Login para continuar" />
                 <Image style={styles.Image} source={LoginBaker} />
                 
-                <Input
-                captalize='none' 
-                value={user}
-                setData={setuser}
-                name="Usuário :" 
-                placeholder="Seu nome de usuário" 
-                options={{
-                    titleMode: 'Light'
-                }} 
-                />
+                <Formik
+                    initialValues={{user:'', password:'',}}
+                    validationSchema={loginValidationSchema}
+                    onSubmit={values => SignIn(values)}
+                >
+                    {({
+                        handleChange,
+                        handleBlur,
+                        handleSubmit,
+                        values,
+                        errors,
+                        isValid
+                    }) => (
+                        <>
+                                <Input
+                                captalize='none' 
+                                value={values.user}
+                                setData={handleChange('user')}
+                                name="Usuário :" 
+                                placeholder="Seu nome de usuário" 
+                                options={{
+                                    titleMode: 'Light'
+                                }} 
+                                />
 
+                                {errors.user &&
+                                        <Text style={{ fontSize: 15, color: 'yellow', marginBottom:10 }}>{errors.user}</Text>
+                                }
+                                <Input 
+                                captalize='none'
+                                value={values.password}
+                                setData={handleChange('password')}
+                                name="Senha :" 
+                                secureTextEntry={true}
+                                placeholder="Informe sua senha" 
+                                options={{
+                                    titleMode: 'Light',
+                                }} 
+                                />
+                                {errors.password &&
+                                    <Text style={{ fontSize: 15, color: 'yellow', marginBottom:10 }}>{errors.password}</Text>
+                                }
 
-                <Input 
-                captalize='none'
-                value={passwd}
-                setData={setPasswd}
-                name="Senha :" 
-                secureTextEntry={true}
-                placeholder="Informe sua senha" 
-                options={{
-                    titleMode: 'Light',
-                }} 
-                />
-
-                <RectButton onPress={()=> setForgotPasswdModalVisible(true)} style={{alignSelf: 'flex-end', marginRight:60}}>
-                    <Text style={styles.passwordText}>Esqueci minha senha</Text>
-                </RectButton>
-                <RectButton onPress={SignIn} style={styles.submitButton}>
-                    <Text style={styles.submitButtonText}>Entrar</Text>
-                </RectButton>
-                <RectButton style={{marginTop:28, flexDirection: 'row'}} onPress={handleNavigateToRegister}>
-                    <Text style={styles.GoToRegisterText}>Não possui uma Conta? </Text><Text style={styles.GoToRegisterTextLink}>Clique aqui</Text>
-                </RectButton>
+                                <RectButton onPress={()=> setForgotPasswdModalVisible(true)} style={{alignSelf: 'flex-end', marginRight:60}}>
+                                    <Text style={styles.passwordText}>Esqueci minha senha</Text>
+                                </RectButton>
+                                <Button onPress={handleSubmit} style={styles.submitButton}>
+                                    <Text style={styles.submitButtonText}>Entrar</Text>
+                                </Button>
+                                <RectButton style={{marginTop:28, flexDirection: 'row'}} onPress={handleNavigateToRegister}>
+                                    <Text style={styles.GoToRegisterText}>Não possui uma Conta? </Text><Text style={styles.GoToRegisterTextLink}>Clique aqui</Text>
+                                </RectButton>
+                        </>
+                    )}
+                </Formik>
 
                 
             </View>
