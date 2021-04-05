@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import {Text, TextInput, View } from 'react-native'
 import styles from './styles'
 
@@ -15,7 +15,7 @@ interface InputProps{
     defaultValue?: string,
     secureTextEntry?: boolean,
     value?:string,
-    setData?:  React.Dispatch<React.SetStateAction<string>>,
+    setData?:  React.Dispatch<React.SetStateAction<string>>|((e: string | ChangeEvent<any>) => void),
     captalize?: any
 }
 
