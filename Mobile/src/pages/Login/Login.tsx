@@ -1,7 +1,7 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import {Image,Keyboard,KeyboardAvoidingView,Text, View} from 'react-native'
-import { RectButton} from 'react-native-gesture-handler'
+import {GestureResponderEvent, Image,Keyboard,KeyboardAvoidingView,Text, View} from 'react-native'
+import { RectButton, TouchableOpacity} from 'react-native-gesture-handler'
 import Header from '../../components/Header/Header'
 import styles from './styles'
 import LoginBaker from '../../images/LoginBaker.png'
@@ -9,18 +9,15 @@ import Input from '../../components/Input/Input'
 import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
 import ModalView from '../../components/Modal/Modal'
-import { Formik } from 'formik'
-import * as yup from 'yup'
+import { Formik} from 'formik'
 import { Button } from 'react-native-paper'
 import { loginValidationSchema } from '../../Schema/loginSchema'
+import { EmailSchema } from '../../Schema/EmailSchema'
 
 export default function Login(){
 
     const navigation = useNavigation()
 
-
-    const [user,setuser] = useState("")
-    const [passwd, setPasswd] = useState("") 
     const [loginModalVisible, setLoginModalVisible] = useState(false);
     const [forgotPasswdmodalVisible, setForgotPasswdModalVisible] = useState(false);
     const [email, setEmail] = useState('')
@@ -58,8 +55,6 @@ export default function Login(){
             if(err.response.status == 400){
                 console.log(err.response.status)
                 setLoginModalVisible(true)
-                setuser('')
-                setPasswd('')
                 return
             } else{
                 console.log(err)
@@ -82,8 +77,6 @@ export default function Login(){
 
     
     useEffect(() => {
-        setuser('')
-        setPasswd('')
         setLoginModalVisible(false)
         setForgotPasswdModalVisible(false)
     },[])
@@ -110,11 +103,10 @@ export default function Login(){
                 >
                     {({
                         handleChange,
-                        handleBlur,
                         handleSubmit,
                         values,
                         errors,
-                        isValid
+                        handleReset
                     }) => (
                         <>
                                 <Input
@@ -149,9 +141,13 @@ export default function Login(){
                                 <RectButton onPress={()=> setForgotPasswdModalVisible(true)} style={{alignSelf: 'flex-end', marginRight:60}}>
                                     <Text style={styles.passwordText}>Esqueci minha senha</Text>
                                 </RectButton>
-                                <Button onPress={handleSubmit} style={styles.submitButton}>
+                                <TouchableOpacity 
+                                onPressIn={handleSubmit as unknown as (event: GestureResponderEvent) => void}
+                                onPress={handleReset as unknown as (event: GestureResponderEvent) => void} 
+                                style={styles.submitButton}
+                                >
                                     <Text style={styles.submitButtonText}>Entrar</Text>
-                                </Button>
+                                </TouchableOpacity>
                                 <RectButton style={{marginTop:28, flexDirection: 'row'}} onPress={handleNavigateToRegister}>
                                     <Text style={styles.GoToRegisterText}>Não possui uma Conta? </Text><Text style={styles.GoToRegisterTextLink}>Clique aqui</Text>
                                 </RectButton>
@@ -165,36 +161,53 @@ export default function Login(){
         </KeyboardAvoidingView>
 
         <ModalView 
-        modalVisible={loginModalVisible} 
-        setModalVisible={setLoginModalVisible} 
-        title="Erro!" 
-        contentText="Verifique se o usuario e senha estam corretos e tente novamente"
-        actionText="Ok"
-        actionTextStyle={{borderRadius: 50}}
+            modalVisible={loginModalVisible} 
+            setModalVisible={setLoginModalVisible} 
+            title="Erro!" 
+            contentText="Verifique se o usuario e senha estam corretos e tente novamente"
+            actionText="Ok"
+            actionTextStyle={{borderRadius: 50}}
         />
 
         <ModalView
-        ContentBlock={
-        <View style={{marginTop:20, alignItems: 'center'}}>
-                <Input
-                captalize="none" 
-                name="Email: "
-                setData={setEmail}
-                options={{
-                    customStyle: {
-                        alignSelf: "center",
-                        marginBottom: 0
-                    }
-                }}
-                />
-        </View>
-        }
-        modalVisible={forgotPasswdmodalVisible} 
-        setModalVisible={setForgotPasswdModalVisible} 
-        title="Esqueceu sua senha?" 
-        contentText="Sem problema, informe seu email para te ajudarmos a criar uma nova"
-        actionText="Enviar"
-        actionTextStyle = {{width:60, borderRadius:0}}
+            ContentBlock={
+                <Formik
+                initialValues={{email: ''}}
+                validationSchema={EmailSchema}
+                onSubmit={values => console.log(values)}
+                >
+                    {({
+                        handleChange,
+                        handleSubmit,
+                        values,
+                        errors,
+                        handleReset
+                    })=>(
+                        <>
+                            <View style={{marginTop:20, alignItems: 'center'}}>
+                                    <Input
+                                    captalize="none" 
+                                    name="Email: "
+                                    setData={setEmail}
+                                    options={{
+                                        customStyle: {
+                                            alignSelf: "center",
+                                            marginBottom: 0
+                                        }
+                                    }}
+                                    />
+                            </View>
+                        </>
+                    )}
+
+                </Formik>
+            }
+            modalVisible={forgotPasswdmodalVisible} 
+            setModalVisible={setForgotPasswdModalVisible} 
+            title="Esqueceu sua senha?" 
+            contentText="Sem problema, informe seu email para te ajudarmos a criar uma nova"
+            actionText="Enviar"
+            actionTextStyle = {{width:60, borderRadius:0}}
         />
         </>
     )
