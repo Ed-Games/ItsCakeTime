@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { RectButton } from 'react-native-gesture-handler'
+import { RectButton, TouchableOpacity } from 'react-native-gesture-handler'
 import {Modal}from 'react-native-paper'
 
 import styles from './styles'
@@ -13,6 +13,8 @@ interface ModalProps{
     actionText: string,
     ContentBlock?: JSX.Element,
     actionTextStyle?:object,
+    onClose?: ()=>void;
+    disabled?:boolean;
     
 }
 
@@ -27,9 +29,14 @@ export default function ModalView(props:ModalProps){
                 {props.ContentBlock && (
                     props.ContentBlock
                 )}
-                <RectButton style={styles.ModalButton} onPress={()=>props.setModalVisible(false)} >
+                <TouchableOpacity 
+                disabled={props.disabled}
+                style={styles.ModalButton} 
+                onPressIn={()=>props.setModalVisible(false)} 
+                onPress={props.onClose}
+                >
                     <Text style={[styles.ModalButtonText,props.actionTextStyle]} >{props.actionText}</Text>
-                </RectButton>
+                </TouchableOpacity>
             </View>
         </Modal>
     )
