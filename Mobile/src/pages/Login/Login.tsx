@@ -1,4 +1,4 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import {GestureResponderEvent, Image,Keyboard,KeyboardAvoidingView,Text, View} from 'react-native'
 import { RectButton, TouchableOpacity} from 'react-native-gesture-handler'
@@ -10,7 +10,6 @@ import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
 import ModalView from '../../components/Modal/Modal'
 import { Formik} from 'formik'
-import { Button } from 'react-native-paper'
 import { loginValidationSchema } from '../../Schema/loginSchema'
 import { EmailSchema } from '../../Schema/EmailSchema'
 
@@ -63,12 +62,13 @@ export default function Login(){
 
     }
 
-    async function requestPassword(){
+    async function requestPassword(email:string){
+        console.log("email: ",email)
         const data = {
             "email": email
         }
+        console.log(data)
         const response= await api.post('requestNewPassword',data).then(response =>{
-            console.log(data)
             console.log(response.data)
         }).catch(err => console.log(err))
         navigation.navigate('ResetPasswd')
@@ -82,12 +82,16 @@ export default function Login(){
     },[])
 
 
-    useEffect(() => {
+    /*useEffect(() => {
         if(email && email!='' && forgotPasswdmodalVisible==false){
 
             requestPassword()
         }
-    },[forgotPasswdmodalVisible])
+
+        if(forgotPasswdmodalVisible){
+            setEmail('')
+        }
+    },[forgotPasswdmodalVisible])*/
 
     return(
         <>
@@ -169,46 +173,52 @@ export default function Login(){
             actionTextStyle={{borderRadius: 50}}
         />
 
-        <ModalView
-            ContentBlock={
-                <Formik
-                initialValues={{email: ''}}
-                validationSchema={EmailSchema}
-                onSubmit={values => console.log(values)}
-                >
-                    {({
-                        handleChange,
-                        handleSubmit,
-                        values,
-                        errors,
-                        handleReset
-                    })=>(
-                        <>
-                            <View style={{marginTop:20, alignItems: 'center'}}>
-                                    <Input
-                                    captalize="none" 
-                                    name="Email: "
-                                    setData={setEmail}
-                                    options={{
-                                        customStyle: {
-                                            alignSelf: "center",
-                                            marginBottom: 0
-                                        }
-                                    }}
-                                    />
-                            </View>
-                        </>
-                    )}
-
-                </Formik>
+        <Formik
+        initialValues={{email: ''}}
+        validationSchema={EmailSchema}
+        onSubmit={values => requestPassword(values.email.trim())}
+        >
+            {({
+                handleChange,
+                handleSubmit,
+                values,
+                errors,
+                handleReset
+            })=>(
+            <ModalView
+                ContentBlock={
+                    <>
+                    <View style={{marginTop:20, alignItems: 'center'}}>
+                        <Input
+                        captalize="none" 
+                        name="Email: "
+                        value={values.email}
+                        setData={handleChange('email')}
+                        options={{
+                            customStyle: {
+                                alignSelf: "center",
+                                marginBottom: 0
+                            }
+                        }}
+                        />
+                        {errors.email &&
+                            <Text style={{ fontSize: 15, color: 'red', marginBottom:10 }}>{errors.email}</Text>
+                                }
+                    </View>
+                </>
             }
             modalVisible={forgotPasswdmodalVisible} 
             setModalVisible={setForgotPasswdModalVisible} 
             title="Esqueceu sua senha?" 
             contentText="Sem problema, informe seu email para te ajudarmos a criar uma nova"
             actionText="Enviar"
-            actionTextStyle = {{width:60, borderRadius:0}}
-        />
+            disabled={Boolean(errors.email)}
+            onClose={handleSubmit}
+            actionTextStyle = {{width:85, borderRadius:0}}
+            />
+            )}
+
+        </Formik>
         </>
     )
 }
