@@ -43,16 +43,14 @@ export default function Profile() {
     //const {id} = route.params as RouteParamsProps
     //console.log("ID: ", id)
 
-    useEffect(() => {
-        GetUser().then((user) => {
-            SetUser(user.id)
-        })
-
-        console.log(user)
-    },[])
 
     useEffect(()=>{
         const unsubricribed =navigation.addListener('focus',()=>{
+            GetUser().then((user) => {
+                SetUser(user.id)
+            })
+    
+            console.log(user)
             GetProfileData()
            // console.log('Refreshing...')
         })
