@@ -59,9 +59,16 @@ export default function Profile() {
     }, [navigation])
 
     async function GetProfileData() {
-        const response = await api.get('/profile/show')
-        console.log("getting data...")
-        setData(response.data.profile)
+        await api.get('/profile/show').then(response => {
+            console.log("getting data...")
+            setData(response.data.profile)
+
+        }).catch(err => {
+            if(err.message=="Request failed with status code 401" || err.message=="Request failed with status code 403"){
+                async()=> await AsyncStorage.removeItem('@Key:user');
+                navigation.navigate('Login')
+            }
+        })
         //
     }
 
@@ -157,6 +164,7 @@ export default function Profile() {
                         <EmailButton address={data?.email as string} />
                     </View>
                     <View style={{alignItems:'center', flexDirection: 'row'}}>
+                        {console.log(data?.user_id)}
                     { user ==data?.user_id?(
                         <>
                             <RectButton onPress={handleNavigateToProfileProducts} style={[styles.ListButton, {alignSelf: 'flex-start'}]} >
