@@ -10,21 +10,15 @@ import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
 
-export interface Data{
-    category: string,
-    detail: string,
-    image: string,
-    name: string,
-    price: string,
-    id: string,
+/*export interface Data extends Product{
     whatsapp: string,
     email: string,
-}
+}*/
 
 export default function ViewYourProducts(){
 
     const navigation = useNavigation()
-    const [data,setData] = useState<Data[]>()
+    const [data,setData] = useState<Product[]>()
 
     function handleNavigationToRegisterProducts(){
         navigation.navigate('ProductRegister')
