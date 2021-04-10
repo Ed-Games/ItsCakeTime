@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Dimensions, Image, ImageBackground, Text, View } from 'react-native'
+import {Image, ImageBackground, Text, View } from 'react-native'
 import Waves from '../../images/waves.png'
 import styles from './style'
 
@@ -15,16 +15,9 @@ import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
 import GetUser from '../../utils/GetUser'
 
-interface Data{
-    description : string,
-    id: number,
-    image: string,
-    specialty: string,
-    user_id: number,
-    whatsapp: string,
-    imageUrl: string,
-    email: string,
-    userName:string,
+
+interface ProfileProps extends Profile,Product{
+ imageUrl: string
 }
 
 interface RouteParamsProps{
@@ -35,7 +28,7 @@ export default function Profile() {
 
     const navigation = useNavigation()
     const [images,setImages] = useState<string[]>([])
-    const [data,setData] = useState<Data>()
+    const [data,setData] = useState<ProfileProps>()
     const [user, SetUser] = useState({})
     
 
@@ -198,10 +191,10 @@ export default function Profile() {
                             paddingBottom:210,
                             marginTop: -60
                         }}>
-                            <ProductItem InfoButton={false} />
-                            <ProductItem InfoButton={false} />
-                            <ProductItem InfoButton={false} />
-                            <ProductItem InfoButton={false} />
+                            <ProductItem Data={data as Product} InfoButton={false} />
+                            <ProductItem Data={data as Product} InfoButton={false} />
+                            <ProductItem Data={data as Product} InfoButton={false} />
+                            <ProductItem Data={data as Product} InfoButton={false} />
                         </ScrollView>
             </View>
             )}
