@@ -7,13 +7,12 @@ import Cake from '../../images/cake.jpg'
 import { RectButton } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import { Data } from '../../pages/ViewYourProducts/ViewYourProducts'
 import AsyncStorage from '@react-native-community/async-storage'
 
 interface ProductItemProps{
     InfoButton?: boolean,
     EditButton?:boolean,
-    Data: Data,
+    Data: Product,
     key?: string
 }
 
@@ -59,8 +58,12 @@ export default function ProductItem(props:ProductItemProps) {
             </View>
             <Text style={styles.ProductDescription}>{props.Data.detail}</Text>
             <View style={styles.FlexRowView}>
-                <WhatsappButton number ={props.Data.whatsapp} />
-                <EmailButton address ={props.Data.email}/>
+                {props.Data.whatsapp && (
+                    <WhatsappButton number ={props.Data.whatsapp} />
+                )}
+                {props.Data.email && (
+                    <EmailButton address ={props.Data.email}/>
+                )}
             </View>
         </View>
     )
