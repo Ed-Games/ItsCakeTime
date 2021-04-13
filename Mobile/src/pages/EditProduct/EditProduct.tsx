@@ -197,7 +197,7 @@ export default function EditProduct(){
             </View>
             <ModalView title="Atenção" isVisible={modalVisible} setStateFunction={setModalVisible}>
                 <>
-                    <Text>Você tem certeza que deseja excluir esse produto?</Text>
+                    <ModalText>Você tem certeza que deseja excluir esse produto?</ModalText>
                     <View style={{flexDirection:"row",justifyContent:"space-between", padding:10}}>
                         <ModalButton onPress={deleteProduct}>
                             <ModalText>Sim</ModalText>
