@@ -14,7 +14,9 @@ import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
 import ReactPicker from '../../components/ReactPicker/ReactPicker'
-import ModalView from '../../components/Modal/Modal'
+import ModalView from '../../components/Modal/ModalView'
+import { ModalButton} from '../../components/Modal/ModalButton'
+import { ModalText } from '../../components/Modal/ModalText'
 
 export interface RouteProps{
     productId: number
@@ -193,31 +195,20 @@ export default function EditProduct(){
                     <Text style={styles.actionButtonText}>Deletar</Text>
                 </RectButton>
             </View>
+            <ModalView title="Atenção" isVisible={modalVisible} setStateFunction={setModalVisible}>
+                <>
+                    <Text>Você tem certeza que deseja excluir esse produto?</Text>
+                    <View style={{flexDirection:"row",justifyContent:"space-between", padding:10}}>
+                        <ModalButton onPress={deleteProduct}>
+                            <ModalText>Sim</ModalText>
+                        </ModalButton>
 
-            <ModalView
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            title="Atenção"
-            contentText=" Deseja realmente apagar esse produto?"
-            actionText="Não"
-            ContentBlock={
-                <RectButton 
-                onPress={deleteProduct} 
-                style={{
-                    flexDirection: 'column',
-                    width: 50,
-                    position: 'absolute',
-                    marginTop: 145,
-                }}>
-                    <Text style={{
-                        fontFamily:'Poppins_500Medium',
-                        fontSize: 18,
-                        color: '#9553A0',
-                        alignSelf:'flex-end',
-                    }}>Sim</Text>
-                </RectButton>
-            }
-            />
+                        <ModalButton onPress={()=>setModalVisible(false)}>
+                            <ModalText>Não</ModalText>
+                        </ModalButton>
+                    </View>
+                </>
+            </ModalView>
             
         </View>
     )
