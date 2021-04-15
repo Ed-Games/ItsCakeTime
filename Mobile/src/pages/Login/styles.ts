@@ -4,10 +4,6 @@ const styles = StyleSheet.create({
     container : {
         backgroundColor: '#9553A0',
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        textAlign: 'center',
-
     },
 
     Image:{
@@ -27,12 +23,12 @@ const styles = StyleSheet.create({
     },
 
     submitButton:{
-        width:134,
-        height:36,
+        width: Dimensions.get('screen').width - 120,
         marginTop: 28,
         backgroundColor: '#F783EC',
         borderRadius: 10,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        paddingVertical: 6,
     },
 
     submitButtonText: {
