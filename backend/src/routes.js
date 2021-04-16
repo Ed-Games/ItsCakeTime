@@ -33,6 +33,8 @@ routes.get('/profile/', profileController.index)
 
 routes.get('/profile/show',authenticateToken, profileController.show)
 
+routes.get('/profile/search/',profileController.search)
+
 routes.get('/profile/:id', profileController.detail)
 
 routes.put('/profile/update/:id/',authenticateToken,upload.single('image') ,profileController.update)
@@ -52,8 +54,6 @@ routes.put('/products/update/:id',authenticateToken,upload.single('image'), prod
 routes.get('/product/myproducts',authenticateToken,productController.list)
 
 routes.put('/products/edit/:id', authenticateToken,upload.single('image'), productController.edit)
-
-routes.get('/profile/search',profileController.search)
 
 routes.get('/token',authenticateToken,refreshToken)
 
