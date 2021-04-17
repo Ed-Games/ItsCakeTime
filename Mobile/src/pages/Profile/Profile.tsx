@@ -4,19 +4,18 @@ import Waves from '../../images/waves.png'
 import styles from './style'
 
 import Avatar from '../../images/avatar.png'
-import WhatsappButton from '../../components/WhatsappButton/WhatsappButton'
-import EmailButton from '../../components/EmailButton/EmailButton'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
-import { Feather, FontAwesome } from '@expo/vector-icons'
+import { Feather} from '@expo/vector-icons'
 import {useNavigation, useRoute } from '@react-navigation/native'
 import ProductItem from '../../components/ProductItem/ProductItem'
 import handleSelectImages from '../../utils/ImageUpload'
 import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
 import GetUser from '../../utils/GetUser'
+import Biography from '../../components/BiographyContainer/Biography'
 
 
-interface ProfileProps extends Profile,Product{
+interface ProfileProps extends Profile{
  imageUrl: string
 }
 
@@ -29,31 +28,16 @@ export default function Profile() {
     const navigation = useNavigation()
     const [images,setImages] = useState<string[]>([])
     const [data,setData] = useState<ProfileProps>()
+    const [products,setProducts] = useState<Product[]>()
     const [user, SetUser] = useState({})
-    
 
     const route = useRoute()
-    //const {id} = route.params as RouteParamsProps
-    //console.log("ID: ", id)
-
-
-    useEffect(()=>{
-        const unsubricribed =navigation.addListener('focus',()=>{
-            GetUser().then((user) => {
-                SetUser(user.id)
-            })
     
-            console.log(user)
-            GetProfileData()
-           // console.log('Refreshing...')
-        })
-    }, [navigation])
-
     async function GetProfileData() {
         await api.get('/profile/show').then(response => {
             console.log("getting data...")
             setData(response.data.profile)
-
+            
         }).catch(err => {
             if(err.message=="Request failed with status code 401" || err.message=="Request failed with status code 403"){
                 async()=> await AsyncStorage.removeItem('@Key:user');
@@ -62,42 +46,37 @@ export default function Profile() {
         })
         //
     }
-
-    function handleNavigateToProfileProducts(){
-        if(AsyncStorage.getItem('@Key:user')){
-            
-            navigation.navigate('ViewYourProducts')
-        }else{
-            navigation.navigate('ProfileProducts')
-        }
-
-    }
-
-    function handleNavigateToUpdateProfile(){
-        navigation.navigate('UpdateProfile',{Data: data})
-    }
-
+        
     async function handleImageUpload(){
         const imageData = new FormData()
         let id = null
-
+        
         await GetUser().then((user) => {
             id = user.id
         })
-
+        
         imageData.append('image',{
             type: 'image/jpg',
             uri: images[images.length - 1],
             name: 'profileImage',
         } as any)
-
-        //console.log(imageData)
-
+        
         await api.put(`profile/update/${id}`, imageData).catch(err => console.log(err))
-
+        
         setImages([])
         GetProfileData()
     }
+    
+    useEffect(()=>{
+        navigation.addListener('focus',()=>{
+            GetUser().then((user) => {
+                SetUser(user.id)
+            })
+    
+            console.log(user)
+            GetProfileData()
+        })
+    }, [navigation])
 
     return(
         <View style={styles.container}>
@@ -107,7 +86,6 @@ export default function Profile() {
                             {images.length>0?(
                                 images.map((image,i,arr)=>{
                                     if(arr.length -1 ===i){
-                                        {/*console.log({uri:image})*/}
                                         return(
                                             <>
                                                 <Image key={image + 'image'} source={{uri: image}} style={styles.Avatar}/>
@@ -140,62 +118,14 @@ export default function Profile() {
                 </ImageBackground>
             </View>
             {route.name == 'Profile'?(
-                <View style={styles.InfoView}>
-                    <Text style={styles.TopicText}>Biografia:</Text>
-                    <Text style={styles.ContentText}>
-                    {data?.description}
-                    </Text>
-                    <Text style={styles.TopicText}>Especialidades:</Text>
-                    <Text style={styles.ContentText}>
-                    {data?.specialty} 
-                    </Text>
-                    <Text style={styles.TopicText}>Contato:</Text>
-                    <View style={styles.ButtonsView}>
-                        <WhatsappButton number={data?.whatsapp} />
-                        <EmailButton address={data?.email as string} />
-                    </View>
-                    <View style={{alignItems:'center', flexDirection: 'row'}}>
-                        {console.log(data?.user_id)}
-                    { user ==data?.user_id?(
-                        <>
-                            <RectButton onPress={handleNavigateToProfileProducts} style={[styles.ListButton, {alignSelf: 'flex-start'}]} >
-                                <View style={styles.FlexRowView}>
-                                    <FontAwesome name="birthday-cake" size={24} color='#FFF' style={{marginLeft: 5, marginTop: 5}} />
-                                    <Text style={styles.ButtonText}>Lista de produtos</Text>
-                                </View>
-                            </RectButton>
-                            <RectButton onPress={handleNavigateToUpdateProfile} style={[styles.ListButton,{alignSelf:'flex-end', backgroundColor:'#9553A0'}]} >
-                            <View style={styles.FlexRowView}>
-                                <FontAwesome name="edit" size={24} color='#FFF' style={{marginLeft: 5, marginTop: 5}} />
-                                <Text style={styles.ButtonText}>Editar perfil</Text>
-                            </View>
-                            </RectButton>
-                        </>
-                        
-                    ):(
-                        <RectButton onPress={handleNavigateToProfileProducts} style={styles.ListButton} >
-                            <View style={styles.FlexRowView}>
-                                <FontAwesome name="birthday-cake" size={24} color='#FFF' style={{marginLeft: 5, marginTop: 5}} />
-                                <Text style={styles.ButtonText}>Lista de produtos</Text>
-                            </View>
-                        </RectButton>
-                    )}
-                    
-                    </View>
-                </View>
+                <Biography data={data as ProfileProps} user={user as number} />
             ):(
                 <View style={styles.ProductsList}>
-                <ScrollView contentContainerStyle={{
-                            alignItems: 'center',
-                            paddingTop: 40,
-                            paddingBottom:210,
-                            marginTop: -60
-                        }}>
-                            <ProductItem Data={data as Product} InfoButton={false} />
-                            <ProductItem Data={data as Product} InfoButton={false} />
-                            <ProductItem Data={data as Product} InfoButton={false} />
-                            <ProductItem Data={data as Product} InfoButton={false} />
-                        </ScrollView>
+                <ScrollView contentContainerStyle={styles.ScrollView}>
+                    {products?.map((product) => {
+                        <ProductItem Data={product} InfoButton={false} />
+                    })}
+                </ScrollView>
             </View>
             )}
         </View>
