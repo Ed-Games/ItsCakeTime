@@ -9,10 +9,7 @@ import Avatar from '../../images/avatar.png'
 import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
 
-interface ProfileProps{
-    userName: string,
-    image:string,
-    specialty: string,
+interface ProfileProps extends Omit<Profile, 'id'>{
     id:string,
 }
 
