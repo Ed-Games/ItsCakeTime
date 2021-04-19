@@ -44,7 +44,6 @@ export default function Profile() {
                 navigation.navigate('Login')
             }
         })
-        //
     }
         
     async function handleImageUpload(){
