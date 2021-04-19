@@ -4,7 +4,7 @@ import { createDrawerNavigator} from '@react-navigation/drawer'
 
 
 import Landing from './pages/Landing/Landing'
-import ProductScreen from './components/Screens/RouteScreens'
+import ProductScreen from './components/Screens/ProductScreen'
 import ProfileScreen from './components/Screens/ProfileScreen'
 import SearchScreen from './components/Screens/SearchScreen'
 
