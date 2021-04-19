@@ -94,6 +94,17 @@ export default function Login(){
     },[Keyboard])
 
 
+    /*useEffect(() => {
+        if(email && email!='' && forgotPasswdmodalVisible==false){
+
+            requestPassword()
+        }
+
+        if(forgotPasswdmodalVisible){
+            setEmail('')
+        }
+    },[forgotPasswdmodalVisible])*/
+
     return(
         <KeyboardAvoidingView  behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <View style={{alignItems: 'center'}}>
