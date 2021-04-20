@@ -19,10 +19,6 @@ interface ProfileProps extends Profile{
  imageUrl: string
 }
 
-interface RouteParamsProps{
-    id: string
-}
-
 export default function Profile() {
 
     const navigation = useNavigation()
@@ -35,7 +31,6 @@ export default function Profile() {
     
     async function GetProfileData() {
         await api.get('/profile/show').then(response => {
-            console.log("getting data...")
             setData(response.data.profile)
             
         }).catch(err => {
@@ -43,6 +38,15 @@ export default function Profile() {
                 async()=> await AsyncStorage.removeItem('@Key:user');
                 navigation.navigate('Login')
             }
+        })
+    }
+
+    async function GetSelectedProfileData(){
+        await api.get(`/profile/${route.params?.id}`).then((response) =>{
+            setData(response.data.profile)
+            setProducts(response.data.products)
+        }).catch((error) => {
+            console.log(error)
         })
     }
         
@@ -72,8 +76,8 @@ export default function Profile() {
                 SetUser(user.id)
             })
     
-            console.log(user)
-            GetProfileData()
+            if(route.name =="Profile") GetProfileData()
+            if(route.name=="Details") GetSelectedProfileData()
         })
     }, [navigation])
 
@@ -116,17 +120,19 @@ export default function Profile() {
                         <Text style={styles.Name}>{data?.userName}</Text>
                 </ImageBackground>
             </View>
-            {route.name == 'Profile'?(
+            {!products?(
                 <Biography data={data as ProfileProps} user={user as number} />
             ):(
                 <View style={styles.ProductsList}>
-                <ScrollView contentContainerStyle={styles.ScrollView}>
-                    {products?.map((product) => {
-                        <ProductItem Data={product} InfoButton={false} />
-                    })}
-                </ScrollView>
-            </View>
-            )}
+                    <ScrollView  contentContainerStyle={styles.ScrollView}>
+                        {products.map((product) =>{
+                            return (
+                                <ProductItem Data={{...product,email:data?.email, whatsapp:data?.whatsapp}} InfoButton={false} EditButton={false} /> 
+                            )
+                        })}
+                    </ScrollView>
+                </View>
+    )}
         </View>
     )
 }
