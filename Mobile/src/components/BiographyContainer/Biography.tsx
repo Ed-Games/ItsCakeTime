@@ -28,6 +28,10 @@ export default function Biography(props: BiographyProps){
         
     }
 
+    function handleNavigateToProductsList(){
+        navigation.navigate('ProfileProducts')
+    }
+
     function handleNavigateToUpdateProfile(){
         navigation.navigate('UpdateProfile',{Data: props.data})
     }
@@ -67,7 +71,7 @@ export default function Biography(props: BiographyProps){
                 </>
                 
             ):(
-                <RectButton onPress={handleNavigateToProfileProducts} style={styles.ListButton} >
+                <RectButton onPress={handleNavigateToProductsList} style={styles.ListButton} >
                     <View style={styles.FlexRowView}>
                         <FontAwesome name="birthday-cake" size={24} color='#FFF' style={{marginLeft: 5, marginTop: 5}} />
                         <Text style={styles.ButtonText}>Lista de produtos</Text>
