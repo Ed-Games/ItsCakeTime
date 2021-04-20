@@ -2,13 +2,15 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import { Feather } from '@expo/vector-icons';
 import Profile from '../../pages/Profile/Profile';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 
 
 const Stack = createStackNavigator()
 
 
-export default function ProfileProductsScreen({navigation}) {
+export default function ProfileProductsScreen() {
 
+    const navigation = useNavigation()
     function handleNavigateToPreviousPage(){
         navigation.goBack()
     }
@@ -24,7 +26,7 @@ export default function ProfileProductsScreen({navigation}) {
                     name="menu"
                     size={25}
                     color="#FFF"
-                    onPress={() => navigation.openDrawer()}
+                    onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}
                   />
                 ),
                 headerLeft: ()=> (
