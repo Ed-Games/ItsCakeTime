@@ -4,9 +4,9 @@ const styles = StyleSheet.create({
     InfoView : {
         backgroundColor: '#FFF',
         width: 328,
-        height: 381,
         borderRadius: 20,
         marginTop: 10,
+        paddingVertical:10
     },
 
     TopicText :{

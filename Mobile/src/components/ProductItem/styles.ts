@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
         backgroundColor: '#FFF',
         width: Dimensions.get('screen').width -30,
-        height:(Dimensions.get('screen').width + 320) - Dimensions.get('screen').width,
+        paddingBottom:15,
         borderRadius: 20,
 
     },
