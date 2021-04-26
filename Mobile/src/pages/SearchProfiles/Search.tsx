@@ -20,6 +20,8 @@ export default function Search(){
     const navigation = useNavigation()
 
     function handleNavigateToProfile(id: string, userName:string){
+        setProfiles([])
+        console.log(id)
          navigation.navigate('Details',{
              screen: 'Details',
              params: {id}
@@ -46,7 +48,9 @@ export default function Search(){
     }
 
     useEffect(() => {
-        GetAllProfiles()
+        navigation.addListener('focus',()=>{
+            GetAllProfiles()
+        })
     },[])
 
     return(
