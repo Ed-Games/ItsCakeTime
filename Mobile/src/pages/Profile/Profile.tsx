@@ -6,7 +6,7 @@ import styles from './style'
 import Avatar from '../../images/avatar.png'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { Feather} from '@expo/vector-icons'
-import {useNavigation, useRoute } from '@react-navigation/native'
+import {DrawerActions, useNavigation, useRoute } from '@react-navigation/native'
 import ProductItem from '../../components/ProductItem/ProductItem'
 import handleSelectImages from '../../utils/ImageUpload'
 import api from '../../services/api'
@@ -24,7 +24,6 @@ export default function Profile() {
     const navigation = useNavigation()
     const [images,setImages] = useState<string[]>([])
     const [data,setData] = useState<ProfileProps>()
-    const [products,setProducts] = useState<Product[]>()
     const [user, SetUser] = useState({})
 
     const route = useRoute()
@@ -43,8 +42,7 @@ export default function Profile() {
 
     async function GetSelectedProfileData(){
         await api.get(`/profile/${route.params?.id}`).then((response) =>{
-            setData(response.data.profile)
-            setProducts(response.data.products)
+            setData(response.data)
         }).catch((error) => {
             console.log(error)
         })
@@ -120,19 +118,7 @@ export default function Profile() {
                         <Text style={styles.Name}>{data?.userName}</Text>
                 </ImageBackground>
             </View>
-            {!products?(
-                <Biography data={data as ProfileProps} user={user as number} />
-            ):(
-                <View style={styles.ProductsList}>
-                    <ScrollView  contentContainerStyle={styles.ScrollView}>
-                        {products.map((product) =>{
-                            return (
-                                <ProductItem Data={{...product,email:data?.email, whatsapp:data?.whatsapp}} InfoButton={false} EditButton={false} /> 
-                            )
-                        })}
-                    </ScrollView>
-                </View>
-    )}
+            <Biography data={data as ProfileProps} user={user as number} />
         </View>
     )
 }
