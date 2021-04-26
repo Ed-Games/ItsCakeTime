@@ -87,8 +87,6 @@ module.exports = {
                 )
             .where('profile.id','=', id).first()
 
-            const products = await connection('product').select('*').where('user_id','=', profile.user_id)
-
             if(!profile) return response.sendStatus(404)
 
             const serializedProfile = {
@@ -96,7 +94,7 @@ module.exports = {
                 imageUrl: `http://10.0.0.105:3333/uploads/${profile.image}`
             }
 
-            return response.json({profile: serializedProfile, products: products}).status(200)
+            return response.json(serializedProfile).status(200)
         } catch (error) {
             console.log(error)
             return response.sendStatus(500)
