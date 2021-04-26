@@ -51,9 +51,7 @@ routes.delete('/products/delete/:id',authenticateToken,productController.delete)
 
 routes.put('/products/update/:id',authenticateToken,upload.single('image'), productController.update)
 
-routes.get('/product/myproducts',authenticateToken,productController.list)
-
-routes.put('/products/edit/:id', authenticateToken,upload.single('image'), productController.edit)
+routes.get('/product/myproducts',authenticateToken,productController.listByLoggedUser)
 
 routes.get('/token',authenticateToken,refreshToken)
 
