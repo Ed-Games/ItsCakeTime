@@ -30,7 +30,6 @@ module.exports = {
             const id = await connection('user').select('id').where('user.userName','=',user)
             const user_id = id[0]['id']
             const {price, detail,category,name} = request.body;
-            console.log("ioiioioioioioioioio", user_id)
             await connection('product').insert({
                 price,
                 detail,
@@ -156,7 +155,7 @@ module.exports = {
        }
     },
 
-    async list(request, response){
+    async listByLoggedUser(request, response){
        try {
         const user = request.user.name
         const products = await connection('product')
@@ -176,34 +175,25 @@ module.exports = {
        }
     },
 
-    async edit(request,response){
+    async listByUserId(request,response) {
         try {
-            if(!request.body || !request.params.id) return response.sendStatus(400)
-            const user = request.user.name
-            const {id} = request.params
-            const data = request.body
-
-            const profileUser = await connection('product')
+            const userId = request.query.user_id
+            const products = await connection('product')
             .join('user','user.id','product.user_id')
-            .select('user.userName')
-            .where('product.id','=',id)
+            .select('product.name',
+            'product.detail',
+            'product.category',
+            'product.image',
+            'product.price',
+            'product.id'
+            ).where('user.userName','=', userId)
 
-            console.log(profileUser)
+            return response.json(products)
 
-            if(user!=profileUser[0]['userName']) return response.sendStatus(403)
-
-            const editedProduct = await connection('product')
-            .join('user','user.id','product.user_id')
-            .select('*')
-            .where('product.id','=',id)
-            .update(data)
-
-            return response.json(editedProduct)
         } catch (error) {
             console.log(error)
             return response.sendStatus(500)
         }
-
     }
 
 }
