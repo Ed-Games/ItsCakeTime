@@ -23,13 +23,17 @@ export default function Biography(props: BiographyProps){
             
             navigation.navigate('ViewYourProducts')
         }else{
-            navigation.navigate('ProfileProducts')
+            navigation.navigate('ViewProfileProducts')
         }
         
     }
 
     function handleNavigateToProductsList(){
-        navigation.navigate('ProfileProducts')
+        navigation.navigate('ViewProfileProducts', {
+            params: {
+                user_id: props.data.user_id
+            }
+        })
     }
 
     function handleNavigateToUpdateProfile(){
