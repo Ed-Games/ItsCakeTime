@@ -9,7 +9,6 @@ import ProfileScreen from './components/Screens/ProfileScreen'
 import SearchScreen from './components/Screens/SearchScreen'
 
 import DrawerContent from './components/DrawerContent/DrawerContent'
-import ProfileProductsScreen from './components/Screens/ProfileProductsScreen'
 import Register from './pages/Register/Register'
 import Login from './pages/Login/Login'
 import Logout from './pages/Logout/Logout'
@@ -21,6 +20,7 @@ import ViewYourProducts from './pages/ViewYourProducts/ViewYourProducts'
 import EditProduct from './pages/EditProduct/EditProduct'
 import * as Linking from 'expo-linking'
 import DetailsScreen from './components/Screens/DetailsScreen'
+import ViewProfileProductsScreen from './components/Screens/ViewProfileProductsScreen'
 
 const Drawer = createDrawerNavigator()
 const prefix = Linking.createURL('/');
@@ -60,7 +60,7 @@ export default function Routes() {
                 <Drawer.Screen name="ProductList" component={ProductScreen} />
                 <Drawer.Screen name="Profile" component={ProfileScreen} />
                 <Drawer.Screen name="Details" component={DetailsScreen} />
-                <Drawer.Screen name="ProfileProducts" component={ProfileProductsScreen} />
+                <Drawer.Screen name="ViewProfileProducts" component={ViewProfileProductsScreen} />
                 <Drawer.Screen name="Search Profiles" component={SearchScreen} />
                 <Drawer.Screen name="Register" component={Register} />
                 <Drawer.Screen name="Login" component={Login} />
