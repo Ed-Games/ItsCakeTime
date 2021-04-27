@@ -21,17 +21,13 @@ export default function Search(){
 
     function handleNavigateToProfile(id: string, userName:string){
         setProfiles([])
-        console.log(id)
-         navigation.navigate('Details',{
-             screen: 'Details',
-             params: {id}
-         })
+        navigation.navigate('Details',{id})
     }
 
     async function GetAllProfiles(){
         await api.get('profile').then(response=>{
             setProfiles(response.data)
-            console.log(response.data)
+            //console.log(response.data)
         })
     }
 
@@ -43,7 +39,7 @@ export default function Search(){
             }
         }).then(response=>{
             setProfiles(response.data)
-            console.log(response.data)
+            //console.log(response.data)
         })
     }
 
