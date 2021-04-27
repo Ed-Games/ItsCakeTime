@@ -21,6 +21,7 @@ import EditProduct from './pages/EditProduct/EditProduct'
 import * as Linking from 'expo-linking'
 import DetailsScreen from './components/Screens/DetailsScreen'
 import ViewProfileProductsScreen from './components/Screens/ViewProfileProductsScreen'
+import Profile from './pages/Profile/Profile'
 
 const Drawer = createDrawerNavigator()
 const prefix = Linking.createURL('/');
@@ -58,8 +59,8 @@ export default function Routes() {
             <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}  initialRouteName="Landing">
                 <Drawer.Screen name="Landing" component={Landing} />
                 <Drawer.Screen name="ProductList" component={ProductScreen} />
-                <Drawer.Screen name="Profile" component={ProfileScreen} />
-                <Drawer.Screen name="Details" component={DetailsScreen} />
+                <Drawer.Screen name="Profile" component={Profile} />
+                <Drawer.Screen name="Details" component={Profile} />
                 <Drawer.Screen name="ViewProfileProducts" component={ViewProfileProductsScreen} />
                 <Drawer.Screen name="Search Profiles" component={SearchScreen} />
                 <Drawer.Screen name="Register" component={Register} />
