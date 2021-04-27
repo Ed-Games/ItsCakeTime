@@ -1,5 +1,5 @@
 import { Feather } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import { DrawerActions, useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { Image, Text, View } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
@@ -8,7 +8,8 @@ import styles from './styles'
 interface Headerprops {
     title?: string,
     color?: string,
-    titleStyle?: object
+    titleStyle?: object,
+    backgroundColor?: string,
 }
 
 export default function Header(props:Headerprops) {
@@ -19,22 +20,35 @@ export default function Header(props:Headerprops) {
         navigation.goBack()
     }
 
+    const backgroundColor = props.backgroundColor
+
     return(
-        <View style={styles.headerView}>
-            <RectButton onPress={handleNavigateToPreviousPage} style={{alignSelf:'flex-start'}}>
-                {props.color? (
-                    <Feather styles={styles.iconButton} name="arrow-left" size={24} color={props.color}/>
-                ):(
-                    <Feather styles={styles.iconButton} name="arrow-left" size={24} color='#FFF'/>
-                )}
-            </RectButton>
-            {props.color?(
-                <Text style={[styles.title, {
+        <View style={backgroundColor? {...styles.headerView,backgroundColor}:styles.headerView }>
+            <View style={styles.icons}>
+                <Feather 
+                styles={styles.iconButton} 
+                name="arrow-left" 
+                size={24} 
+                color={props.color? props.color :'#FFF'} 
+                onPress={handleNavigateToPreviousPage}
+                />
+
+                <Feather
+                name="menu"
+                size={25}
+                color={props.color? props.color :'#FFF'}
+                onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}
+                />
+            </View>
+            <View style={styles.titleView}>
+                {props.color?(
+                    <Text style={[styles.title, {
                     color: props.color
-                }]}>{props.title}</Text>
-            ):(
-                <Text style={[styles.title,props.titleStyle]}>{props.title}</Text>
-            )}
+                            }]}>{props.title}</Text>
+                ):(
+                    <Text style={[styles.title,props.titleStyle]}>{props.title}</Text>
+                )}
+            </View>
         </View>
     )
 }

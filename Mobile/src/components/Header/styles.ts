@@ -5,6 +5,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontFamily: 'Archivo_600SemiBold',
         color: '#FFF',
+        width: 'auto',
+        textAlign: 'center'
         
     },
 
@@ -18,9 +20,19 @@ const styles = StyleSheet.create({
 
     headerView:{
         width: Dimensions.get('screen').width,
-        height:80,
-        alignItems: 'center',
-        marginTop: 30,
+        flexDirection: 'column',
+        paddingTop: 30,
+    },
+
+    icons: {
+        padding: 5,
+        flexDirection:"row",
+        justifyContent:'space-between',
+        alignItems:'flex-start',
+    },
+    
+    titleView:{
+        alignSelf:'center',
     }
 })
 
