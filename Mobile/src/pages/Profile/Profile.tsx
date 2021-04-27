@@ -13,6 +13,7 @@ import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
 import GetUser from '../../utils/GetUser'
 import Biography from '../../components/BiographyContainer/Biography'
+import Header from '../../components/Header/Header'
 
 
 interface ProfileProps extends Profile{
@@ -82,39 +83,40 @@ export default function Profile() {
     return(
         <View style={styles.container}>
             <View>
+                <Header backgroundColor="#9553A0"/>
                 <ImageBackground style={styles.Waves} source={Waves}>
-                        <View style={{flexDirection: 'row'}}>
-                            {images.length>0?(
-                                images.map((image,i,arr)=>{
-                                    if(arr.length -1 ===i){
-                                        return(
-                                            <>
-                                                <Image key={image + 'image'} source={{uri: image}} style={styles.Avatar}/>
-                                                <RectButton key={image + 'button'} onPress={handleImageUpload} style={styles.Savebutton}>
-                                                    <Text style={styles.SavebuttonText}>Salvar</Text>
-                                                </RectButton>
-                                            </>
-                                        )
-                                    }
-                                })
+                    <View style={{flexDirection: 'row'}}>
+                        {images.length>0?(
+                            images.map((image,i,arr)=>{
+                                if(arr.length -1 ===i){
+                                    return(
+                                        <>
+                                            <Image key={image + 'image'} source={{uri: image}} style={styles.Avatar}/>
+                                            <RectButton key={image + 'button'} onPress={handleImageUpload} style={styles.Savebutton}>
+                                                <Text style={styles.SavebuttonText}>Salvar</Text>
+                                            </RectButton>
+                                        </>
+                                    )
+                                }
+                            })
+                        ):(
+                            data?.image?(
+                                <>
+                                    <Image source={{uri: data.imageUrl}} style={styles.Avatar}/>
+                                    <RectButton onPress={()=>handleSelectImages(images,setImages)} style={styles.EditButton}>
+                                        <Feather name="camera" size={24} color="#FFF" />
+                                    </RectButton>
+                                </>
                             ):(
-                                data?.image?(
-                                    <>
-                                        <Image source={{uri: data.imageUrl}} style={styles.Avatar}/>
-                                        <RectButton onPress={()=>handleSelectImages(images,setImages)} style={styles.EditButton}>
-                                            <Feather name="camera" size={24} color="#FFF" />
+                                <>
+                                    <Image source={Avatar} style={styles.Avatar}/>
+                                    <RectButton onPress={()=>handleSelectImages(images,setImages)} style={styles.EditButton}>
+                                        <Feather name="camera" size={24} color="#FFF" />
                                         </RectButton>
-                                    </>
-                                ):(
-                                    <>
-                                        <Image source={Avatar} style={styles.Avatar}/>
-                                        <RectButton onPress={()=>handleSelectImages(images,setImages)} style={styles.EditButton}>
-                                            <Feather name="camera" size={24} color="#FFF" />
-                                         </RectButton>
-                                    </>
-                                )
-                            )}
-                        </View>
+                                </>
+                            )
+                        )}
+                    </View>
                         <Text style={styles.Name}>{data?.userName}</Text>
                 </ImageBackground>
             </View>

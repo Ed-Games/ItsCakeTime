@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
 
     Waves : {
         width: Dimensions.get('screen').width,
-        height:210,
+        height:216,
         alignItems: 'center',
     },
 
