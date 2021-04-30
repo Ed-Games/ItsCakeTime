@@ -57,7 +57,6 @@ export default function Biography(props: BiographyProps){
                 <EmailButton address={props.data?.email as string} />
             </View>
             <View style={{alignItems:'center', flexDirection: 'row'}}>
-                {console.log(props.data?.user_id)}
             { props.user ==props.data?.user_id?(
                 <>
                     <RectButton onPress={handleNavigateToProfileProducts} style={[styles.ListButton, {alignSelf: 'flex-start'}]} >
