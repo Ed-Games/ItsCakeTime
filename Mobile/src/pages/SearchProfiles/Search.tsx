@@ -5,7 +5,6 @@ import styles from './styles'
 import Waves from '../../images/waves.png'
 import { RectButton, ScrollView, TextInput } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
-import Avatar from '../../images/avatar.png'
 import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
 
