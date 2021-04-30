@@ -1,34 +1,40 @@
 import React, { useEffect, useState } from 'react'
 import {Image, ImageBackground, Text, View } from 'react-native'
-import Waves from '../../images/waves.png'
-import styles from './style'
-
-import Avatar from '../../images/avatar.png'
-import { RectButton, ScrollView } from 'react-native-gesture-handler'
+import { RectButton} from 'react-native-gesture-handler'
 import { Feather} from '@expo/vector-icons'
-import {DrawerActions, useNavigation, useRoute } from '@react-navigation/native'
-import ProductItem from '../../components/ProductItem/ProductItem'
+import {useNavigation} from '@react-navigation/native'
 import handleSelectImages from '../../utils/ImageUpload'
-import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
+
+import api from '../../services/api'
 import GetUser from '../../utils/GetUser'
 import Biography from '../../components/BiographyContainer/Biography'
 import Header from '../../components/Header/Header'
 
+import Avatar from '../../images/avatar.png'
+import Waves from '../../images/waves.png'
+import styles from './style'
 
-interface ProfileProps extends Profile{
+interface DataProps extends Profile{
  imageUrl: string
 }
 
-export default function Profile() {
+interface ProfileProps{
+    route : {
+        name: string,
+        params: {
+            id:string
+        },
+    },
+}
+
+export default function Profile({route}: ProfileProps) {
 
     const navigation = useNavigation()
     const [images,setImages] = useState<string[]>([])
-    const [data,setData] = useState<ProfileProps>()
+    const [data,setData] = useState<DataProps>()
     const [user, SetUser] = useState({})
-
-    const route = useRoute()
-    
+  
     async function GetProfileData() {
         await api.get('/profile/show').then(response => {
             setData(response.data.profile)
@@ -41,8 +47,9 @@ export default function Profile() {
         })
     }
 
-    async function GetSelectedProfileData(){
-        await api.get(`/profile/${route.params?.id}`).then((response) =>{
+    async function GetSelectedProfileData(id:string){
+        console.log('id: ', id)
+        await api.get(`/profile/${id}`).then((response) =>{
             setData(response.data)
         }).catch((error) => {
             console.log(error)
@@ -76,9 +83,12 @@ export default function Profile() {
             })
     
             if(route.name =="Profile") GetProfileData()
-            if(route.name=="Details") GetSelectedProfileData()
         })
     }, [navigation])
+
+    useEffect(()=>{
+        if(route.name=="Details")  GetSelectedProfileData(route.params.id)
+    },[route])
 
     return(
         <View style={styles.container}>
@@ -120,7 +130,7 @@ export default function Profile() {
                         <Text style={styles.Name}>{data?.userName}</Text>
                 </ImageBackground>
             </View>
-            <Biography data={data as ProfileProps} user={user as number} />
+            <Biography data={data as DataProps} user={user as number} />
         </View>
     )
 }
