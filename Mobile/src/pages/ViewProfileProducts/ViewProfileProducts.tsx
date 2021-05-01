@@ -14,7 +14,9 @@ interface RouteProps{
     route : {
         name:string,
         params:{
-            id:string
+            id:string,
+            image:string,
+            name: string
         }
     }
 }
@@ -38,8 +40,8 @@ export default function ViewProfileProducts({route}:RouteProps){
         <View style={styles.container}>
             <Header backgroundColor="#9553A0" />
             <View style={styles.header}>
-                <Image source={avatar} style={styles.avatar} />
-                <Text style={styles.title}> Lista de produtos de Fernanda</Text>
+                <Image source={route.params.image? {uri:`http://10.0.0.105:3333/uploads/${route.params.image}`} : avatar} style={styles.avatar} />
+                <Text style={styles.title}> Lista de produtos de {route.params.name}</Text>
             </View>
             <View style={styles.products}>
                 <ScrollView contentContainerStyle={{
