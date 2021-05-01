@@ -12,7 +12,8 @@ const styles = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         height: Dimensions.get('screen').height * 0.1,
-        backgroundColor: '#9553A0'
+        backgroundColor: '#9553A0',
+        marginTop: -30
     },
 
     avatar : {
@@ -28,6 +29,11 @@ const styles = StyleSheet.create({
         maxWidth: Dimensions.get('screen').width * 0.8,
         textAlign: 'center',
         margin:20
+    },
+
+    products : {
+        marginTop: 20,
+        alignItems: 'center'
     }
 })
 
