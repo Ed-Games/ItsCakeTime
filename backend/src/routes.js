@@ -53,6 +53,8 @@ routes.put('/products/update/:id',authenticateToken,upload.single('image'), prod
 
 routes.get('/product/myproducts',authenticateToken,productController.listByLoggedUser)
 
+routes.get('/profile/:id/products', productController.listByUserId)
+
 routes.get('/token',authenticateToken,refreshToken)
 
 routes.delete('/logout',authenticateToken, userController.logout)
