@@ -176,8 +176,9 @@ module.exports = {
     },
 
     async listByUserId(request,response) {
+        console.log("loading...")
         try {
-            const userId = request.query.user_id
+            const userId = request.params.id
             const products = await connection('product')
             .join('user','user.id','product.user_id')
             .select('product.name',
@@ -186,7 +187,7 @@ module.exports = {
             'product.image',
             'product.price',
             'product.id'
-            ).where('user.userName','=', userId)
+            ).where('user.id','=', userId)
 
             return response.json(products)
 
