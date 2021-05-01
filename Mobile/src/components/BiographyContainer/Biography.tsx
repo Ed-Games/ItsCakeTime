@@ -1,7 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons'
 import AsyncStorage from '@react-native-community/async-storage'
 import { useNavigation } from '@react-navigation/native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Text, View } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
 import EmailButton from '../EmailButton/EmailButton'
@@ -18,6 +18,8 @@ export default function Biography(props: BiographyProps){
 
     const navigation = useNavigation()
 
+    console.log("user id: ", props.data)
+
     function handleNavigateToProfileProducts(){
         if(AsyncStorage.getItem('@Key:user')){
             
@@ -29,18 +31,14 @@ export default function Biography(props: BiographyProps){
     }
 
     function handleNavigateToProductsList(){
-        navigation.navigate('ViewProfileProducts', {
-            params: {
-                user_id: props.data.user_id
-            }
-        })
+        console.log("id: ",props.data.user_id)
+        navigation.navigate('ViewProfileProducts',{id: props.data.user_id})
     }
 
     function handleNavigateToUpdateProfile(){
         navigation.navigate('UpdateProfile',{Data: props.data})
     }
     
-
     return (
         <View style={styles.InfoView}>
             <Text style={styles.TopicText}>Biografia:</Text>
@@ -57,7 +55,7 @@ export default function Biography(props: BiographyProps){
                 <EmailButton address={props.data?.email as string} />
             </View>
             <View style={{alignItems:'center', flexDirection: 'row'}}>
-            { props.user ==props.data?.user_id?(
+            { props.user == props.data?.user_id?(
                 <>
                     <RectButton onPress={handleNavigateToProfileProducts} style={[styles.ListButton, {alignSelf: 'flex-start'}]} >
                         <View style={styles.FlexRowView}>
