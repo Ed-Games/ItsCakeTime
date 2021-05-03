@@ -13,6 +13,8 @@ module.exports = {
             'product.image',
             'product.detail',
             'product.id',
+            'product.user_id',
+            'user.id',
             'user.email',
             'profile.whatsapp'
             )
@@ -83,6 +85,7 @@ module.exports = {
                 'product.image',
                 'product.name',
                 'product.id',
+                'product.user_id',
                 'profile.whatsapp',
                 'user.email'
                 )
