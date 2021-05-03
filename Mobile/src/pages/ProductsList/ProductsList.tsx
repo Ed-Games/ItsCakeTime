@@ -10,20 +10,15 @@ import ProductItem from '../../components/ProductItem/ProductItem'
 import { useNavigation } from '@react-navigation/native'
 import Header from '../../components/Header/Header'
 import api from '../../services/api'
-import { Data } from '../ViewYourProducts/ViewYourProducts'
+
 
 export default function ProductsList() {
     const [value, setValue] = useState("0")
-    const [data, setData] = useState<Data[]>()
+    const [data, setData] = useState<Product[]>()
     const navigation = useNavigation()
     const [price, setPrice] = useState('')
     const [category, setCategory] = useState('')
     const categories = ['Selecionar', 'Bolos','Tortas','Salgados','Biscoitos','Doces','Outros']
-
-
-    function handleNavigateToLandingPage(){
-        navigation.navigate('Landing')
-    }
 
     function GetListOfProducts(){
         api.get('products').then((response => {
@@ -47,10 +42,8 @@ export default function ProductsList() {
     }
 
     useEffect(() => {
-        const unsubricribed =navigation.addListener('focus',()=>{
-            GetListOfProducts()
-            console.log('Refreshing...')
-        })
+        console.log(price, category)
+        GetListOfProducts()
     },[navigation])
 
     useEffect(() => {
