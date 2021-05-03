@@ -23,7 +23,7 @@ export default function ProductItem(props:ProductItemProps) {
 
 
     function handleNavigateToProfile(){
-        navigation.navigate('Profile')
+        navigation.navigate('Details', {id: props.Data.user_id})
     }
 
     async function handleNavigateToEditProduct(){
