@@ -86,13 +86,24 @@ const styles = StyleSheet.create({
         marginTop: 3
     },
 
+    buttonsContainer: {
+        flexDirection:'row',
+        
+    },
+
     filterButton:{
         backgroundColor: '#F782EC',
-        width: 64,
+
         height:27,
+        width:120,
         marginTop:18,
         borderRadius: 5,
+
+        flexDirection:'row',
         alignItems: 'center',
+        alignContent:'space-between',
+        justifyContent:'center',
+        marginHorizontal:10,
     },
 
     ProductsList : {
