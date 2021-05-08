@@ -85,6 +85,7 @@ module.exports = {
                 'product.image',
                 'product.name',
                 'product.id',
+                'product.detail',
                 'product.user_id',
                 'profile.whatsapp',
                 'user.email'
