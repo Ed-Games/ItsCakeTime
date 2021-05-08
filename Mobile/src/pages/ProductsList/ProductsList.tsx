@@ -1,8 +1,8 @@
-import React, { SetStateAction, useEffect, useState } from 'react'
+import React, {useEffect, useState } from 'react'
 import { Text, View,TextInput, Image, ImageBackground, ScrollView} from 'react-native'
-import {Picker} from '@react-native-community/picker'
+import {Picker} from '@react-native-picker/picker';
 import styles from './styles'
-import {Feather, FontAwesome} from '@expo/vector-icons'
+import {Feather, FontAwesome5} from '@expo/vector-icons'
 import selectImg from '../../images/select.png'
 import Waves from '../../images/waves.png'
 import { RectButton } from 'react-native-gesture-handler'
@@ -13,46 +13,38 @@ import api from '../../services/api'
 
 
 export default function ProductsList() {
-    const [value, setValue] = useState("0")
+    const [value, setValue] = useState('')
     const [data, setData] = useState<Product[]>()
-    const navigation = useNavigation()
     const [price, setPrice] = useState('')
-    const [category, setCategory] = useState('')
-    const categories = ['Selecionar', 'Bolos','Tortas','Salgados','Biscoitos','Doces','Outros']
+    
+    const navigation = useNavigation()
 
     function GetListOfProducts(){
         api.get('products').then((response => {
-            console.log("api response: ", response.data)
             setData(response.data)
         }))
     }
 
-    function handleFilterResults(){
-        api.get('product/filter/',{
+    async function handleFilterResults(){
+        await api.get('product/filter/',{
             params: {
                 price,
-                category
+                category: value
             }
         }).then((response => {
-            console.log(response.data)
             setData(response.data)
         })).catch((error) => {
             console.log(error)
         })
     }
 
-    useEffect(() => {
-        console.log(price, category)
+    function clear(){
+        setPrice('')
+        setValue('')
         GetListOfProducts()
-    },[navigation])
+    }
 
-    useEffect(() => {
-        const index = value as unknown as number
-        setCategory(categories[index])
-        console.log(categories[index])
-        console.log(price)
-
-    }, [value])
+    useEffect(() => {GetListOfProducts()},[])
 
     return(
         <View style={styles.container}>
@@ -62,30 +54,37 @@ export default function ProductsList() {
 
                     <View style={styles.FilterView}>
                         <Text style={styles.FilterViewText}>Preço</Text>
-                        <TextInput onChangeText={text=> setPrice(text)} placeholder='R$ 00,00' style={styles.FilterViewInput} />
+                        <TextInput value={price} onChangeText={text=> setPrice(text)} placeholder='R$ 00,00' style={styles.FilterViewInput} />
                         <Text style={styles.FilterViewText}>Categoria</Text>
 
                         <View style={styles.pickerView}>
                             <Picker 
                             selectedValue={value} 
-                            onValueChange={value => setValue(value as SetStateAction<string> )} 
+                            onValueChange={value => setValue(value)} 
                             style={[styles.FilterViewSelect,{
                                 fontFamily: 'Poppins_300Light'
                             }]}>
-                            <Picker.Item label="Selecionar" value="0" />
-                                <Picker.Item label="Bolos" value="1" />
-                                <Picker.Item label="Tortas" value="2" />
-                                <Picker.Item label="Salgados" value="3" />
-                                <Picker.Item label="Biscoitos" value="4" />
-                                <Picker.Item label="Doces" value="5" />
-                                <Picker.Item label="Outros" value="6" />
+                            <Picker.Item label="Selecionar" value="" />
+                                <Picker.Item label="Bolos" value="Bolos" />
+                                <Picker.Item label="Tortas" value="Tortas" />
+                                <Picker.Item label="Salgados" value="Salgados" />
+                                <Picker.Item label="Biscoitos" value="Biscoitos" />
+                                <Picker.Item label="Doces" value="Doces" />
+                                <Picker.Item label="Outros" value="Outros" />
                             </Picker>
                             <Image style={styles.selectImg} source={selectImg} />
                         </View>
                     </View>
-                        <RectButton onPress={handleFilterResults} style={styles.filterButton}>
-                            <Feather name="filter" size={25} color='#FFF' />
-                        </RectButton>
+                        <View style={styles.buttonsContainer}> 
+                            <RectButton enabled={price && value? true: false} onPress={handleFilterResults} style={price && value? styles.filterButton : [styles.filterButton, {backgroundColor:'#BF79B9'}]}>
+                                <Feather name="search" size={25} color='#FFF' />
+                                <Text style={styles.FilterViewText}>Pesquisar</Text>
+                            </RectButton>
+                            <RectButton enabled={price || value? true:false } onPress={clear} style={price || value? styles.filterButton : [styles.filterButton, {backgroundColor:'#BF79B9'}]}>
+                                <FontAwesome5 name="broom" size={20} color='#FFF'/>
+                                <Text style={styles.FilterViewText}>Limpar</Text>
+                            </RectButton>
+                        </View>
                 </ImageBackground>
             </View>
             <View style={styles.ProductsList}>
@@ -95,9 +94,9 @@ export default function ProductsList() {
                             paddingBottom:180,
                             marginTop: -70
                         }}>
-                            {data?.map(product=>{
+                            {data?.map((product,i)=>{
                                 return (
-                                    <ProductItem Data={product} EditButton={false} />
+                                    <ProductItem key={product.name+" numero: "+i} Data={product} EditButton={false} />
                                 )
                             })}
                 </ScrollView>
