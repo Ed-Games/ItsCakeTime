@@ -4,8 +4,6 @@ import { createDrawerNavigator} from '@react-navigation/drawer'
 
 
 import Landing from './pages/Landing/Landing'
-import ProductScreen from './components/Screens/ProductScreen'
-import ProfileScreen from './components/Screens/ProfileScreen'
 import SearchScreen from './components/Screens/SearchScreen'
 
 import DrawerContent from './components/DrawerContent/DrawerContent'
@@ -21,6 +19,7 @@ import EditProduct from './pages/EditProduct/EditProduct'
 import * as Linking from 'expo-linking'
 import Profile from './pages/Profile/Profile'
 import ViewProfileProducts from './pages/ViewProfileProducts/ViewProfileProducts'
+import ProductsList from './pages/ProductsList/ProductsList'
 
 const Drawer = createDrawerNavigator()
 const prefix = Linking.createURL('/');
@@ -57,7 +56,7 @@ export default function Routes() {
         <NavigationContainer linking={linking}>
             <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}  initialRouteName="Landing">
                 <Drawer.Screen name="Landing" component={Landing} />
-                <Drawer.Screen name="ProductList" component={ProductScreen} />
+                <Drawer.Screen name="ProductList" component={ProductsList} />
                 <Drawer.Screen name="Profile" component={Profile} />
                 <Drawer.Screen name="Details" component={Profile} />
                 <Drawer.Screen name="ViewProfileProducts" component={ViewProfileProducts} />
