@@ -7,7 +7,6 @@ import selectImg from '../../images/select.png'
 import Waves from '../../images/waves.png'
 import { RectButton } from 'react-native-gesture-handler'
 import ProductItem from '../../components/ProductItem/ProductItem'
-import { useNavigation } from '@react-navigation/native'
 import Header from '../../components/Header/Header'
 import api from '../../services/api'
 
@@ -17,8 +16,6 @@ export default function ProductsList() {
     const [data, setData] = useState<Product[]>()
     const [price, setPrice] = useState('')
     
-    const navigation = useNavigation()
-
     function GetListOfProducts(){
         api.get('products').then((response => {
             setData(response.data)
@@ -48,10 +45,10 @@ export default function ProductsList() {
 
     return(
         <View style={styles.container}>
-            <View style={{height:250}}>
+            <View style={{height:270}}>
                 <ImageBackground source={Waves} style={styles.waves}>
+                    <Header title='Produtos Disponíveis' />
                     <Text style={styles.filterText}>Filtre sua busca:</Text>
-
                     <View style={styles.FilterView}>
                         <Text style={styles.FilterViewText}>Preço</Text>
                         <TextInput value={price} onChangeText={text=> setPrice(text)} placeholder='R$ 00,00' style={styles.FilterViewInput} />
@@ -91,7 +88,7 @@ export default function ProductsList() {
                 <ScrollView contentContainerStyle={{
                             alignItems: 'center',
                             paddingTop: 40,
-                            paddingBottom:180,
+                            paddingBottom:210,
                             marginTop: -70
                         }}>
                             {data?.map((product,i)=>{

@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     waves : {
         width: Dimensions.get('screen').width,
         flex: 1,
-        height: 240,
+        height: 255,
         alignItems: 'center',
     },
 
@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
         height: 30,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 10
     },
 
     FilterViewText : {
