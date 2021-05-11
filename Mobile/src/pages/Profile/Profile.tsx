@@ -14,6 +14,7 @@ import Header from '../../components/Header/Header'
 import Avatar from '../../images/avatar.png'
 import Waves from '../../images/waves.png'
 import styles from './style'
+import { useUser } from '../../Contexts/UserContext'
 
 interface DataProps extends Profile{
  imageUrl: string
@@ -33,7 +34,8 @@ export default function Profile({route}: ProfileProps) {
     const navigation = useNavigation()
     const [images,setImages] = useState<string[]>([])
     const [data,setData] = useState<DataProps>()
-    const [user, SetUser] = useState({})
+
+    const {loggedUser} = useUser()
   
     async function GetProfileData() {
         await api.get('/profile/show').then(response => {
@@ -58,11 +60,7 @@ export default function Profile({route}: ProfileProps) {
         
     async function handleImageUpload(){
         const imageData = new FormData()
-        let id = null
-        
-        await GetUser().then((user) => {
-            id = user.id
-        })
+        let id = loggedUser.id
         
         imageData.append('image',{
             type: 'image/jpg',
@@ -78,10 +76,6 @@ export default function Profile({route}: ProfileProps) {
     
     useEffect(()=>{
         navigation.addListener('focus',()=>{
-            GetUser().then((user) => {
-                SetUser(user.id)
-            })
-    
             if(route.name =="Profile") GetProfileData()
         })
     }, [navigation])
@@ -130,7 +124,7 @@ export default function Profile({route}: ProfileProps) {
                         <Text style={styles.Name}>{data?.userName}</Text>
                 </ImageBackground>
             </View>
-            <Biography data={data as DataProps} user={user as number} />
+            <Biography data={data as DataProps} user={loggedUser.id} />
         </View>
     )
 }
