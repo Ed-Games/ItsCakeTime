@@ -14,10 +14,12 @@ import { loginValidationSchema } from '../../Schema/loginSchema'
 import { EmailSchema } from '../../Schema/EmailSchema'
 import { ModalText } from '../../components/Modal/ModalText'
 import { ModalButton } from '../../components/Modal/ModalButton'
+import { useUser } from '../../Contexts/UserContext'
 
 export default function Login(){
 
     const navigation = useNavigation()
+    const {SaveUserDataToStorage} = useUser()
 
     const [loginModalVisible, setLoginModalVisible] = useState(false);
     const [forgotPasswdmodalVisible, setForgotPasswdModalVisible] = useState(false);
@@ -29,28 +31,18 @@ export default function Login(){
         navigation.navigate('Register')
     }
 
-    async function SaveUser(user:object){
-        await AsyncStorage.setItem('@Key:user', JSON.stringify(user))
-        const exists = await AsyncStorage.getItem('@Key:user')
-       // if(exists)console.log("sera que tem um user?", JSON.parse(exists))
-    }
-
-
     async function SignIn(values:{user:string, password:string}){
         const credentials = {
             userName: values.user.trim(),
             password: values.password.trim(),
         }
         
-
         try {
             await api.post('login',credentials).then(response =>{
-                //console.log(response.data)
-                SaveUser(response.data)
+                SaveUserDataToStorage(response.data)
             })
             navigation.navigate('Profile') 
             
-
         } catch (err) {
             console.log(err)
             if(err.response.status == 400){
@@ -92,18 +84,6 @@ export default function Login(){
             setIsKeyboardOpen(false)
         })
     },[Keyboard])
-
-
-    /*useEffect(() => {
-        if(email && email!='' && forgotPasswdmodalVisible==false){
-
-            requestPassword()
-        }
-
-        if(forgotPasswdmodalVisible){
-            setEmail('')
-        }
-    },[forgotPasswdmodalVisible])*/
 
     return(
         <KeyboardAvoidingView  behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
