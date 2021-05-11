@@ -1,9 +1,12 @@
+import AsyncStorage from '@react-native-community/async-storage'
 import axios from 'axios'
 import { Alert } from 'react-native'
-import GetUser from '../utils/GetUser'
-import DeleteUser from '../utils/DeleteUser'
 import NavigationService from './navigationService'
 
+async function GetUserData(){
+    const userData = await AsyncStorage.getItem('@Key:user')
+    if(userData) return JSON.parse(userData)
+}
 
 const api = axios.create({
     baseURL: 'http://10.0.0.105:3333',
@@ -44,7 +47,7 @@ api.interceptors.response.use(
 
 api.interceptors.request.use(
     config => {
-        return GetUser().then(user =>{
+        return GetUserData().then(user =>{
             if(user && user.accessToken)
                 config.headers.authorization = `Bearer ${user.accessToken}` 
             return Promise.resolve(config)
