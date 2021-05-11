@@ -1,8 +1,9 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import { useNavigation } from '@react-navigation/native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Image, Text, View } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
+import { useUser } from '../../Contexts/UserContext'
 import bakerImage from '../../images/baker.png'
 import Logo from '../../images/logo.png'
 import styles from './styles'
@@ -10,6 +11,7 @@ import styles from './styles'
 
 export default function Landing(){
     const navigation = useNavigation()
+    const {LoadUserDataFromStorage} = useUser()
 
     function handleNavigateToProductsList(){
         navigation.navigate('ProductList')
@@ -19,6 +21,10 @@ export default function Landing(){
         const user = await AsyncStorage.getItem('@Key:user')
         navigation.navigate(user?'Profile':'Login')
     }
+
+    useEffect(()=>{
+        LoadUserDataFromStorage()
+    },[])
 
     return(
         <View style={styles.container} >
