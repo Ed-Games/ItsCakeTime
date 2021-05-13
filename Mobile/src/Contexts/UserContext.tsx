@@ -1,6 +1,7 @@
 import React from 'react'
 import AsyncStorage from "@react-native-community/async-storage";
 import { createContext, ReactNode, useContext, useState } from "react";
+import api from '../services/api';
 
 type User = {
     userName: string,
@@ -11,6 +12,8 @@ type User = {
 
 interface UserContextProps{
     loggedUser: User,
+    profileData: Profile|null,
+    LoadProfileDataFromAPI: ()=> void,
     LoadUserDataFromStorage: () => void,
     SaveUserDataToStorage: (user:User) => void,
     ClearUserDataFromStorage: () => void
@@ -25,6 +28,21 @@ export const UserContext = createContext({} as UserContextProps);
 
 export const UserContextProvider = ({children}:UserContextProviderProps) => {
     const [loggedUser, setLoggedUser] = useState<User>({} as User)
+    const [profileData, setProfileData] = useState<Profile|null>(null)
+
+    async function LoadProfileDataFromAPI(){
+        try {
+            if(loggedUser.id){
+                const response = await api.get('/profile/show')
+                setProfileData(response.data.profile)
+            } else {
+                setProfileData(null)
+            }
+        } catch (error) {
+            setProfileData(null)
+            console.log(error.message)
+        }
+    }
 
     async function LoadUserDataFromStorage(){
         const userData = await AsyncStorage.getItem('@Key:user')
@@ -41,14 +59,17 @@ export const UserContextProvider = ({children}:UserContextProviderProps) => {
     async function ClearUserDataFromStorage(){
         await AsyncStorage.removeItem('@Key:user')
         setLoggedUser({} as User)
+        setProfileData(null)
     }
 
     return(
         <UserContext.Provider value={{
         loggedUser,
+        LoadProfileDataFromAPI,
         LoadUserDataFromStorage,
         SaveUserDataToStorage,
-        ClearUserDataFromStorage
+        ClearUserDataFromStorage,
+        profileData
         }}>
         {children}
         </UserContext.Provider>
