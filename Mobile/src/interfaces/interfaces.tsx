@@ -16,6 +16,7 @@ interface Profile {
     whatsapp?: string,
     user_id: number,
     image: string,
+    imageUrl?: string,
     specialty: string,
     userName: string,
     email?: string,
