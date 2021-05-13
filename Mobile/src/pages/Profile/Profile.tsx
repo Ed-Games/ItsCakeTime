@@ -106,16 +106,20 @@ export default function Profile({route}: ProfileProps) {
                             data?.image?(
                                 <>
                                     <Image source={{uri: data.imageUrl}} style={styles.Avatar}/>
-                                    <RectButton onPress={()=>handleSelectImages(images,setImages)} style={styles.EditButton}>
-                                        <Feather name="camera" size={24} color="#FFF" />
-                                    </RectButton>
+                                    {loggedUser.id == data.user_id && (
+                                        <RectButton onPress={()=>handleSelectImages(images,setImages)} style={styles.EditButton}>
+                                                <Feather name="camera" size={24} color="#FFF" />
+                                        </RectButton>
+                                    )}
                                 </>
                             ):(
                                 <>
                                     <Image source={Avatar} style={styles.Avatar}/>
-                                    <RectButton onPress={()=>handleSelectImages(images,setImages)} style={styles.EditButton}>
-                                        <Feather name="camera" size={24} color="#FFF" />
+                                    {loggedUser.id == data?.user_id && (
+                                        <RectButton onPress={()=>handleSelectImages(images,setImages)} style={styles.EditButton}>
+                                            <Feather name="camera" size={24} color="#FFF" />
                                         </RectButton>
+                                    )}
                                 </>
                             )
                         )}
