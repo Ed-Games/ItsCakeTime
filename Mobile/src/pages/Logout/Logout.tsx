@@ -6,10 +6,12 @@ import Question from '../../images/Question.png'
 import { RectButton } from 'react-native-gesture-handler'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-community/async-storage'
+import { useUser } from '../../Contexts/UserContext'
 
 export default function Logout(){
 
     const navigation = useNavigation()
+    const {ClearUserDataFromStorage} = useUser()
     
     function handleNavigateToPreviousPage(){
         navigation.goBack()
@@ -17,7 +19,7 @@ export default function Logout(){
 
     async function handleNavigateToLandingPage(){
         try {
-            await AsyncStorage.removeItem('@Key:user')
+            ClearUserDataFromStorage()
         } catch (error) {
             console.log(error)
         }
