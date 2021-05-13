@@ -4,10 +4,9 @@ import { RectButton} from 'react-native-gesture-handler'
 import { Feather} from '@expo/vector-icons'
 import {useNavigation} from '@react-navigation/native'
 import handleSelectImages from '../../utils/ImageUpload'
-import AsyncStorage from '@react-native-community/async-storage'
+
 
 import api from '../../services/api'
-import GetUser from '../../utils/GetUser'
 import Biography from '../../components/BiographyContainer/Biography'
 import Header from '../../components/Header/Header'
 
@@ -35,7 +34,7 @@ export default function Profile({route}: ProfileProps) {
     const [images,setImages] = useState<string[]>([])
     const [data,setData] = useState<DataProps>()
 
-    const {loggedUser} = useUser()
+    const {loggedUser, ClearUserDataFromStorage} = useUser()
   
     async function GetProfileData() {
         await api.get('/profile/show').then(response => {
@@ -43,7 +42,7 @@ export default function Profile({route}: ProfileProps) {
             
         }).catch(err => {
             if(err.message=="Request failed with status code 401" || err.message=="Request failed with status code 403"){
-                async()=> await AsyncStorage.removeItem('@Key:user');
+                ClearUserDataFromStorage();
                 navigation.navigate('Login')
             }
         })
