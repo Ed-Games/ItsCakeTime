@@ -2,6 +2,7 @@ import React from 'react'
 import AsyncStorage from "@react-native-community/async-storage";
 import { createContext, ReactNode, useContext, useState } from "react";
 import api from '../services/api';
+import { Navigate } from '../services/RootNavigation';
 
 type User = {
     userName: string,
@@ -12,8 +13,8 @@ type User = {
 
 interface UserContextProps{
     loggedUser: User,
-    profileData: Profile|null,
-    LoadProfileDataFromAPI: ()=> void,
+    profileData: Profile| undefined,
+    LoadProfileDataFromAPI: ()=> Promise<Profile>,
     LoadUserDataFromStorage: () => void,
     SaveUserDataToStorage: (user:User) => void,
     ClearUserDataFromStorage: () => void
@@ -28,19 +29,18 @@ export const UserContext = createContext({} as UserContextProps);
 
 export const UserContextProvider = ({children}:UserContextProviderProps) => {
     const [loggedUser, setLoggedUser] = useState<User>({} as User)
-    const [profileData, setProfileData] = useState<Profile|null>(null)
+    const [profileData, setProfileData] = useState<Profile>()
 
     async function LoadProfileDataFromAPI(){
         try {
             if(loggedUser.id){
                 const response = await api.get('/profile/show')
                 setProfileData(response.data.profile)
-            } else {
-                setProfileData(null)
+                return await response.data.profile
             }
         } catch (error) {
-            setProfileData(null)
-            console.log(error.message)
+            setProfileData(undefined)
+            console.log(error)
         }
     }
 
@@ -59,7 +59,7 @@ export const UserContextProvider = ({children}:UserContextProviderProps) => {
     async function ClearUserDataFromStorage(){
         await AsyncStorage.removeItem('@Key:user')
         setLoggedUser({} as User)
-        setProfileData(null)
+        setProfileData(undefined)
     }
 
     return(
