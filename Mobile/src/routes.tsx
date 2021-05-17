@@ -20,6 +20,7 @@ import * as Linking from 'expo-linking'
 import Profile from './pages/Profile/Profile'
 import ViewProfileProducts from './pages/ViewProfileProducts/ViewProfileProducts'
 import ProductsList from './pages/ProductsList/ProductsList'
+import {navigationRef} from './services/RootNavigation'
 
 const Drawer = createDrawerNavigator()
 const prefix = Linking.createURL('/');
@@ -53,7 +54,7 @@ export default function Routes() {
       console.log('url: ',linking)
 
     return(
-        <NavigationContainer linking={linking}>
+        <NavigationContainer ref={navigationRef} linking={linking}>
             <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}  initialRouteName="Landing">
                 <Drawer.Screen name="Landing" component={Landing} />
                 <Drawer.Screen name="ProductList" component={ProductsList} />
