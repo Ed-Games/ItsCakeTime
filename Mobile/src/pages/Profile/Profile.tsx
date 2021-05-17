@@ -5,7 +5,6 @@ import { Feather} from '@expo/vector-icons'
 import {useNavigation} from '@react-navigation/native'
 import handleSelectImages from '../../utils/ImageUpload'
 
-
 import api from '../../services/api'
 import Biography from '../../components/BiographyContainer/Biography'
 import Header from '../../components/Header/Header'
@@ -14,10 +13,6 @@ import Avatar from '../../images/avatar.png'
 import Waves from '../../images/waves.png'
 import styles from './style'
 import { useUser } from '../../Contexts/UserContext'
-
-interface DataProps extends Profile{
- imageUrl: string
-}
 
 interface ProfileProps{
     route : {
@@ -32,9 +27,9 @@ export default function Profile({route}: ProfileProps) {
 
     const navigation = useNavigation()
     const [images,setImages] = useState<string[]>([])
-    const [data,setData] = useState<DataProps>()
+    const [data,setData] = useState<Profile>()
 
-    const {loggedUser, ClearUserDataFromStorage} = useUser()
+    const {loggedUser, ClearUserDataFromStorage, LoadProfileDataFromAPI, profileData} = useUser()
   
     async function GetProfileData() {
         await api.get('/profile/show').then(response => {
@@ -42,10 +37,14 @@ export default function Profile({route}: ProfileProps) {
             
         }).catch(err => {
             if(err.message=="Request failed with status code 401" || err.message=="Request failed with status code 403"){
-                ClearUserDataFromStorage();
+                //ClearUserDataFromStorage();
                 navigation.navigate('Login')
             }
         })
+    }
+
+    const handleChangeProfileDataState = async()=>{
+        setData(await LoadProfileDataFromAPI())
     }
 
     async function GetSelectedProfileData(id:string){
@@ -70,12 +69,12 @@ export default function Profile({route}: ProfileProps) {
         await api.put(`profile/update/${id}`, imageData).catch(err => console.log(err))
         
         setImages([])
-        GetProfileData()
+        handleChangeProfileDataState()
     }
     
     useEffect(()=>{
         navigation.addListener('focus',()=>{
-            if(route.name =="Profile") GetProfileData()
+            if(route.name =="Profile") handleChangeProfileDataState()
         })
     }, [navigation])
 
@@ -127,7 +126,7 @@ export default function Profile({route}: ProfileProps) {
                         <Text style={styles.Name}>{data?.userName}</Text>
                 </ImageBackground>
             </View>
-            <Biography data={data as DataProps} user={loggedUser.id} />
+            <Biography data={data as Profile} user={loggedUser.id} />
         </View>
     )
 }
