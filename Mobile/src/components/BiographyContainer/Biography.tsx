@@ -18,8 +18,6 @@ export default function Biography(props: BiographyProps){
 
     const navigation = useNavigation()
 
-    console.log("user id: ", props.data)
-
     function handleNavigateToProfileProducts(){
         if(AsyncStorage.getItem('@Key:user')){
             
