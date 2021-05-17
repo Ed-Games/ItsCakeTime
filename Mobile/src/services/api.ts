@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import axios from 'axios'
 import { Alert } from 'react-native'
-import NavigationService from './navigationService'
+import {Navigate} from './RootNavigation'
 
 async function GetUserData(){
     const userData = await AsyncStorage.getItem('@Key:user')
@@ -29,15 +29,12 @@ api.interceptors.response.use(
             )
         }
 
-        /*if(error.response.status===401|| error.response.status===403){
+        if(error.response.status===401|| error.response.status===403){
             const requestConfig = error.config
-
-            DeleteUser().then(()=>{
-                NavigationService('Login')
-            })
-
+            Navigate('Login',{})
+        
             return axios(requestConfig)
-        }*/
+        }
 
         return Promise.reject(error)
     },
