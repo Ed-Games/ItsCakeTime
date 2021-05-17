@@ -23,7 +23,6 @@ export default function DrawerContent(props:DrawerContentComponentProps<DrawerCo
 
     useEffect(()=>{
         LoadProfileDataFromAPI()
-        console.log("Drawer request: ",profileData)
     },[loggedUser])
 
     return(
