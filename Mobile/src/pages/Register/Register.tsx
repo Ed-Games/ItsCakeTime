@@ -1,53 +1,45 @@
 import React, { useState } from 'react'
-import { ImageBackground, Text, View, Dimensions, Alert } from 'react-native'
+import { ImageBackground, Text, View, Dimensions, Alert, GestureResponderEvent } from 'react-native'
 import Waves from '../../images/waves.png'
 import styles from './styles'
 import Header from '../../components/Header/Header'
-import { RectButton, ScrollView} from 'react-native-gesture-handler'
+import { RectButton, ScrollView, TouchableOpacity} from 'react-native-gesture-handler'
 import Input from '../../components/Input/Input'
 import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
 import ModalView from '../../components/Modal/Modal'
+import { Formik } from 'formik'
+import { Registervalidation } from '../../Schema/RegisterSchema'
+
+interface RegisterValues {
+    name: string,
+    email:string,
+    password: string,
+    whatsapp: string,
+    confirmPassword: string
+}
 
 export default function Register(){
-
-    const [name, setName] = useState<string>('')
-    const [email, setEmail] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
-    const[confirmPassword, setConfirmPassword] = useState<string>('')
-    const [whatsapp,setWhatsapp] = useState<string>('')
     const [modalVisible, setModalVisible] = useState<boolean>(false)
     const [message, setMessage] = useState<string>()
-    const info = [name,email,password, whatsapp]
 
 
     const navigation = useNavigation()
     
 
-    async function createUser(){
-
-        if(!name || !email || !password || !whatsapp){
-            setModalVisible(true)
-            setMessage("Por favor, precisamos que você preencha todos os dados para criarmos a sua conta")
-        } else if(password != confirmPassword){
-            setModalVisible(true)
-            setMessage("senha e confirmar senha precisam ser iguais")
-        } else {
-            const data = {
-                userName : name,
-                email : email,
-                password : password,
-                whatsapp:whatsapp
-            }
-    
-    
-            await api.post('users/register', data).then(response => {
-                console.log(response)
-            }).catch(err => console.log(err))
-
-            navigation.navigate('Login')
+    async function createUser(values:RegisterValues){
+        const data = {
+            userName : values.name,
+            email : values.email.trim(),
+            password : values.password,
+            whatsapp:values.whatsapp
         }
 
+        console.log(data)
+
+        await api.post('users/register', data).then(()=> {
+            navigation.navigate('Login')
+        }).catch(err => console.log(err))        
         
     }
 
@@ -60,27 +52,84 @@ export default function Register(){
             </View>
             <View>
                 <View style={styles.FormView}>
-                   <ScrollView 
-                   style={{
-                       width:Dimensions.get('screen').width,
-                       
-                   }}
-
-                   contentContainerStyle={{
-                       alignItems: 'center',
-                       paddingBottom: 80
-                   }}
+                <Formik
+                   initialValues={{name:'', email:'', password:'',confirmPassword:'', whatsapp:''}}
+                   validationSchema={Registervalidation}
+                   onSubmit={values => createUser(values)}
                    >
-                    <Input setData={setName} name="Nome: " placeholder="Seu Nome de usuário" />
-                    <Input setData={setEmail} name="E-mail: " placeholder="Informe seu e-mail" />
-                    <Input setData={setPassword} name="Senha: " placeholder="Informe uma boa senha" />
-                    <Input setData={setConfirmPassword} name="Confirmar senha: " placeholder="Repita a senha anterior " />
-                    <Input setData={setWhatsapp} name="Whatsapp: " placeholder="Seu numero de whatsapp" />
-                    <RectButton onPress={createUser} style={styles.submitButton}>
-                        <Text style={styles.submitButtonText}>Finalizar Cadastro</Text>
-                    </RectButton>
-                    
-                   </ScrollView>
+                       {({
+                           handleChange,
+                           handleSubmit,
+                           errors,
+                           handleReset
+                       })=>(
+                            <ScrollView 
+                            style={{width:Dimensions.get('screen').width}}
+                            contentContainerStyle={{alignItems: 'center',paddingBottom: 80}}
+                            >
+                            <Input 
+                            setData={handleChange('name')} 
+                            name="Nome: " 
+                            placeholder="Seu Nome de usuário" 
+                            />
+
+                            {errors.name &&
+                                <Text style={{ fontSize: 15, color: 'red', marginBottom:5 }}>{errors.name}</Text>
+                            }
+        
+                            <Input 
+                            setData={handleChange('email')} 
+                            name="E-mail: "
+                            placeholder="Informe seu e-mail" 
+                            captalize='none'
+                            />
+
+                            {errors.email &&
+                                <Text style={{ fontSize: 15, color: 'red', marginBottom:5 }}>O email deve ser válido</Text>
+                            }
+        
+                            <Input 
+                            setData={handleChange('password')} 
+                            name="Senha: " 
+                            placeholder="Informe uma boa senha"
+                            secureTextEntry={true} 
+                            />
+
+                            {errors.password &&
+                                <Text style={{ fontSize: 15, color: 'red', marginBottom:5 }}>{errors.password}</Text>
+                            }
+        
+                            <Input 
+                            setData={handleChange('confirmPassword')} 
+                            name="Confirmar senha: " 
+                            placeholder="Repita a senha anterior " 
+                            secureTextEntry={true} 
+                            />
+
+                            {errors.confirmPassword &&
+                                <Text style={{ fontSize: 15, color: 'red', marginBottom:5 }}>{errors.confirmPassword}</Text>
+                            }
+        
+                            <Input 
+                            setData={handleChange('whatsapp')} 
+                            name="Whatsapp: " 
+                            placeholder="Seu numero de whatsapp" 
+                            />
+                            {errors.whatsapp &&
+                                <Text style={{ fontSize: 15, color: 'red', marginBottom:5 }}>{errors.whatsapp}</Text>
+                            }
+                            
+                            <TouchableOpacity 
+                            onPressIn={handleSubmit as unknown as (event: GestureResponderEvent) => void}
+                            onPress={!errors?handleReset as unknown as (event: GestureResponderEvent) => void: ()=>{}} 
+                            style={styles.submitButton}
+                            >
+                                <Text style={styles.submitButtonText}>Finalizar Cadastro</Text>
+                            </TouchableOpacity>
+                            
+                            </ScrollView>
+                       )}
+                   </Formik>
                 </View>
             </View>
             <ModalView 
