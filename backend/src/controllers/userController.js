@@ -59,33 +59,42 @@ module.exports = {
     },
 
     async create(request,response){
-        //console.log("objeto JSON", request.body)
         try {
             const {userName, email, password, whatsapp} = request.body
 
             const trx = await connection.transaction()
 
-            await trx('user').insert({
-                userName,
-                email,
-                password,
-            })
+            const hasUserWithTheseCredentials = await trx('user')
+            .where('user.email','=',email)
+            .orWhere('user.userName','=',userName)
+            .count().first()
 
-            id = await trx('user').select('user.id').where('user.email', "=", email)
-            //console.log("here is the id need", id)
+            if(Number(hasUserWithTheseCredentials['count(*)'])!=0){
+                console.log('there is at least one user with these credentials, aborting...')
+                trx.rollback()
+                return response.status(500).json('A user with this userName or e-mail already exists')
+            } else {
+                console.log('there is no user with these credentials, go ahead')
+                await trx('user').insert({
+                    userName,
+                    email,
+                    password,
+                })
 
-            user_id = id[0]['id']
-            
-            await trx('profile').insert({
-                user_id,
-                whatsapp
-            })
+                const {id} = await trx('user').select('user.id').where('user.email', "=", email).first()
+                console.log(id)
+                const user_id = id
+                await trx('profile').insert({
+                    user_id,
+                    whatsapp
+                })
 
-            await trx.commit()
+                await trx.commit()
+            }
 
             return response.status(201).json("created user")    
         } catch (error) {
-            console.log(error)
+            console.log("error: ",error)
             return response.status(500).json('unable to create user or profile, please check if your data is correct and try again')
         }
     },
