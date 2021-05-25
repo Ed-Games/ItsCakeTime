@@ -7,9 +7,11 @@ import { RectButton, ScrollView, TouchableOpacity} from 'react-native-gesture-ha
 import Input from '../../components/Input/Input'
 import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
-import ModalView from '../../components/Modal/Modal'
+import ModalView from '../../components/Modal/ModalView'
 import { Formik } from 'formik'
 import { Registervalidation } from '../../Schema/RegisterSchema'
+import { ModalText } from '../../components/Modal/ModalText'
+import { ModalButton } from '../../components/Modal/ModalButton'
 
 interface RegisterValues {
     name: string,
@@ -21,7 +23,7 @@ interface RegisterValues {
 
 export default function Register(){
     const [modalVisible, setModalVisible] = useState<boolean>(false)
-    const [message, setMessage] = useState<string>()
+    const [message, setMessage] = useState<string>('')
 
 
     const navigation = useNavigation()
@@ -39,7 +41,12 @@ export default function Register(){
 
         await api.post('users/register', data).then(()=> {
             navigation.navigate('Login')
-        }).catch(err => console.log(err))        
+        }).catch(err => {
+            console.log(err)
+            setModalVisible(true)
+            setMessage(`O e-mail ${data.email} ou nome ${data.userName} já estão em uso por outra pessoa!`)
+
+        })        
         
     }
 
@@ -134,11 +141,18 @@ export default function Register(){
             </View>
             <ModalView 
             title="Erro!" 
-            contentText={message as string} 
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            actionText="Ok"
-            />
+            isVisible={modalVisible}
+            setStateFunction={setModalVisible}
+            >
+                <ModalText>
+                    {message}
+                </ModalText>
+                <ModalButton onPress={()=> setModalVisible(false)}>
+                    <ModalText style={{color:"#9553A0"}}>
+                        ok
+                    </ModalText>
+                </ModalButton>
+            </ModalView>
             
         </View>
     )
