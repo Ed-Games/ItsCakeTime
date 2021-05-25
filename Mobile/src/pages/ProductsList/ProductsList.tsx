@@ -51,7 +51,7 @@ export default function ProductsList() {
                     <Text style={styles.filterText}>Filtre sua busca:</Text>
                     <View style={styles.FilterView}>
                         <Text style={styles.FilterViewText}>Preço</Text>
-                        <TextInput value={price} onChangeText={text=> setPrice(text)} placeholder='R$ 00,00' style={styles.FilterViewInput} />
+                        <TextInput keyboardType='number-pad' value={price} onChangeText={text=> setPrice(text)} placeholder='R$ 00,00' style={styles.FilterViewInput} />
                         <Text style={styles.FilterViewText}>Categoria</Text>
 
                         <View style={styles.pickerView}>
