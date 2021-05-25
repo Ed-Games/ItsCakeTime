@@ -72,7 +72,7 @@ module.exports = {
             if(Number(hasUserWithTheseCredentials['count(*)'])!=0){
                 console.log('there is at least one user with these credentials, aborting...')
                 trx.rollback()
-                return response.status(500).json('A user with this userName or e-mail already exists')
+                return response.status(400).json('A user with this name or e-mail already exists')
             } else {
                 console.log('there is no user with these credentials, go ahead')
                 await trx('user').insert({
