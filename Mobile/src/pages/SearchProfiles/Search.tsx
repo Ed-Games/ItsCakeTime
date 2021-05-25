@@ -63,9 +63,9 @@ export default function Search(){
                 </ImageBackground>
 
                 <ScrollView>
-                {profiles?.map(profile => {
+                {profiles?.sort().map(profile => {
                     return(
-                        <RectButton  key={profile.userName} onPress={()=> handleNavigateToProfile(profile.id, profile.userName)}>
+                        <RectButton  key={profile.userName+profile.id} onPress={()=> handleNavigateToProfile(profile.id, profile.userName)}>
                         <View style={styles.AvatarView}>
                             <Image style={styles.Avatar} source={{uri:`http://10.0.0.105:3333/uploads/${profile.image}`}} />
                             <View>
