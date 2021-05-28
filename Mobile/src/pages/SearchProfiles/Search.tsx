@@ -18,7 +18,7 @@ export default function Search(){
 
     const navigation = useNavigation()
 
-    function handleNavigateToProfile(id: string, userName:string){
+    function handleNavigateToProfile(id: string){
         setProfiles([])
         navigation.navigate('Details',{id})
     }
@@ -26,7 +26,6 @@ export default function Search(){
     async function GetAllProfiles(){
         await api.get('profile').then(response=>{
             setProfiles(response.data)
-            //console.log(response.data)
         })
     }
 
@@ -38,7 +37,6 @@ export default function Search(){
             }
         }).then(response=>{
             setProfiles(response.data)
-            //console.log(response.data)
         })
     }
 
@@ -53,19 +51,24 @@ export default function Search(){
             <View>
                 <ImageBackground source={Waves} style={styles.Waves}>
                     <View style={styles.search}>
-                        <TextInput onChangeText={value=> setSelectedProfile(value)} style={styles.searchInput} placeholder="Procure um confeiteiro pelo nome de perfil" />
-                        <View style={styles.searchButtonView}>
-                            <RectButton onPress={GetSearchResults} style={styles.SearchButton}>
-                                <Feather name="search" size={24} color='#FFF'/>
-                            </RectButton>
-                        </View>
+                        <TextInput 
+                        onChangeText={(value)=> setSelectedProfile(value)} 
+                        style={styles.searchInput} 
+                        placeholder="Procure um confeiteiro pelo nome de perfil" 
+                        autoCapitalize='none'
+                        />
+                            <View style={selectedProfile?styles.searchButtonView : [styles.searchButtonView,{backgroundColor:'#BF79B9'}]}>
+                                <RectButton enabled={selectedProfile? true: false} onPress={GetSearchResults} style={selectedProfile? styles.SearchButton : [styles.SearchButton, {backgroundColor:'#BF79B9'}]}>
+                                    <Feather name="search" size={24} color='#FFF'/>
+                                </RectButton>
+                            </View>
                     </View>
                 </ImageBackground>
 
                 <ScrollView>
                 {profiles?.sort().map(profile => {
                     return(
-                        <RectButton  key={profile.userName+profile.id} onPress={()=> handleNavigateToProfile(profile.id, profile.userName)}>
+                        <RectButton  key={profile.userName+profile.id} onPress={()=> handleNavigateToProfile(profile.id)}>
                         <View style={styles.AvatarView}>
                             <Image style={styles.Avatar} source={{uri:`http://10.0.0.105:3333/uploads/${profile.image}`}} />
                             <View>
@@ -84,6 +87,7 @@ export default function Search(){
                 </ScrollView>
                 
             </View>
+
         </View>
     )
 }
