@@ -29,22 +29,12 @@ export default function Profile({route}: ProfileProps) {
     const [images,setImages] = useState<string[]>([])
     const [data,setData] = useState<Profile>()
 
-    const {loggedUser, ClearUserDataFromStorage, LoadProfileDataFromAPI, profileData} = useUser()
+    const {loggedUser, LoadProfileDataFromAPI, profileData} = useUser()
   
-    async function GetProfileData() {
-        await api.get('/profile/show').then(response => {
-            setData(response.data.profile)
-            
-        }).catch(err => {
-            if(err.message=="Request failed with status code 401" || err.message=="Request failed with status code 403"){
-                //ClearUserDataFromStorage();
-                navigation.navigate('Login')
-            }
-        })
-    }
-
     const handleChangeProfileDataState = async()=>{
+        console.log('fetching profile data...')
         setData(await LoadProfileDataFromAPI())
+        console.log(data)
     }
 
     async function GetSelectedProfileData(id:string){
