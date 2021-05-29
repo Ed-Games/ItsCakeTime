@@ -38,8 +38,9 @@ export default function Login(){
         }
         
         try {
-            await api.post('login',credentials).then(response =>{
-                SaveUserDataToStorage(response.data)
+            await api.post('login',credentials).then(async response =>{
+                console.log('saving user...')
+                await SaveUserDataToStorage(response.data)
             })
             navigation.navigate('Profile') 
             
