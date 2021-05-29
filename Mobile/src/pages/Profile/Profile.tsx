@@ -32,9 +32,7 @@ export default function Profile({route}: ProfileProps) {
     const {loggedUser, LoadProfileDataFromAPI, profileData} = useUser()
   
     const handleChangeProfileDataState = async()=>{
-        console.log('fetching profile data...')
         setData(await LoadProfileDataFromAPI())
-        console.log(data)
     }
 
     async function GetSelectedProfileData(id:string){
