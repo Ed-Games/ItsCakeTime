@@ -16,7 +16,7 @@ interface UserContextProps{
     profileData: Profile| undefined,
     LoadProfileDataFromAPI: ()=> Promise<Profile>,
     LoadUserDataFromStorage: () => void,
-    SaveUserDataToStorage: (user:User) => void,
+    SaveUserDataToStorage: (user:User) => Promise<Boolean>,
     ClearUserDataFromStorage: () => void
 }
 
@@ -41,7 +41,7 @@ export const UserContextProvider = ({children}:UserContextProviderProps) => {
         } catch (error) {
             setProfileData(undefined)
             ClearUserDataFromStorage()
-            console.log(error)
+            console.log("Erro: ",error)
         }
     }
 
@@ -53,8 +53,9 @@ export const UserContextProvider = ({children}:UserContextProviderProps) => {
     }
 
     async function SaveUserDataToStorage(user: User){
-        await AsyncStorage.setItem('@Key:user', JSON.stringify(user))
+        await AsyncStorage.setItem('@Key:user', JSON.stringify(user)).catch(error => {return false})
         setLoggedUser(user)
+        return true
     }
 
     async function ClearUserDataFromStorage(){
