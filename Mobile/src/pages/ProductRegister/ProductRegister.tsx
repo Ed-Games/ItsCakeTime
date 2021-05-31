@@ -7,31 +7,31 @@ import Input from '../../components/Input/Input'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { Picker } from '@react-native-picker/picker'
 import selectImg from '../../images/select.png'
-import * as ImagePicker from 'expo-image-picker'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import handleSelectImages from '../../utils/ImageUpload'
 import api from '../../services/api'
+import { Formik } from 'formik'
+import { ProductSchema } from '../../Schema/ProductSchema'
+
+type ProductData = {
+    name: string,
+    details: string,
+    price: string,
+    category: string
+}
 
 export default function ProductRegister(){
-    const [value, setValue] = useState("0")
     const [images,setImages] = useState<string[]>([])
-    const [name, setName] = useState<string>('')
-    const [details,setDetails] = useState<string>('')
-    const [price,setPrice] = useState<string>('')
-    const categories = ['Não categorizado','Bolos','Tortas','Salgados','Biscoitos', 'Doces', 'Outros']
-
     const navigation = useNavigation()
 
-    async function handleSubmitMultipartForm(){
+    async function handleSubmitMultipartForm(values: ProductData){
         const data = new FormData()
-        const index = value as unknown as number
-        console.log("categoria: ", categories[index])
 
-        data.append('name',name)
-        data.append('detail',details)
-        data.append('price',price)
-        data.append('category',categories[index])
+        data.append('name',values.name)
+        data.append('detail',values.details)
+        data.append('price',values.price)
+        data.append('category',values.category)
 
         images.forEach((image, index)=>{
             data.append('image',{
@@ -49,9 +49,6 @@ export default function ProductRegister(){
         console.log(data)
 
         setImages([])
-        setPrice('')
-        setName('')
-        setDetails('')
     }
 
     return(
@@ -64,57 +61,112 @@ export default function ProductRegister(){
             </View>
 
             <View style={styles.FormView}>
-                <ScrollView style={{width: Dimensions.get('screen').width}} contentContainerStyle={{
-                    alignItems: 'center',
-                    paddingBottom: 100
-                }} >
-                    <Input value={name} setData={setName} name="Nome: " placeholder="" />
-                    <Text style={styles.InputText}>Foto:</Text>
-                    <View style={{flexDirection: 'row',width:253}}>
-                        {images.map(image=> (
-                            <Image key={image} source={{uri: image}} style={styles.UploadedImage} />
-                        ))}
-                    {!images.length && (
-                        <RectButton onPress={()=> handleSelectImages(images,setImages)} style={styles.UploadButton}>
-                            <Feather name="plus" size={24} color='#FFF'/>
-                        </RectButton>
+                <Formik 
+                initialValues={{name:'', details:'', price:'', category:''}}
+                onSubmit={values => handleSubmitMultipartForm(values)}
+                validationSchema={ProductSchema}
+                >
+                    {({
+                        handleChange,
+                        handleReset,
+                        handleSubmit,
+                        errors,
+                        values
+                    })=>(
+                        <ScrollView style={{width: Dimensions.get('screen').width}} contentContainerStyle={{
+                            alignItems: 'center',
+                            paddingBottom: 100
+                        }} >
+
+                            <Input 
+                            value={values.name} 
+                            setData={handleChange('name')} 
+                            name="Nome: " 
+                            placeholder="" 
+                            />
+
+                            {errors.details && (
+                                <Text style={{color:'red'}}>{errors.name}</Text>
+                            )}
+
+                            <Text style={styles.InputText}>Foto:</Text>
+
+                            <View style={{flexDirection: 'row',width:253}}>
+                                {images.map(image=> (
+                                    <Image key={image} source={{uri: image}} style={styles.UploadedImage} />
+                                ))}
+                            {!images.length && (
+                                <RectButton 
+                                onPress={()=> handleSelectImages(images,setImages)} 
+                                style={styles.UploadButton}>
+                                    <Feather name="plus" size={24} color='#FFF'/>
+                                </RectButton>
+                            )}
+                            </View>
+        
+        
+                            <Input 
+                            value={values.details} 
+                            setData={handleChange('details')} 
+                            name="Detalhes: " 
+                            placeholder="" 
+                            options={{
+                                useAsTextArea: true,
+                                customStyle:{
+                                    height:115
+                                },
+                                TextInputStyle:{
+                                    height:115,
+                                    alignItems: 'flex-start'
+                                }
+                            }} />
+
+                            {errors.details && (
+                                <Text style={{color:'red'}}>{errors.details}</Text>
+                            )}
+
+                            <Text style={styles.InputText}>Categoria: </Text>
+
+                            <View style={styles.pickerView}>
+                                <Picker 
+                                    selectedValue={values.category} 
+                                    onValueChange={handleChange('category')} 
+                                    style={[styles.CategoryInput,{
+                                        fontFamily: 'Poppins_300Light'
+                                    }]}>
+                                    <Picker.Item label="Selecionar" value="" />
+                                        <Picker.Item label="Bolos" value="Bolos" />
+                                        <Picker.Item label="Tortas" value="Tortas" />
+                                        <Picker.Item label="Salgados" value="Salgados" />
+                                        <Picker.Item label="Biscoitos" value="Biscoitos" />
+                                        <Picker.Item label="Doces" value="Doces" />
+                                        <Picker.Item label="Outros" value="Outros" />
+                                </Picker>
+                                <Image style={styles.selectImg} source={selectImg} />
+                            </View>
+
+                            {errors.category && (
+                                <Text style={{color:'red'}}>{errors.category}</Text>
+                            )}
+
+                            <Input 
+                            value={values.price} 
+                            setData={handleChange('price')} 
+                            name="Preço: " 
+                            placeholder="" 
+                            />
+
+                            {errors.price && (
+                                <Text style={{color:'red'}}>{errors.price}</Text>
+                            )}
+
+                            <RectButton onPress={handleSubmit as ()=>void} style={styles.SubmitButton}>
+                                <Text style={styles.SubmitButtonText}>Finalizar cadastro</Text>
+                            </RectButton>
+
+                        </ScrollView>
                     )}
-                    </View>
-
-
-                    <Input value={details} setData={setDetails} name="Detalhes: " placeholder="" options={{
-                        useAsTextArea: true,
-                        customStyle:{
-                            height:115
-                        },
-                        TextInputStyle:{
-                            height:115,
-                            alignItems: 'flex-start'
-                        }
-                    }} />
-                    <Text style={styles.InputText}>Categoria: </Text>
-                    <View style={styles.pickerView}>
-                        <Picker 
-                            selectedValue={value} 
-                            onValueChange={value => setValue((value as string))} 
-                            style={[styles.CategoryInput,{
-                                fontFamily: 'Poppins_300Light'
-                            }]}>
-                            <Picker.Item label="Selecionar" value="0" />
-                                <Picker.Item label="Bolos" value="1" />
-                                <Picker.Item label="Tortas" value="2" />
-                                <Picker.Item label="Salgados" value="3" />
-                                <Picker.Item label="Biscoitos" value="4" />
-                                <Picker.Item label="Doces" value="5" />
-                                <Picker.Item label="Outros" value="6" />
-                        </Picker>
-                        <Image style={styles.selectImg} source={selectImg} />
-                    </View>
-                    <Input value={price} setData={setPrice} name="Preço: " placeholder="" />
-                    <RectButton onPress={handleSubmitMultipartForm} style={styles.SubmitButton}>
-                        <Text style={styles.SubmitButtonText}>Finalizar cadastro</Text>
-                    </RectButton>
-                </ScrollView>
+                </Formik>
             </View>
         </View>
     )
