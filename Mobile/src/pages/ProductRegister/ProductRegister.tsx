@@ -13,12 +13,14 @@ import handleSelectImages from '../../utils/ImageUpload'
 import api from '../../services/api'
 import { Formik } from 'formik'
 import { ProductSchema } from '../../Schema/ProductSchema'
+import { ImageUpload } from '../../utils/PickerImage'
 
 type ProductData = {
     name: string,
     details: string,
     price: string,
-    category: string
+    category: string,
+    image: string
 }
 
 export default function ProductRegister(){
@@ -32,15 +34,20 @@ export default function ProductRegister(){
         data.append('detail',values.details)
         data.append('price',values.price)
         data.append('category',values.category)
+        data.append('image', {
+            name:`image_${values.name}.jpg`,
+                type:'image/jpg',
+                uri:values.image,
+        } as any)
 
-        images.forEach((image, index)=>{
+        /*images.forEach((image, index)=>{
             data.append('image',{
                 name:`image_${index}.jpg`,
                 type:'image/jpg',
                 uri:image,
 
             } as any )
-        })
+        })*/
 
         await api.post('products/create',data).then(response =>{
             console.log(response)
@@ -48,7 +55,6 @@ export default function ProductRegister(){
         navigation.navigate('ViewYourProducts')
         console.log(data)
 
-        setImages([])
     }
 
     return(
@@ -62,7 +68,7 @@ export default function ProductRegister(){
 
             <View style={styles.FormView}>
                 <Formik 
-                initialValues={{name:'', details:'', price:'', category:''}}
+                initialValues={{name:'', details:'', price:'', category:'', image:''}}
                 onSubmit={values => handleSubmitMultipartForm(values)}
                 validationSchema={ProductSchema}
                 >
@@ -92,18 +98,18 @@ export default function ProductRegister(){
                             <Text style={styles.InputText}>Foto:</Text>
 
                             <View style={{flexDirection: 'row',width:253}}>
-                                {images.map(image=> (
-                                    <Image key={image} source={{uri: image}} style={styles.UploadedImage} />
-                                ))}
-                            {!images.length && (
+                                <Image key={values.image} source={{uri: values.image}} style={styles.UploadedImage} />
+                            {values.image == '' && (
                                 <RectButton 
-                                onPress={()=> handleSelectImages(images,setImages)} 
+                                onPress={()=> ImageUpload(handleChange('image'))} 
                                 style={styles.UploadButton}>
                                     <Feather name="plus" size={24} color='#FFF'/>
                                 </RectButton>
                             )}
                             </View>
-        
+                                {errors.image && (
+                                    <Text style={{color:'red'}}>{errors.image}</Text>
+                                )}
         
                             <Input 
                             value={values.details} 
