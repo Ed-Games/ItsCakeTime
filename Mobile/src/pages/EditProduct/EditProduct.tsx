@@ -1,54 +1,58 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Alert, Dimensions, Image, ImageBackground, Text, View } from 'react-native'
 
 import styles from './styles'
 import Waves from '../../images/waves.png'
 import Header from '../../components/Header/Header'
 import Input from '../../components/Input/Input'
-import { Picker } from '@react-native-community/picker'
 import selectImg from '../../images/select.png'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
-import handleSelectImages from '../../utils/ImageUpload'
 import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
 import AsyncStorage from '@react-native-community/async-storage'
-import ReactPicker from '../../components/ReactPicker/ReactPicker'
 import ModalView from '../../components/Modal/ModalView'
 import { ModalButton} from '../../components/Modal/ModalButton'
 import { ModalText } from '../../components/Modal/ModalText'
+import { Formik, FormikProps, FormikValues } from 'formik'
+import { Picker } from '@react-native-picker/picker'
+import { ImageUpload } from '../../utils/PickerImage'
+import {ProductSchema} from '../../Schema/EditProductSchema'
+import AppLoading from 'expo-app-loading'
 
 export interface RouteProps{
     productId: number
 }
 
-export interface ProductDataProps{
-    category: string,
-    detail: string,
-    email: string,
-    image: string,  
+
+type Product = {
     name: string,
+    detail: string,
     price: string,
-    userName?: string,
+    image: string,
+    category:string
 }
 
 export default function EditProduct(){
-    const [images,setImages] = useState<string[]>([])
-    const [productdata,setProductdata] = useState<ProductDataProps>()
-    const [value, setValue] = useState<number>()
-    const [initialCategory, setInitialCategory] = useState<number>()
-    const [changeImage, setChangeImage] = useState(0)
-    const [name, setName] = useState<string>('')
-    const [detail, setDetail] = useState<string>('')
-    const [price, setPrice] = useState<string>('')
-    const categories = ["Não categorizado","Bolos","Tortas","Salgados","Biscoitos", "Doces", "Outros"]
+    const [image,setImage] = useState(true)
+    const [productdata,setProductdata] = useState<Product>()
     const [modalVisible, setModalVisible] = useState<boolean>(false)
-    
+    const categories = ['Bolos', 'Tortas', 'Salgados', 'Biscoitos', 'Doces', 'Outros']
+    const formikRef = useRef<FormikProps<FormikValues>>(null)
     const navigation = useNavigation()
 
     function goBack(){
         navigation.goBack()
     }
+
+    /*function toggleImage(){
+        setImage(!image)
+        console.log(image)
+        if(image==false){
+            formikRef.current?.setFieldValue('image','',false)
+        }
+
+    }*/
 
     async function deleteProduct(){
         setModalVisible(false)
@@ -62,73 +66,63 @@ export default function EditProduct(){
         }
     }
 
-    function handleSetcategory(category:string){
-        setInitialCategory(categories.indexOf(category))
-        console.log("Category: ",categories.indexOf(category))
-        console.log("VALUE: ",value)
-    }
-
     useEffect(()=>{
-        const unsubricribed =navigation.addListener('focus',()=>{
-            setImages([])
+        navigation.addListener('focus',()=>{
             GetProductData()
-            setChangeImage(0)
         })
     }, [navigation])
+
+    useEffect(()=>{
+        console.log(image)
+        if(image == false){
+            formikRef.current?.setFieldValue('image','',false)
+        }
+    },[image])
 
 
     async function GetProductData(){
         const id = await AsyncStorage.getItem('@Key:tempId')
         if(id){
             await api.get(`products/${JSON.parse(id)}`).then(async response => {
-                setProductdata(response.data)
-                handleSetcategory(response.data.category)
-    
+                setProductdata(await response.data)
+                console.log("data: ",response.data)
             })
         }
 
     }
 
-    async function handleUpdateProduct(){
+    async function handleUpdateProduct(values:Product){
         const id = await AsyncStorage.getItem('@Key:tempId')
         if(id){
 
             const data = new FormData()
 
-            if(name!='') data.append('name', name)
-            if(price!='') data.append('price', price)
-            if(detail!='') data.append('detail', detail)
+            data.append('name', values.name)
+            data.append('price', values.price as unknown as string)
+            data.append('detail', values.detail)
 
-            if(value){
-                data.append('category', categories[value as any])
-            }
+            data.append('image',{
+                name:`image_${values.name}.jpg`,
+                type:'image/jpg',
+                uri:values.image,
 
-            images.forEach((image, index)=>{
-                data.append('image',{
-                    name:`image_${index}.jpg`,
-                    type:'image/jpg',
-                    uri:image,
-    
-                } as any )
-            })
-
-            setImages([])
+            } as any )
             
-
             console.log("olha os dados aqui: ",data)
 
             await api.put(`products/update/${id}`,data).then(response => {
                 console.log(response.data)
+                goBack()
             }).catch(error => {
                 if(error.message=="undefined is not an object (evaluating 'error.response.includes')") return
                 console.log(error)
                 Alert.alert('Ops! um erro ocorreu, tente novamente mais tarde')
             })
 
-            goBack()
         }
 
     }
+    
 
     return(
         
@@ -140,74 +134,139 @@ export default function EditProduct(){
                 </ImageBackground>
             </View>
 
-            <ScrollView contentContainerStyle={{alignItems: 'center', width:Dimensions.get('screen').width}}>
-                <Input name="Nome: " defaultValue={productdata?.name} setData={setName} />
-
-                <Text style={styles.InputText}>Fotos</Text>
-                        <View style={{flexDirection: 'row',width:253}}>
-                            {images.map(image=> (
-                                <Image key={image} source={{uri: image}} style={styles.UploadedImage} />
-                            ))}
-                        {images.length == 0 && (
-                            <>
-                                {changeImage == 0?(
-                                    <>
-                                    <Image source={{uri:`http://10.0.0.105:3333/${productdata?.image}`}} style={styles.EditUploadedImage} />
-                                    <RectButton onPress={()=> setChangeImage(1)} style={styles.CloseButton}>
-                                        <Feather name="x" size={18} color='#FFF'/>
-                                    </RectButton>
-                                    </>
-                                ):(
-                                    <RectButton onPress={()=> handleSelectImages(images,setImages)} style={styles.UploadButton}>
-                                        <Feather name="plus" size={18} color='#FFF'/>
-                                    </RectButton>
-                                )}
-                            </>
+            {productdata?(
+                <Formik
+                innerRef={formikRef}
+                initialValues={{name:productdata.name, detail:productdata.detail, price: productdata.price, category:productdata.category, image:`http://10.0.0.105:3333/${productdata.image}`}}
+                onSubmit={values => handleUpdateProduct(values as Product)}
+                validationSchema={ProductSchema}
+                >
+                    {({
+                        handleSubmit,
+                        handleChange,
+                        errors,
+                        values
+                    })=>(
+                    <>
+                        <ScrollView contentContainerStyle={{alignItems: 'center', width:Dimensions.get('screen').width}}>
+                        
+                        <Input 
+                        name="Nome: " 
+                        defaultValue={productdata?.name}
+                        value={values.name} 
+                        setData={handleChange('name')} 
+                        />
+    
+                        {errors.name && (
+                            <Text style={{color:'red'}}>{errors.name}</Text>
                         )}
+    
+                        <Text style={styles.InputText}>Imagem:</Text>
+    
+                        <View style={{flexDirection: 'row', width:'70%'}}>
+                                {image? 
+                                (
+                                <View style={{backgroundColor:'white', height:75, width:75, marginBottom:20}}>
+                                    {console.log("valores aqui:", values.image)}
+                                    <Image key={values.image} source={{ uri: values.image}} style={styles.UploadedImage} />
+                                    <RectButton onPress={()=> setImage(false)} style={styles.CloseButton}>
+                                        <Feather name="x" size={18} color='#FFF' />
+                                    </RectButton>
+                                </View>
+                                ): (
+                                    <RectButton onPress={async()=> {
+                                        const {cancelled} = await ImageUpload(handleChange('image')) 
+                                        setImage(!cancelled)
+                                    }} 
+                                    style={styles.UploadButton}>
+                                        <Feather name="plus" size={24} color='#FFF'/>
+                                    </RectButton>   
+                                )}
                         </View>
-
-                <Input options={{
-                    useAsTextArea: true,
-                    customStyle: {height:115}
-                }} name="Detalhes: " defaultValue={productdata?.detail} setData={setDetail} />
-
-                <Text style={styles.InputText}>Categoria: </Text>
-                        <View style={styles.pickerView}>
-                            { value==0 || value==undefined || value==null?(
-                                <ReactPicker value={initialCategory as number} setValue={setValue} />
-                            ):(
-                                <ReactPicker value={value as number} setValue={setValue} />
-                            )}
-                            {/* PRECISO RESOLVER ISSO COM URGÊNCIA!!!  */}
-                            <Image style={styles.selectImg} source={selectImg} />
+    
+                        {errors.image && (
+                            <Text style={{color:'red'}}>{errors.image}</Text>
+                        )}
+    
+                        <Input 
+                        options={{
+                            useAsTextArea: true,
+                            customStyle: {height:115}
+                        }} 
+                        name="Detalhes: " 
+                        defaultValue={productdata?.detail} 
+                        setData={handleChange('detail')} />
+    
+                        {errors.detail && (
+                            <Text style={{color:'red'}}>{errors.detail}</Text>
+                        )}
+    
+                        <Text style={styles.InputText}>Categoria: </Text>
+                                <View style={styles.pickerView}>
+                                    <Picker 
+                                        selectedValue={values.category} 
+                                        onValueChange={handleChange('category')} 
+                                        style={[styles.CategoryInput,{
+                                            fontFamily: 'Poppins_300Light'
+                                        }]}>
+                                        <Picker.Item enabled={false} label={productdata?.category? productdata.category : ''} value={productdata?.category} />
+                                        {categories.map((category, i) => {
+                                            if(category!= productdata?.category){
+                                                return (
+                                                    <Picker.Item key={category+i} label={category} value={category} />
+                                                )
+                                            }
+                                        })}
+                                        
+                                    </Picker>
+                                    <Image style={styles.selectImg} source={selectImg} />
+                                </View>
+                        {errors.category && (
+                            <Text style={{color:'red'}}>{errors.category}</Text>
+                        )}
+    
+                        <Input 
+                        name="Preço: " 
+                        defaultValue={JSON.stringify(productdata?.price)} 
+                        setData={handleChange('price')} 
+                        />
+    
+                        {errors.price && (
+                            <Text style={{color:'red'}}>{errors.price}</Text>
+                        )}
+    
+                    </ScrollView>
+    
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                            <RectButton onPress={handleSubmit as ()=>void} style={[styles.actionButton,{backgroundColor:'#2BAF80'}]}>
+                                <Text style={styles.actionButtonText}>Salvar</Text>
+                            </RectButton>
+                            <RectButton onPress={goBack} style={[styles.actionButton,{backgroundColor:'#455A64'}]}>
+                                <Text style={styles.actionButtonText}>Cancelar</Text>
+                            </RectButton>
+                            <RectButton onPress={()=>setModalVisible(true)} style={[styles.actionButton,{backgroundColor:'#FF0909'}]}>
+                                <Text style={styles.actionButtonText}>Deletar</Text>
+                            </RectButton>
                         </View>
-                <Input name="Preço: " defaultValue={JSON.stringify(productdata?.price)} setData={setPrice} />
-            </ScrollView>
+                    </>
+                    )}
+                </Formik>
+            ):(
+                <AppLoading />
+            )}
 
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <RectButton onPress={handleUpdateProduct} style={[styles.actionButton,{backgroundColor:'#2BAF80'}]}>
-                    <Text style={styles.actionButtonText}>Salvar</Text>
-                </RectButton>
-                <RectButton onPress={goBack} style={[styles.actionButton,{backgroundColor:'#455A64'}]}>
-                    <Text style={styles.actionButtonText}>Cancelar</Text>
-                </RectButton>
-                <RectButton onPress={()=>setModalVisible(true)} style={[styles.actionButton,{backgroundColor:'#FF0909'}]}>
-                    <Text style={styles.actionButtonText}>Deletar</Text>
-                </RectButton>
-            </View>
+            
             <ModalView title="Atenção" isVisible={modalVisible} setStateFunction={setModalVisible}>
-                <>
-                    <ModalText>Você tem certeza que deseja excluir esse produto?</ModalText>
-                    <View style={{flexDirection:"row",justifyContent:"space-between", padding:10}}>
-                        <ModalButton onPress={deleteProduct}>
-                            <ModalText>Sim</ModalText>
-                        </ModalButton>
+                <ModalText>Você tem certeza que deseja excluir esse produto?</ModalText>
+                <View style={{flexDirection:"row",justifyContent:"space-between", padding:10}}>
+                    <ModalButton onPress={deleteProduct}>
+                        <ModalText>Sim</ModalText>
+                    </ModalButton>
 
-                        <ModalButton onPress={()=>setModalVisible(false)}>
-                            <ModalText>Não</ModalText>
-                        </ModalButton>
-                    </View>
-                </>
+                    <ModalButton onPress={()=>setModalVisible(false)}>
+                        <ModalText>Não</ModalText>
+                    </ModalButton>
+                </View>
             </ModalView>
             
         </View>
