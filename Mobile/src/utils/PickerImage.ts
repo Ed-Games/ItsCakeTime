@@ -19,6 +19,8 @@ export async function ImageUpload(handleChange: (value: string)=>void){
 
     console.log(result)
 
-    !result.cancelled && handleChange(result.uri)
+    !result.cancelled? handleChange(result.uri) : handleChange('')
+
+    return result
     
 }
