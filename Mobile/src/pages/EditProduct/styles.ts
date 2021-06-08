@@ -50,8 +50,8 @@ const styles= StyleSheet.create({
 
     UploadButton:{
         backgroundColor: '#E6E6E6',
-        width:45,
-        height:45,
+        width:75,
+        height:75,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius:10,
@@ -65,12 +65,12 @@ const styles= StyleSheet.create({
         justifyContent: 'center',
         borderRadius:5,
         position: 'absolute',
-        marginLeft: 80
+        alignSelf:'flex-end'
     },
 
     UploadedImage:{
-        width:45,
-        height:45,
+        width:75,
+        height:75,
         borderRadius:10,
         marginBottom: 10,
         marginRight:5, 
