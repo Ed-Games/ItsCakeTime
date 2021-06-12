@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Alert, Dimensions, Image, ImageBackground, Text, View } from 'react-native'
+import { Alert, Dimensions, Image, ImageBackground, PickerProps, Text, View } from 'react-native'
 
 import styles from './styles'
 import Waves from '../../images/waves.png'
@@ -45,21 +45,11 @@ export default function EditProduct(){
         navigation.goBack()
     }
 
-    /*function toggleImage(){
-        setImage(!image)
-        console.log(image)
-        if(image==false){
-            formikRef.current?.setFieldValue('image','',false)
-        }
-
-    }*/
-
     async function deleteProduct(){
         setModalVisible(false)
         const id = await AsyncStorage.getItem('@Key:tempId')
         if(id){
             await api.delete(`products/delete/${JSON.parse(id)}`).then(async response => {
-                console.log(response.data)
                 goBack()
     
             })
@@ -73,7 +63,6 @@ export default function EditProduct(){
     }, [navigation])
 
     useEffect(()=>{
-        console.log(image)
         if(image == false){
             formikRef.current?.setFieldValue('image','',false)
         }
@@ -85,13 +74,14 @@ export default function EditProduct(){
         if(id){
             await api.get(`products/${JSON.parse(id)}`).then(async response => {
                 setProductdata(await response.data)
-                console.log("data: ",response.data)
             })
         }
 
     }
 
     async function handleUpdateProduct(values:Product){
+
+         console.log(values)
         const id = await AsyncStorage.getItem('@Key:tempId')
         if(id){
 
@@ -100,6 +90,7 @@ export default function EditProduct(){
             data.append('name', values.name)
             data.append('price', values.price as unknown as string)
             data.append('detail', values.detail)
+            data.append('category', values.category)
 
             data.append('image',{
                 name:`image_${values.name}.jpg`,
@@ -108,10 +99,8 @@ export default function EditProduct(){
 
             } as any )
             
-            console.log("olha os dados aqui: ",data)
 
             await api.put(`products/update/${id}`,data).then(response => {
-                console.log(response.data)
                 goBack()
             }).catch(error => {
                 if(error.message=="undefined is not an object (evaluating 'error.response.includes')") return
@@ -136,6 +125,7 @@ export default function EditProduct(){
 
             {productdata?(
                 <Formik
+                enableReinitialize={true}
                 innerRef={formikRef}
                 initialValues={{name:productdata.name, detail:productdata.detail, price: productdata.price, category:productdata.category, image:`http://10.0.0.105:3333/${productdata.image}`}}
                 onSubmit={values => handleUpdateProduct(values as Product)}
@@ -153,7 +143,6 @@ export default function EditProduct(){
                         <Input 
                         name="Nome: " 
                         defaultValue={productdata?.name}
-                        value={values.name} 
                         setData={handleChange('name')} 
                         />
     
@@ -167,7 +156,6 @@ export default function EditProduct(){
                                 {image? 
                                 (
                                 <View style={{backgroundColor:'white', height:75, width:75, marginBottom:20}}>
-                                    {console.log("valores aqui:", values.image)}
                                     <Image key={values.image} source={{ uri: values.image}} style={styles.UploadedImage} />
                                     <RectButton onPress={()=> setImage(false)} style={styles.CloseButton}>
                                         <Feather name="x" size={18} color='#FFF' />
@@ -204,12 +192,9 @@ export default function EditProduct(){
                         <Text style={styles.InputText}>Categoria: </Text>
                                 <View style={styles.pickerView}>
                                     <Picker 
-                                        selectedValue={values.category} 
                                         onValueChange={handleChange('category')} 
-                                        style={[styles.CategoryInput,{
-                                            fontFamily: 'Poppins_300Light'
-                                        }]}>
-                                        <Picker.Item enabled={false} label={productdata?.category? productdata.category : ''} value={productdata?.category} />
+                                        style={styles.CategoryInput}>
+                                        <Picker.Item label={productdata.category} value={productdata?.category} />
                                         {categories.map((category, i) => {
                                             if(category!= productdata?.category){
                                                 return (
