@@ -36,18 +36,9 @@ export default function ProductRegister(){
         data.append('category',values.category)
         data.append('image', {
             name:`image_${values.name}.jpg`,
-                type:'image/jpg',
-                uri:values.image,
+            type:'image/jpg',
+            uri:values.image,
         } as any)
-
-        /*images.forEach((image, index)=>{
-            data.append('image',{
-                name:`image_${index}.jpg`,
-                type:'image/jpg',
-                uri:image,
-
-            } as any )
-        })*/
 
         await api.post('products/create',data).then(response =>{
             console.log(response)
