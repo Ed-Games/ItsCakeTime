@@ -3,7 +3,7 @@ exports.up = function(Knex){
         table.increments().primary();
         table.string('name').notNullable();
         table.string('detail').notNullable();
-        table.string('category').defaultTo('Não categorizado');
+        table.string('category').notNullable();
         table.string('image').notNullable();
         table.decimal('price').notNullable();
         table.decimal('user_id').notNullable();
