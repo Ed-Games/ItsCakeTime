@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const {generateAccessToken} = require('../services/authorization')
 const sendMail = require('../services/nodeMailerConfig')
 const crypto = require('crypto')
+const ip = require('ip')
 
 module.exports = {
     async index(request, response){
@@ -60,8 +61,8 @@ module.exports = {
 
     async create(request,response){
         try {
-            const {userName, email, password, whatsapp} = request.body
-
+            const {userName, email, password, whatsapp, image} = request.body
+ 
             const trx = await connection.transaction()
 
             const hasUserWithTheseCredentials = await trx('user')
@@ -86,7 +87,8 @@ module.exports = {
                 const user_id = id
                 await trx('profile').insert({
                     user_id,
-                    whatsapp
+                    whatsapp,
+                    image: image? image : 'default.png'
                 })
 
                 await trx.commit()
