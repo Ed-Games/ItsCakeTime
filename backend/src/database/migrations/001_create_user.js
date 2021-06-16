@@ -5,7 +5,7 @@ exports.up = function(Knex){
         table.string('email').notNullable();
         table.string('password').notNullable();
         table.string('refreshToken');
-        table.string('requestPasswdToken').defaultTo(null);
+        table.string('requestPasswdToken');
         table.date('expirationDate')
         table.unique(['userName','email','refreshToken', 'requestPasswdToken']);
 
