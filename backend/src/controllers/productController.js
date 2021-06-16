@@ -1,4 +1,5 @@
-const connection = require('../database/connection');
+const connection = require('../database/connection')
+const ip = require('ip')
 
 
 module.exports = {
@@ -19,7 +20,14 @@ module.exports = {
             'profile.whatsapp'
             )
 
-            return response.json(products)
+            const serializedProducts = products.map(product=>{
+                return {
+                    ...product,
+                    imageUrl: `http://${ip.address()}:3333/${product.image}`
+                }
+            })
+
+            return response.json(serializedProducts)
         } catch (error) {
             console.log(error)
             return response.sendStatus(500)
@@ -40,6 +48,8 @@ module.exports = {
                 image: request.file.path,
                 name
             })
+
+            console.log(request.file)
 
             return response.status(201).json("product created");
         } catch (error) {
@@ -62,8 +72,14 @@ module.exports = {
         'profile.whatsapp',
         'user.email',
         'user.userName',
-        ).where('product.id','=',id)
-        return response.json(product[0])
+        ).where('product.id','=',id).first()
+
+        serializedProduct = {
+            ...product,
+            imageUrl: `http://${ip.address()}:3333/${product.image}`
+        }
+
+        return response.json(serializedProduct)
        } catch (error) {
            console.log(error)
            return response.sendStatus(404)
@@ -92,7 +108,15 @@ module.exports = {
                 )
             .where("product.price","=",price)
             .andWhere("product.category","=",category)
-            return response.json(products)
+
+            const serializedProducts = products.map(product=>{
+                return {
+                    ...product,
+                    imageUrl: `http://${ip.address()}:3333/${product.image}`
+                }
+            })
+
+            return response.json(serializedProducts)
         } catch (error) {
             console.log(error)
             return response.sendStatus(400)
