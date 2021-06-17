@@ -1,7 +1,5 @@
-const { request, response } = require('express')
 const connection = require('../database/connection')
-const { use } = require('../routes')
-const { GetRequestUser } = require('../services/authorization')
+const ip = require('ip')
 
 module.exports = {
     async delete(request,response){
@@ -28,7 +26,15 @@ module.exports = {
                 'profile.specialty',
                 'user.userName'
                 )
-            return response.status(200).json(profiles)
+
+                const serializedProfiles = profiles.map(profile => {
+                    return {
+                        ...profile,
+                        imageUrl: `http://${ip.address()}:3333/uploads/${profile.image}`
+                    }
+                })
+
+            return response.status(200).json(serializedProfiles)
         } catch (error) {
             console.log(error)
             return response.sendStatus(500)
@@ -39,9 +45,11 @@ module.exports = {
         
         try {
             const userName = request.user.name
-            const id = await connection('user')
+            const {id} = await connection('user')
             .select('id')
-            .where('user.userName','=',userName)
+            .where('user.userName','=',userName).first()
+
+            console.log(id)
 
             const profile = await connection('profile').join('user','user.id','profile.user_id')
             .select('profile.id',
@@ -53,13 +61,13 @@ module.exports = {
             'user.userName',
             'user.email',
             'user.userName')
-            .where('profile.user_id','=',id[0]['id'])
+            .where('profile.user_id','=',id).first()
 
             console.log(profile.image)
 
             const serealizedProfile = {
-                ...profile[0],
-                imageUrl: `http://10.0.0.105:3333/uploads/${profile[0]['image']}`
+                ...profile,
+                imageUrl: `http://${ip.address()}:3333/uploads/${profile.image}`
             }
 
             return response.json({profile:serealizedProfile})
@@ -91,7 +99,7 @@ module.exports = {
 
             const serializedProfile = {
                 ...profile,
-                imageUrl: `http://10.0.0.105:3333/uploads/${profile.image}`
+                imageUrl: `http://${ip.address()}:3333/uploads/${profile.image}`
             }
 
             return response.json(serializedProfile).status(200)
@@ -130,11 +138,18 @@ module.exports = {
     async search(request,response){
        try {
             const {search} = request.query
-            const users = await connection('profile')
+            const profiles = await connection('profile')
             .join('user','user.id','profile.user_id')
             .select('user.userName','profile.image','profile.specialty','profile.id').where('user.userName','=',search)
 
-            return response.json(users)
+            const serializedProfiles = profiles.map(profile => {
+                return {
+                    ...profile,
+                    imageUrl: `http://${ip.address()}:3333/uploads/${profile.image}`
+                }
+            })
+            
+            return response.json(serializedProfiles)
        } catch (error) {
            console.log(error)
            return response.sendStatus(404)

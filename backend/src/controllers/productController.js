@@ -195,8 +195,15 @@ module.exports = {
         'product.price',
         'product.id'
         ).where('user.userName','=', user)
+
+        const serializedProducts = products.map(product=>{
+            return {
+                ...product,
+                imageUrl: `http://${ip.address()}:3333/${product.image}`
+            }
+        })
     
-        return response.json(products)
+        return response.json(serializedProducts)
        } catch (error) {
            console.log(error)
            return response.sendStatus(500)
@@ -217,7 +224,14 @@ module.exports = {
             'product.id'
             ).where('user.id','=', userId)
 
-            return response.json(products)
+            const serializedProducts = products.map(product=>{
+                return {
+                    ...product,
+                    imageUrl: `http://${ip.address()}:3333/${product.image}`
+                }
+            })
+
+            return response.json(serializedProducts)
 
         } catch (error) {
             console.log(error)
