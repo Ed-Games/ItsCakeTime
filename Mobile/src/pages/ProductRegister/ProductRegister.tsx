@@ -30,12 +30,14 @@ export default function ProductRegister(){
     async function handleSubmitMultipartForm(values: ProductData){
         const data = new FormData()
 
+        const name = values.name.replace(' ', '_')
+
         data.append('name',values.name)
         data.append('detail',values.details)
         data.append('price',values.price)
         data.append('category',values.category)
         data.append('image', {
-            name:`image_${values.name}.jpg`,
+            name:`image_${name}.jpg`,
             type:'image/jpg',
             uri:values.image,
         } as any)
