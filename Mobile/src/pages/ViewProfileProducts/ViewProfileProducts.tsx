@@ -4,7 +4,6 @@ import { Image, Text, View } from 'react-native'
 import avatar from '../../images/avatar.png'
 
 import styles from './styles'
-import {useNavigation} from '@react-navigation/native'
 import Header from '../../components/Header/Header'
 import api from '../../services/api'
 import ProductItem from '../../components/ProductItem/ProductItem'
@@ -16,7 +15,8 @@ interface RouteProps{
         params:{
             id:string,
             image:string,
-            name: string
+            name: string,
+            imageUrl: string
         }
     }
 }
@@ -32,7 +32,6 @@ export default function ViewProfileProducts({route}:RouteProps){
     }
     
     useEffect(() => {
-        console.log("ViewProfileProducts route : ",route.params.id)
         getProducts(route.params.id)
     }, [route.params.id])
 
@@ -40,7 +39,7 @@ export default function ViewProfileProducts({route}:RouteProps){
         <View style={styles.container}>
             <Header backgroundColor="#9553A0" />
             <View style={styles.header}>
-                <Image source={route.params.image? {uri:`http://10.0.0.105:3333/uploads/${route.params.image}`} : avatar} style={styles.avatar} />
+                <Image source={route.params.image? {uri:route.params.imageUrl} : avatar} style={styles.avatar} />
                 <Text style={styles.title}> Lista de produtos de {route.params.name}</Text>
             </View>
             <View style={styles.products}>

@@ -30,7 +30,7 @@ export default function Biography(props: BiographyProps){
 
     function handleNavigateToProductsList(){
         console.log("id: ",props.data.user_id)
-        navigation.navigate('ViewProfileProducts',{id: props.data.user_id, name: props.data.userName, image: props.data.image})
+        navigation.navigate('ViewProfileProducts',{id: props.data.user_id, name: props.data.userName, image: props.data.image, imageUrl: props.data.imageUrl})
     }
 
     function handleNavigateToUpdateProfile(){

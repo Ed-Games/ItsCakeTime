@@ -70,7 +70,7 @@ export default function Search(){
                     return(
                         <RectButton  key={profile.userName+profile.id} onPress={()=> handleNavigateToProfile(profile.id)}>
                         <View style={styles.AvatarView}>
-                            <Image style={styles.Avatar} source={{uri:`http://10.0.0.105:3333/uploads/${profile.image}`}} />
+                            <Image style={styles.Avatar} source={{uri: profile.imageUrl}} />
                             <View>
                                 <Text style={styles.avatarname}>{profile.userName}</Text>
                                 <View style={{flexDirection:'row',width:'95%'}}>

@@ -34,7 +34,7 @@ export default function ProductItem(props:ProductItemProps) {
     return(
         <View key={props.key} style={styles.ProductItem}>
             <View style={styles.FlexRowView}>
-                <Image style={styles.ProductImage} source={{uri:`http://10.0.0.105:3333/${props.Data.image}`}} />
+                <Image style={styles.ProductImage} source={{uri:props.Data.imageUrl}} />
                 <View style={styles.FlexColumnView}>
                     <Text style={styles.CategoryText}>{props.Data.category? `#${props.Data.category}`: '#sem categoria'}</Text>
                     <Text style={styles.ProductTitle}>{props.Data.name}</Text>

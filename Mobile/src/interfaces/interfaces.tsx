@@ -4,6 +4,7 @@ interface Product{
     detail: string,
     category: string,
     image: string,
+    imageUrl: string,
     price: number,
     user_id: number,
     whatsapp?: string,
