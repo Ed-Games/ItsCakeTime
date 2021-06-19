@@ -1,5 +1,6 @@
 const connection = require('../database/connection')
 const ip = require('ip')
+const { RemoveFile } = require('../../utils/removeFile')
 
 module.exports = {
     async delete(request,response){
@@ -115,15 +116,19 @@ module.exports = {
             const requestData = request.body
             const user = request.user.name
             
-            const profileUser = await connection('profile').join('user','user.id','profile.user_id').select('user.userName').where('profile.id','=',id)
+            const profile = await connection('profile').join('user','user.id','profile.user_id').select('user.userName','profile.image').where('profile.id','=',id).first()
             
-            console.log(profileUser[0]['userName'], user)
+            console.log(profile, user)
             
-            if(user!=profileUser[0]['userName']) return response.sendStatus(403)
+            if(user!=profile.userName) return response.sendStatus(403)
 
             if(request.file){
+                RemoveFile(profile.image)
                 const imageName = request.file.filename
-                await connection('profile').select('*').where("profile.id", "=", id).update(requestData).update({image:imageName})
+                await connection('profile').select('*').where("profile.id", "=", id).update({
+                    ...requestData,
+                    image: imageName
+                })
         } else {
                 await connection('profile').select('*').where("profile.id", "=", id).update(requestData)
         }
