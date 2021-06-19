@@ -41,11 +41,11 @@ export default function Biography(props: BiographyProps){
         <View style={styles.InfoView}>
             <Text style={styles.TopicText}>Biografia:</Text>
             <Text style={styles.ContentText}>
-            {props.data?.description}
+            {props.data?.description? props.data.description : 'Nenhuma Biografia adicionada'}
             </Text>
             <Text style={styles.TopicText}>Especialidades:</Text>
             <Text style={styles.ContentText}>
-            {props.data?.specialty} 
+            {props.data?.specialty? props.data.specialty : 'Nenhuma especialidade informada'} 
             </Text>
             <Text style={styles.TopicText}>Contato:</Text>
             <View style={styles.ButtonsView}>
