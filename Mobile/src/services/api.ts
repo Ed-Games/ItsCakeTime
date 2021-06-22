@@ -21,12 +21,16 @@ api.interceptors.response.use(
     },
 
     error => {
-        if(error.request._hasError=== true && error.response.includes('connect')){
+
+        console.log(error.message)
+
+        if(error.message == 'Network Error'){
             Alert.alert('Aviso', 
-            'Não foi possível conectar, sem internet',
+            'Desculpe, houve uma falha na conexão. Tente novamente mais tarde',
             [{text: 'Ok'}],
             {cancelable:false}
             )
+            
         }
 
         if(error.response.status===401|| error.response.status===403){
