@@ -30,9 +30,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
 
+    UpdateImageView: {
+        flexDirection: 'row',
+        alignItems:'center',
+        justifyContent:'center',
+        width: 180
+    },
+
+    buttonsView: {
+        width:50,
+        alignSelf:'flex-end',
+    },
+
     Avatar : {
-        marginLeft:101,
-        marginRight: 98,
         marginTop: 18,
         width:96,
         height:96,
@@ -54,14 +64,21 @@ const styles = StyleSheet.create({
 
     Savebutton:{
         backgroundColor: '#2BAF80',
-        width:55,
-        height:25,
-        borderRadius: 5,
+        width:50,
+        height:50,
+        borderRadius: 50,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 55,
-        marginRight:90,
-        marginLeft: -110,
+        marginBottom: 5
+    },
+    Cancelbutton:{
+        backgroundColor: '#FF0909',
+        width:50,
+        height:50,
+        borderRadius: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 5
     },
 
     SavebuttonText:{
