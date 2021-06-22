@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         width: 220,
         fontFamily: 'Poppins_300Light',
         fontSize: 15,
-        height: 120
+        height: 80
     },
 
     LinkButton:{
