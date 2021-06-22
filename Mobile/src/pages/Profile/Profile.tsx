@@ -74,12 +74,17 @@ export default function Profile({route}: ProfileProps) {
                 <ImageBackground style={styles.Waves} source={Waves}>
                     <View style={{flexDirection: 'row'}}>
                         {image?(
-                            <>
-                                <Image key={image + 'image'} source={{uri: image}} style={styles.Avatar}/>
-                                <RectButton key={image + 'button'} onPress={handleImageUpload} style={styles.Savebutton}>
-                                    <Text style={styles.SavebuttonText}>Salvar</Text>
-                                </RectButton>
-                            </>
+                                <View style={styles.UpdateImageView}> 
+                                    <Image key={image + 'image'} source={{uri: image}} style={styles.Avatar}/>
+                                    <View style={styles.buttonsView}>
+                                        <RectButton key={image + 'button-save'} onPress={handleImageUpload} style={styles.Savebutton}>
+                                            <Feather name="check-circle" size={24} color="white" />
+                                        </RectButton>
+                                        <RectButton key={image + 'button-cancel'} onPress={()=> setImage('')} style={styles.Cancelbutton}>
+                                            <Feather name="x" size={24} color="white" />
+                                        </RectButton>
+                                    </View>
+                                </View>
                         ):(
                             <>
                                 <Image source={{uri: data?.imageUrl}} style={styles.Avatar}/>
