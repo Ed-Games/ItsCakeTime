@@ -120,7 +120,7 @@ export default function Register(){
                             <Input 
                             setData={handleChange('whatsapp')} 
                             name="Whatsapp: " 
-                            placeholder="Seu numero de whatsapp" 
+                            placeholder="Nº de whatsapp (com DDD)" 
                             />
                             {errors.whatsapp &&
                                 <Text style={{ fontSize: 15, color: 'red', marginBottom:5 }}>{errors.whatsapp}</Text>
