@@ -21,6 +21,13 @@ const styles = StyleSheet.create({
 
     },
 
+    imageView : {
+        flexDirection: 'row-reverse', 
+        alignSelf:'center',
+        width: Dimensions.get('screen').width - 120,
+        justifyContent:'flex-end'
+    },
+
     SubmitButton: {
         width:  Dimensions.get('screen').width -120,
         height:40,
@@ -87,8 +94,6 @@ const styles = StyleSheet.create({
         height:45,
         borderRadius:10,
         marginBottom: 10,
-        marginRight:5, 
-        alignItems: 'flex-start'
     }
 })
 

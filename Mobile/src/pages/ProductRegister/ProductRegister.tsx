@@ -90,7 +90,7 @@ export default function ProductRegister(){
 
                             <Text style={styles.InputText}>Foto:</Text>
 
-                            <View style={{flexDirection: 'row',width:253}}>
+                            <View style={styles.imageView}>
                                 <Image key={values.image} source={{uri: values.image}} style={styles.UploadedImage} />
                             {values.image == '' && (
                                 <RectButton 
