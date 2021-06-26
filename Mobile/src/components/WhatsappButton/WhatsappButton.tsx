@@ -11,7 +11,12 @@ interface WhatsappProps{
 export default function WhatsappButton(props:WhatsappProps) {
 
     function sendWhatsapp(){
-        Linking.openURL(`whatsapp://send?phone=${props.number}`)
+        if(props.number && props.number.length <= 11){
+            Linking.openURL(`whatsapp://send?phone=+55${props.number}`)
+        } else{
+            Linking.openURL(`whatsapp://send?phone=${props.number}`)
+        }
+
     }
 
     return(
