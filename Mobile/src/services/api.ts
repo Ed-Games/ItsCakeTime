@@ -21,15 +21,14 @@ api.interceptors.response.use(
     },
 
     error => {
-
-        console.log(error.message)
-
         if(error.message == 'Network Error'){
-            Alert.alert('Aviso', 
+            /*Alert.alert('Aviso', 
             'Desculpe, houve uma falha na conexão. Tente novamente mais tarde',
             [{text: 'Ok'}],
             {cancelable:false}
-            )
+            )*/
+
+            Navigate('Landing',{message:'connection error'})
             
         }
 
