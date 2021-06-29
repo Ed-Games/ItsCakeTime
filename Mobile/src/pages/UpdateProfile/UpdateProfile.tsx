@@ -1,5 +1,5 @@
 import React from 'react'
-import {ImageBackground, Text, View } from 'react-native'
+import {ImageBackground, Text, View, KeyboardAvoidingView, Platform } from 'react-native'
 import styles from './styles'
 import Waves from '../../images/waves.png'
 import Header from '../../components/Header/Header'
@@ -62,7 +62,7 @@ export default function UpdateProfile(){
     }
 
     return(
-        <View style={styles.container}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
 
             <View style={{height:220, alignItems: 'center'}}>
                 <ImageBackground style={styles.waves} source={Waves}>
@@ -138,6 +138,6 @@ export default function UpdateProfile(){
                     </View>
                 )}
             </Formik>
-        </View>
+        </KeyboardAvoidingView>
     )
 }

@@ -6,12 +6,14 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
         alignItems: 'center',
+        justifyContent: 'space-evenly',
     },
     waves : {
         width: Dimensions.get('screen').width,
         flex: 1,
-        height: 210,
+        height: 160,
         alignItems: 'center',
+        zIndex: 5
     },
 
     FormView:{
@@ -19,6 +21,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('screen').width - 136,
         height: 536,
         alignItems: 'center',
+        bottom:30,
 
     },
     FormInputView:{
@@ -54,7 +57,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 10
+        marginTop: 20
     },
 
     submitButtonText:{

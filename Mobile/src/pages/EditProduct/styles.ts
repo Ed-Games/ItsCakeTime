@@ -4,8 +4,8 @@ const styles= StyleSheet.create({
     container : {
         flex: 1,
         alignItems: 'center',
-        backgroundColor: '#F5F5F5'
-
+        backgroundColor: '#F5F5F5',
+        justifyContent: 'space-evenly'
     },
 
     waves : {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dimensions, Image, ImageBackground, Text, View } from 'react-native'
+import { Dimensions, Image, ImageBackground, Text, View, KeyboardAvoidingView, Platform } from 'react-native'
 import styles from './styles'
 import Waves from '../../images/waves.png'
 import Header from '../../components/Header/Header'
@@ -9,7 +9,6 @@ import { Picker } from '@react-native-picker/picker'
 import selectImg from '../../images/select.png'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import handleSelectImages from '../../utils/ImageUpload'
 import api from '../../services/api'
 import { Formik } from 'formik'
 import { ProductSchema } from '../../Schema/ProductSchema'
@@ -51,7 +50,7 @@ export default function ProductRegister(){
     }
 
     return(
-        <View style={styles.container}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
 
             <View style={{height:230}}>
                 <ImageBackground style={styles.Waves} source={Waves}>
@@ -167,6 +166,6 @@ export default function ProductRegister(){
                     )}
                 </Formik>
             </View>
-        </View>
+        </KeyboardAvoidingView>
     )
 }

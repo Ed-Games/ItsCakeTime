@@ -5,11 +5,13 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F5F5F5',
         alignItems: 'center',
+        justifyContent: 'space-evenly',
+        marginTop: 30,
     },
     Waves : {
         width: Dimensions.get('screen').width,
         flex: 1,
-        height: 210,
+        height: 160,
         alignItems: 'center',
     },
 
@@ -18,6 +20,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('screen').width ,
         height: 536,
         alignItems: 'center',
+        paddingVertical: 30
 
     },
 

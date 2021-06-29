@@ -5,11 +5,13 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#F5F5F5',
         alignItems: 'center',
+        justifyContent:'space-evenly',
+        marginTop:30,
     },
 
     waves : {
         width: Dimensions.get('screen').width,
-        height:210,
+        height:240,
         alignItems: 'center',
     },
 
@@ -18,6 +20,8 @@ const styles = StyleSheet.create({
         width: Dimensions.get('screen').width,
         height: 536,
         alignItems: 'center',
+        paddingBottom: 30,
+        justifyContent:'center'
 
     },
 
@@ -27,7 +31,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#9553A0',
         borderRadius:10,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: 10
     },
 
     SubmitButtonText: {

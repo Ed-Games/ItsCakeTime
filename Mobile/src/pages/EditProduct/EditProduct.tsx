@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Alert, Dimensions, Image, ImageBackground, PickerProps, Text, View } from 'react-native'
+import { Alert, Dimensions, Image, ImageBackground,Platform, Text, View, KeyboardAvoidingView } from 'react-native'
 
 import styles from './styles'
 import Waves from '../../images/waves.png'
@@ -116,7 +116,7 @@ export default function EditProduct(){
 
     return(
         
-        <View style={styles.container}> 
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}> 
             <View style={{height:160}}>
                 <ImageBackground source={Waves} style={styles.waves}>
                     <View style={{marginBottom:60}} />
@@ -255,6 +255,6 @@ export default function EditProduct(){
                 </View>
             </ModalView>
             
-        </View>
+        </KeyboardAvoidingView>
     )
 }

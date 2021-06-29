@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { ImageBackground, Text, View, Dimensions, Alert, GestureResponderEvent } from 'react-native'
+import { ImageBackground, Text, View, Dimensions, Alert, GestureResponderEvent, KeyboardAvoidingView, Platform } from 'react-native'
 import Waves from '../../images/waves.png'
 import styles from './styles'
 import Header from '../../components/Header/Header'
@@ -51,7 +51,7 @@ export default function Register(){
     }
 
     return(
-        <View style={styles.container}>
+        <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}>
             <View style={{height:230}}>
                 <ImageBackground source={Waves} style={styles.waves}>
                     <Header title="Cadastre-se para começar a vender" />
@@ -154,6 +154,6 @@ export default function Register(){
                 </ModalButton>
             </ModalView>
             
-        </View>
+        </KeyboardAvoidingView>
     )
 }
