@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Image, ImageBackground, Text, View } from 'react-native'
 
 import styles from './styles'
+import notFoundImg from '../../images/NotFound.png'
 import Waves from '../../images/waves.png'
 import { RectButton, ScrollView, TextInput } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
@@ -65,26 +66,31 @@ export default function Search(){
                     </View>
                 </ImageBackground>
 
-                <ScrollView>
-                {profiles?.sort().map(profile => {
-                    return(
-                        <RectButton  key={profile.userName+profile.id} onPress={()=> handleNavigateToProfile(profile.id)}>
-                        <View style={styles.AvatarView}>
-                            <Image style={styles.Avatar} source={{uri: profile.imageUrl}} />
-                            <View>
-                                <Text style={styles.avatarname}>{profile.userName}</Text>
-                                <View style={{flexDirection:'row',width:'95%'}}>
-                                <Text style={styles.avatarSpecialtyBold}>Especialidades: <Text style={styles.avatarSpecialty}>{profile.specialty}</Text> </Text>
+                {profiles?.length !=0? (
+                    <ScrollView>
+                    {profiles?.sort().map(profile => {
+                        return(
+                            <RectButton  key={profile.userName+profile.id} onPress={()=> handleNavigateToProfile(profile.id)}>
+                            <View style={styles.AvatarView}>
+                                <Image style={styles.Avatar} source={{uri: profile.imageUrl}} />
+                                <View>
+                                    <Text style={styles.avatarname}>{profile.userName}</Text>
+                                    <View style={{flexDirection:'row',width:'95%'}}>
+                                    <Text style={styles.avatarSpecialtyBold}>Especialidades: <Text style={styles.avatarSpecialty}>{profile.specialty}</Text> </Text>
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                    </RectButton>
-                    )
-                })}
-                
-
-                
-                </ScrollView>
+                        </RectButton>
+                        )
+                    })}
+                    
+                    </ScrollView>
+                ): (
+                    <View style={{marginTop:50, alignSelf:'center'}}>
+                        <Image style={styles.notFoundImg} source={notFoundImg} />
+                        <Text style={styles.notFoundText}>Ops!... sem resultados para sua pesquisa</Text>
+                    </View>
+                )}
                 
             </View>
 

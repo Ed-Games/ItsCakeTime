@@ -106,10 +106,9 @@ const styles = StyleSheet.create({
     },
 
     ProductsList : {
-        marginRight: 10,
         width: Dimensions.get('screen').width,
-        marginLeft:10,
         alignItems: 'center',
+        justifyContent:'center'
     },
 
     Frame : {
@@ -125,6 +124,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: 67
+    },
+
+    notFoundImg : {
+        width: 230,
+        height: 230,
+    },
+
+    notFoundText : {
+        fontFamily: 'Poppins_500Medium_Italic',
+        fontSize: 18,
+        lineHeight: 27,
+        textAlign: 'center',
+        color: '#BA68C8',
+        width: 223
     },
 
     

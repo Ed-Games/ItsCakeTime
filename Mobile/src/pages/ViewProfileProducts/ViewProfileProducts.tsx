@@ -4,6 +4,7 @@ import { Image, Text, View } from 'react-native'
 import avatar from '../../images/avatar.png'
 
 import styles from './styles'
+import notFoundImg from '../../images/NotFound.png'
 import Header from '../../components/Header/Header'
 import api from '../../services/api'
 import ProductItem from '../../components/ProductItem/ProductItem'
@@ -43,16 +44,23 @@ export default function ViewProfileProducts({route}:RouteProps){
                 <Text style={styles.title}> Lista de produtos de {route.params.name}</Text>
             </View>
             <View style={styles.products}>
-                <ScrollView contentContainerStyle={{
-                    alignItems: 'center',
-                    paddingBottom:180,
-                }}>
-                    {products?.map(product => {
-                        return(
-                            <ProductItem Data={product} EditButton={false} InfoButton={false} />
-                        )
-                    })}
-                </ScrollView>
+                {products?.length != 0 ? (
+                    <ScrollView contentContainerStyle={{
+                        alignItems: 'center',
+                        paddingBottom:180,
+                    }}>
+                        {products?.map(product => {
+                            return(
+                                <ProductItem Data={product} EditButton={false} InfoButton={false} />
+                            )
+                        })}
+                    </ScrollView>
+                ) : (
+                    <View style={{marginTop:50}}>
+                        <Image style={styles.notFoundImg} source={notFoundImg} />
+                        <Text style={styles.notFoundText}>Ops!... este usuário ainda não possui produtos</Text>
+                    </View>
+                )}
             </View>
             
         </View>

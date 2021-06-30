@@ -35,8 +35,22 @@ const styles = StyleSheet.create({
 
     products : {
         marginTop: 20,
-        alignItems: 'center'
-    }
+        alignItems: 'center',
+    },
+
+    notFoundImg : {
+        width: 230,
+        height: 230,
+    },
+
+    notFoundText : {
+        fontFamily: 'Poppins_500Medium_Italic',
+        fontSize: 18,
+        lineHeight: 27,
+        textAlign: 'center',
+        color: '#BA68C8',
+        width: 223
+    },
 })
 
 export default styles

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { ImageBackground, Text, View } from 'react-native'
+import { ImageBackground, Text, View, Image } from 'react-native'
 import Header from '../../components/Header/Header'
 
 import styles from './styles'
+import notFoundImg from '../../images/NotFound.png'
 import Waves from '../../images/waves.png'
 import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import ProductItem from '../../components/ProductItem/ProductItem'
@@ -45,19 +46,26 @@ export default function ViewYourProducts(){
                 </ImageBackground>
             </View>
             <View style={styles.ProductsList}>
-                <ScrollView  contentContainerStyle={{
-                    alignItems: 'center',
-                    paddingTop: 40,
-                    paddingBottom:180,
-                    marginTop: -60
-                }}>
-                    {data?.map((product,i) => {
-                        return (
-                            <ProductItem key={product.name+product.id+i} Data={product} InfoButton={false} />
-                        )
-                    })}
-
-                </ScrollView>
+                {data?.length !=0 ? (
+                    <ScrollView  contentContainerStyle={{
+                        alignItems: 'center',
+                        paddingTop: 40,
+                        paddingBottom:180,
+                        marginTop: -60
+                    }}>
+                        {data?.map((product,i) => {
+                            return (
+                                <ProductItem key={product.name+product.id+i} Data={product} InfoButton={false} />
+                            )
+                        })}
+    
+                    </ScrollView>
+                ) : (
+                    <View style={{marginTop:50}}>
+                        <Image style={styles.notFoundImg} source={notFoundImg} />
+                        <Text style={styles.notFoundText}>Ops!... Você ainda não possui produtos.</Text>
+                    </View>
+                )}
                 <RectButton onPress={handleNavigationToRegisterProducts} style={styles.plusButton}>
                     <Feather name="plus" size={24} color='#FFF'/>
                 </RectButton>

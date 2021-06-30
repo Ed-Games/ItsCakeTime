@@ -4,6 +4,7 @@ import {Picker} from '@react-native-picker/picker';
 import styles from './styles'
 import {Feather, FontAwesome5} from '@expo/vector-icons'
 import selectImg from '../../images/select.png'
+import notFoundImg from '../../images/NotFound.png'
 import Waves from '../../images/waves.png'
 import { RectButton } from 'react-native-gesture-handler'
 import ProductItem from '../../components/ProductItem/ProductItem'
@@ -85,18 +86,25 @@ export default function ProductsList() {
                 </ImageBackground>
             </View>
             <View style={styles.ProductsList}>
-                <ScrollView contentContainerStyle={{
-                            alignItems: 'center',
-                            paddingTop: 40,
-                            paddingBottom:210,
-                            marginTop: -70
-                        }}>
-                            {data?.map((product,i)=>{
-                                return (
-                                    <ProductItem key={product.name+" numero: "+i} Data={product} EditButton={false} />
-                                )
-                            })}
-                </ScrollView>
+                {data?.length != 0? (
+                    <ScrollView contentContainerStyle={{
+                        alignItems: 'center',
+                        paddingTop: 40,
+                        paddingBottom:210,
+                        marginTop: -70
+                    }}>
+                        {data?.map((product,i)=>{
+                            return (
+                                <ProductItem key={product.name+" numero: "+i} Data={product} EditButton={false} />
+                            )
+                        })}
+                    </ScrollView>
+                ) : (
+                    <View style={{marginTop:50}}>
+                        <Image style={styles.notFoundImg} source={notFoundImg} />
+                        <Text style={styles.notFoundText}>Ops!... sem resultados para sua pesquisa</Text>
+                    </View>
+                )}
             </View>
             
         </View>
