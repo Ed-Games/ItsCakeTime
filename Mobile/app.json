@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Mobile",
+    "scheme": "itscaketime",
     "slug": "Mobile",
     "version": "1.0.0",
     "orientation": "portrait",
