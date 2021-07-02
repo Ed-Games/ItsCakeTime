@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Mobile",
+    "name": "It's_CakeTime",
     "scheme": "itscaketime",
     "slug": "Mobile",
     "version": "1.0.0",
@@ -18,7 +18,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.koldev.itscaketime"
+    },
+    "android": {
+      "package": "com.koldev.itscaketime"
     },
     "web": {
       "favicon": "./assets/favicon.png"
