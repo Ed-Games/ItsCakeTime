@@ -7,10 +7,12 @@ const upload = require('./services/multerConfig')
 
 
 const routes = express.Router()
-const morgan = require('morgan');
 const { authenticateToken, refreshToken } = require('./services/authorization')
 
-routes.use(morgan('dev'));
+if (process.env.PROJECT_MODE == 'production'){
+    const morgan = require('morgan');
+    routes.use(morgan('dev'))
+} 
 
 routes.use(express.json())
 
