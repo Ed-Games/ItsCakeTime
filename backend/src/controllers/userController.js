@@ -70,7 +70,7 @@ module.exports = {
             .orWhere('user.userName','=',userName)
             .count().first()
 
-            console.log("there is a user with these credentials? :",hasUserWithTheseCredentials)
+            console.log("there is a user with these credentials? :",hasUserWithTheseCredentials.count)
 
             if(Number(hasUserWithTheseCredentials['count(*)'])!=0){
                 console.log('there is at least one user with these credentials, aborting...')
