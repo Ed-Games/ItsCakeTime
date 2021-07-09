@@ -72,7 +72,9 @@ module.exports = {
 
             console.log("there is a user with these credentials? :",hasUserWithTheseCredentials.count)
 
-            if(Number(hasUserWithTheseCredentials['count(*)'])!=0){
+            const countResult = process.env.PROJECT_MODE? Number(hasUserWithTheseCredentials.count) : Number(hasUserWithTheseCredentials['count(*)'])
+
+            if(countResult!=0){
                 console.log('there is at least one user with these credentials, aborting...')
                 trx.rollback()
                 return response.status(400).json('A user with this name or e-mail already exists')
