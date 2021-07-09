@@ -21,6 +21,7 @@
     "nodemailer-pug-engine": "^2.0.0",
     "nodemon": "^2.0.4",
     "pg": "^8.6.0",
+    "pg-connection-string": "^2.5.0",
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {
