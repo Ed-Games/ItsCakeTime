@@ -3,7 +3,7 @@ exports.up = function(Knex){
         table.increments();
         table.string('description');
         table.string('whatsapp').notNullable();
-        table.decimal('user_id').notNullable();
+        table.integer('user_id').notNullable();
         table.string('image').notNullable();
         table.string('specialty');
         table.unique('user_id');
