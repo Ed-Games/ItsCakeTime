@@ -1,6 +1,6 @@
 const connection = require('../database/connection')
 const ip = require('ip')
-
+const prefix = process.env.PROJECT_MODE == 'production'? 'https://itscaketime-server.herokuapp.com': `${ip.address()}:3333`
 
 module.exports = {
     async index(request,response){
@@ -23,7 +23,7 @@ module.exports = {
             const serializedProducts = products.map(product=>{
                 return {
                     ...product,
-                    imageUrl: `http://${ip.address()}:3333/${product.image}`
+                    imageUrl: `http://${prefix}/${product.image}`
                 }
             })
 
@@ -76,7 +76,7 @@ module.exports = {
 
         serializedProduct = {
             ...product,
-            imageUrl: `http://${ip.address()}:3333/${product.image}`
+            imageUrl: `http://${prefix}/${product.image}`
         }
 
         return response.json(serializedProduct)
@@ -112,7 +112,7 @@ module.exports = {
             const serializedProducts = products.map(product=>{
                 return {
                     ...product,
-                    imageUrl: `http://${ip.address()}:3333/${product.image}`
+                    imageUrl: `http://${prefix}/${product.image}`
                 }
             })
 
@@ -199,7 +199,7 @@ module.exports = {
         const serializedProducts = products.map(product=>{
             return {
                 ...product,
-                imageUrl: `http://${ip.address()}:3333/${product.image}`
+                imageUrl: `http://${prefix}/${product.image}`
             }
         })
     
@@ -227,7 +227,7 @@ module.exports = {
             const serializedProducts = products.map(product=>{
                 return {
                     ...product,
-                    imageUrl: `http://${ip.address()}:3333/${product.image}`
+                    imageUrl: `http://${prefix}/${product.image}`
                 }
             })
 

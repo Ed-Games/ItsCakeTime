@@ -1,7 +1,7 @@
 const connection = require('../database/connection')
 const ip = require('ip')
 const { RemoveFile } = require('../../utils/removeFile')
-
+const prefix = process.env.PROJECT_MODE == 'production'? 'https://itscaketime-server.herokuapp.com': `${ip.address()}:3333`
 module.exports = {
     async delete(request,response){
         try {
@@ -31,7 +31,7 @@ module.exports = {
                 const serializedProfiles = profiles.map(profile => {
                     return {
                         ...profile,
-                        imageUrl: `http://${ip.address()}:3333/uploads/${profile.image}`
+                        imageUrl: `http://${prefix}/uploads/${profile.image}`
                     }
                 })
 
@@ -68,7 +68,7 @@ module.exports = {
 
             const serealizedProfile = {
                 ...profile,
-                imageUrl: `http://${ip.address()}:3333/uploads/${profile.image}`
+                imageUrl: `http://${prefix}/uploads/${profile.image}`
             }
 
             return response.json({profile:serealizedProfile})
@@ -100,7 +100,7 @@ module.exports = {
 
             const serializedProfile = {
                 ...profile,
-                imageUrl: `http://${ip.address()}:3333/uploads/${profile.image}`
+                imageUrl: `http://${prefix}/uploads/${profile.image}`
             }
 
             return response.json(serializedProfile).status(200)
@@ -150,7 +150,7 @@ module.exports = {
             const serializedProfiles = profiles.map(profile => {
                 return {
                     ...profile,
-                    imageUrl: `http://${ip.address()}:3333/uploads/${profile.image}`
+                    imageUrl: `http://${prefix}/uploads/${profile.image}`
                 }
             })
             
