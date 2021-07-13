@@ -1,6 +1,6 @@
 const connection = require('../database/connection')
 const ip = require('ip')
-const prefix = process.env.PROJECT_MODE == 'production'? 'https://itscaketime-server.herokuapp.com': `${ip.address()}:3333`
+const prefix = process.env.PROJECT_MODE == 'production'? 'itscaketime-server.herokuapp.com': `${ip.address()}:3333`
 
 module.exports = {
     async index(request,response){
