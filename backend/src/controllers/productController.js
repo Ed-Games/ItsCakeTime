@@ -131,7 +131,7 @@ module.exports = {
             const user = request.user.name
             const productUser =  await connection('product')
             .join('user','user.id','product.user_id')
-            .select('user.username')
+            .select('user.userName')
             .where('product.id','=',id)
 
             console.log("alert:",user,productUser)
