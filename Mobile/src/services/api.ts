@@ -9,7 +9,7 @@ async function GetUserData(){
 }
 
 const api = axios.create({
-    baseURL: 'http://10.0.0.105:3333',
+    baseURL: 'https://itscaketime-server.herokuapp.com',
     headers: {
         'Content-Type': 'application/json',
     }
