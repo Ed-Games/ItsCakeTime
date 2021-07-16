@@ -400,6 +400,11 @@ Temporary Items
 
 #My Owm
 Plan.md
-uploads
+uploads/*
+
+!uploads/default.png
+
+
+
 
 # End of https://www.toptal.com/developers/gitignore/api/linux,node,react,reactnative,visualstudiocode
