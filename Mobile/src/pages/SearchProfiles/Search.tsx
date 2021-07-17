@@ -76,7 +76,7 @@ export default function Search(){
                                 <View>
                                     <Text style={styles.avatarname}>{profile.userName}</Text>
                                     <View style={{flexDirection:'row',width:'95%'}}>
-                                    <Text style={styles.avatarSpecialtyBold}>Especialidades: <Text style={styles.avatarSpecialty}>{profile.specialty}</Text> </Text>
+                                    <Text style={styles.avatarSpecialtyBold}>Especialidades: <Text style={styles.avatarSpecialty}>{profile.specialty? profile.specialty : 'Nenhuma especialidade informada'}</Text> </Text>
                                     </View>
                                 </View>
                             </View>
