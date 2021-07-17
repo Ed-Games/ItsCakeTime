@@ -20,7 +20,7 @@ module.exports = {
             'profile.whatsapp'
             )
 
-            const serializedProducts = products.map(product=>{
+            const serializedProducts = products.reverse().map(product=>{
                 return {
                     ...product,
                     imageUrl: `http://${prefix}/${product.image}`
@@ -109,7 +109,7 @@ module.exports = {
             .where("product.price","=",price)
             .andWhere("product.category","=",category)
 
-            const serializedProducts = products.map(product=>{
+            const serializedProducts = products.reverse().map(product=>{
                 return {
                     ...product,
                     imageUrl: `http://${prefix}/${product.image}`
@@ -196,7 +196,7 @@ module.exports = {
         'product.id'
         ).where('user.userName','=', user)
 
-        const serializedProducts = products.map(product=>{
+        const serializedProducts = products.reverse().map(product=>{
             return {
                 ...product,
                 imageUrl: `http://${prefix}/${product.image}`
@@ -224,7 +224,7 @@ module.exports = {
             'product.id'
             ).where('user.id','=', userId)
 
-            const serializedProducts = products.map(product=>{
+            const serializedProducts = products.reverse().map(product=>{
                 return {
                     ...product,
                     imageUrl: `http://${prefix}/${product.image}`
