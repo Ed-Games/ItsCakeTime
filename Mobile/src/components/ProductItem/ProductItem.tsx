@@ -27,7 +27,7 @@ export default function ProductItem(props:ProductItemProps) {
 
     async function handleNavigateToEditProduct(){
         await AsyncStorage.setItem('@Key:tempId',JSON.stringify(props.Data.id))
-        navigation.navigate('EditProduct')
+        navigation.navigate('EditProduct', {id: props.Data.id})
     }
 
     return(
