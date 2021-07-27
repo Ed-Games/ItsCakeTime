@@ -19,9 +19,17 @@ import { Picker } from '@react-native-picker/picker'
 import { ImageUpload } from '../../utils/PickerImage'
 import {ProductSchema} from '../../Schema/EditProductSchema'
 import AppLoading from 'expo-app-loading'
+import { useUser } from '../../Contexts/UserContext'
 
 export interface RouteProps{
-    productId: number
+    Navigation:any,
+    route: {
+        params: {
+            id: string,
+            name: string,
+            key: string,
+        }
+    }
 }
 
 
@@ -30,16 +38,18 @@ type Product = {
     detail: string,
     price: string,
     image: string,
-    category:string
+    category:string,
+    imageUrl?: string,
 }
 
-export default function EditProduct(){
+export default function EditProduct({route}:RouteProps){
     const [image,setImage] = useState(true)
     const [productdata,setProductdata] = useState<Product>()
     const [modalVisible, setModalVisible] = useState<boolean>(false)
     const categories = ['Bolos', 'Tortas', 'Salgados', 'Biscoitos', 'Doces', 'Outros']
     const formikRef = useRef<FormikProps<FormikValues>>(null)
     const navigation = useNavigation()
+    const {loggedUser} = useUser()
 
     function goBack(){
         navigation.goBack()
@@ -47,9 +57,8 @@ export default function EditProduct(){
 
     async function deleteProduct(){
         setModalVisible(false)
-        const id = await AsyncStorage.getItem('@Key:tempId')
-        if(id){
-            await api.delete(`products/delete/${JSON.parse(id)}`).then(async response => {
+        if(route.params.id){
+            await api.delete(`products/delete/${JSON.parse(route.params.id)}`).then(async response => {
                 goBack()
     
             })
@@ -70,9 +79,8 @@ export default function EditProduct(){
 
 
     async function GetProductData(){
-        const id = await AsyncStorage.getItem('@Key:tempId')
-        if(id){
-            await api.get(`products/${JSON.parse(id)}`).then(async response => {
+        if(route.params.id){
+            await api.get(`products/${JSON.parse(route.params.id)}`).then(async response => {
                 setProductdata(await response.data)
             })
         }
@@ -80,10 +88,7 @@ export default function EditProduct(){
     }
 
     async function handleUpdateProduct(values:Product){
-
-         console.log(values)
-        const id = await AsyncStorage.getItem('@Key:tempId')
-        if(id){
+        if(route.params.id){
 
             const data = new FormData()
             const name = values.name.replace(' ', '_')
@@ -96,19 +101,23 @@ export default function EditProduct(){
             data.append('image',{
                 name:`image_${name}.jpg`,
                 type:'image/jpg',
-                uri:values.image,
+                uri:values.name,
 
             } as any )
-            
 
-            await api.put(`products/update/${id}`,data).then(response => {
+            try {
+                console.log('updating product')
+                const response = await api.put(`/products/update/${route.params.id}`,data)
+                console.log("response: ",response)
                 goBack()
-            }).catch(error => {
-                if(error.message=="undefined is not an object (evaluating 'error.response.includes')") return
-                console.log(error)
-                Alert.alert('Ops! um erro ocorreu, tente novamente mais tarde')
-            })
+                
 
+            } catch (error) {
+                console.log(error)
+                
+                Alert.alert('Ops! um erro ocorreu, tente novamente mais tarde')
+            }
+            
         }
 
     }
@@ -128,7 +137,7 @@ export default function EditProduct(){
                 <Formik
                 enableReinitialize={true}
                 innerRef={formikRef}
-                initialValues={{name:productdata.name, detail:productdata.detail, price: productdata.price, category:productdata.category, image:`http://10.0.0.105:3333/${productdata.image}`}}
+                initialValues={{name:productdata.name, detail:productdata.detail, price: productdata.price, category:productdata.category, image:productdata.imageUrl}}
                 onSubmit={values => handleUpdateProduct(values as Product)}
                 validationSchema={ProductSchema}
                 >
