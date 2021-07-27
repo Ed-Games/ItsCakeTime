@@ -1,6 +1,7 @@
 const connection = require('../database/connection')
 const ip = require('ip')
-const prefix = process.env.PROJECT_MODE == 'production'? 'itscaketime-server.herokuapp.com': `${ip.address()}:3333`
+const prefix = process.env.PROJECT_MODE == 'production'? 'itscaketime-server.herokuapp.com': `${ip.address()}:3333/uploads`
+const { RemoveFile } = require('../../utils/removeFile')
 
 module.exports = {
     async index(request,response){
@@ -45,7 +46,7 @@ module.exports = {
                 detail,
                 category,
                 user_id,
-                image: request.file.path,
+                image: request.file.filename,
                 name
             })
 
@@ -152,16 +153,21 @@ module.exports = {
         const data = request.body
         const user = request.user.name
 
+        if(Object.entries(data).length === 0) return response.sendStatus(400)
+        console.log(data)
+
         const productUser = await connection('product')
         .join('user','user.id','product.user_id')
         .select('user.userName')
         .where('product.id','=',id)
 
-        //console.log(user, productUser[0]['userName'])
-        console.log(data)
         if(productUser[0]['userName']!=user) return response.sendStatus(403)
 
+        const product = await connection('product').select('*').where('product.id','=',id).first()
+        console.log(product.image)
+
         if(request.file){
+            RemoveFile(product.image)
             const imageName = request.file.path
 
             await connection('product')
@@ -176,7 +182,7 @@ module.exports = {
             .update(data)
         }
 
-        return response.json(data)
+        return response.sendStatus(204)
        } catch (error) {
            console.log(error)
            return response.sendStatus(500)
