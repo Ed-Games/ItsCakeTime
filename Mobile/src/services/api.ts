@@ -9,7 +9,7 @@ async function GetUserData(){
 }
 
 const api = axios.create({
-    baseURL: 'https://itscaketime-server.herokuapp.com',
+    baseURL: process.env.NODE_ENV === 'production'? 'https://itscaketime-server.herokuapp.com' : process.env.NODE_ENV === 'test'? 'https://itscaketime-server.herokuapp.com' : 'http://10.0.0.105:3333',
     headers: {
         'Content-Type': 'application/json',
     }
@@ -29,6 +29,7 @@ api.interceptors.response.use(
             )*/
 
             Navigate('Landing',{message:'connection error'})
+            return
             
         }
 
