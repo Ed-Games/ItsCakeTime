@@ -101,13 +101,12 @@ export default function EditProduct({route}:RouteProps){
             data.append('image',{
                 name:`image_${name}.jpg`,
                 type:'image/jpg',
-                uri:values.name,
+                uri:values.image,
 
             } as any )
 
             try {
-                console.log('updating product')
-                const response = await api.put(`/products/update/${route.params.id}`,data)
+                const response = await api.put(`/products/update/${route.params.id}/`, data)
                 console.log("response: ",response)
                 goBack()
                 

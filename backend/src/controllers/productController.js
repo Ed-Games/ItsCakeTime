@@ -168,7 +168,7 @@ module.exports = {
 
         if(request.file){
             RemoveFile(product.image)
-            const imageName = request.file.path
+            const imageName = request.file.filename
 
             await connection('product')
             .select('*')
