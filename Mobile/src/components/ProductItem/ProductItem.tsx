@@ -12,8 +12,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 interface ProductItemProps{
     InfoButton?: boolean,
     EditButton?:boolean,
-    Data: Product,
-    key?: string
+    Data: Product
 }
 
 export default function ProductItem(props:ProductItemProps) {
@@ -28,11 +27,11 @@ export default function ProductItem(props:ProductItemProps) {
 
     async function handleNavigateToEditProduct(){
         await AsyncStorage.setItem('@Key:tempId',JSON.stringify(props.Data.id))
-        navigation.navigate('EditProduct')
+        navigation.navigate('EditProduct', {id: props.Data.id})
     }
 
     return(
-        <View key={props.key} style={styles.ProductItem}>
+        <View style={styles.ProductItem}>
             <View style={styles.FlexRowView}>
                 <Image style={styles.ProductImage} source={{uri:props.Data.imageUrl}} />
                 <View style={styles.FlexColumnView}>

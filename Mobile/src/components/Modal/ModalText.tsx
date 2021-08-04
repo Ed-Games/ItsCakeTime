@@ -13,7 +13,6 @@ export function ModalText(props: TextProps){
         ...props.style,
     }
 
-    console.log(style)
     return(
         <Text style={style}>
             {props.children}

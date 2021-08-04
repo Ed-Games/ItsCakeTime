@@ -40,6 +40,21 @@ const styles = StyleSheet.create({
         fontSize:15,
         color: '#FFF'
     },
+    ExcludeButton: {
+        width:253,
+        height: 40,
+        backgroundColor: '#FF0909',
+        borderRadius:10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10
+    },
+
+    ExcludeButtonText: {
+        fontFamily: 'Poppins_500Medium',
+        fontSize:15,
+        color: '#FFF'
+    },
 
     UploadButton: {
         width: Dimensions.get('screen').width -120,

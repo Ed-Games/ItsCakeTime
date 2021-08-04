@@ -22,7 +22,7 @@ export default function DrawerContent(props:DrawerContentComponentProps<DrawerCo
     }
 
     useEffect(()=>{
-        async()=>await LoadProfileDataFromAPI()
+        LoadProfileDataFromAPI()
     },[loggedUser])
 
     return(

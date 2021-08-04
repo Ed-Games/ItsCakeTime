@@ -10,6 +10,10 @@ import api from '../../services/api'
 import { Formik } from 'formik'
 import { ProfileSchema } from '../../Schema/ProfileSchema'
 import { useUser } from '../../Contexts/UserContext'
+import ModalView from '../../components/Modal/ModalView'
+import { useState } from 'react'
+import { ModalText } from '../../components/Modal/ModalText'
+import { ModalButton } from '../../components/Modal/ModalButton'
 
 
 interface Data{
@@ -35,9 +39,9 @@ type ProfileUpdateFormValues = {
 export default function UpdateProfile(){
     
     const profileData = useRoute().params as Data
-    console.log(profileData)
-    const {loggedUser} = useUser()
+    const {loggedUser,ClearUserDataFromStorage} = useUser()
     const navigation = useNavigation()
+    const [modalVisible, setModalVisible] = useState(false)
 
     function handleNavigateToProfile(){
         navigation.navigate('Profile')
@@ -59,6 +63,11 @@ export default function UpdateProfile(){
         handleNavigateToProfile()
 
     
+    }
+
+    async function handledeleteAccount(){
+        await api.delete(`/users/delete/${loggedUser.id}/`)
+        ClearUserDataFromStorage()
     }
 
     return(
@@ -135,9 +144,40 @@ export default function UpdateProfile(){
                                 Finalizar 
                             </Text>
                         </RectButton>
+
+                        <RectButton
+                        onPress={()=>setModalVisible(true)} 
+                        style={styles.ExcludeButton}
+                        >
+                            <Text style={styles.ExcludeButtonText}>
+                                Excluir conta 
+                            </Text>
+                        </RectButton>
+                        <ModalView
+                        isVisible={modalVisible}
+                        title="Atenção"
+                        setStateFunction={setModalVisible} 
+                        >
+                            <ModalText>
+                                Você esta prestes a excluir sua conta, deseja continuar?
+                            </ModalText>
+                            <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                                <ModalButton onPress={()=> handledeleteAccount()}>
+                                    <ModalText>
+                                        Sim
+                                    </ModalText>
+                                </ModalButton>
+                                <ModalButton onPress={()=>setModalVisible(false)}>
+                                    <ModalText>
+                                        Não
+                                    </ModalText>
+                                </ModalButton>
+                            </View>
+                        </ModalView>
                     </View>
                 )}
             </Formik>
+
         </KeyboardAvoidingView>
     )
 }

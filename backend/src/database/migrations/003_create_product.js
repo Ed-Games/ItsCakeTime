@@ -6,7 +6,7 @@ exports.up = function(Knex){
         table.string('category').notNullable();
         table.string('image').notNullable();
         table.decimal('price').notNullable();
-        table.decimal('user_id').notNullable();
+        table.integer('user_id').notNullable();
 
         table.foreign('user_id').references('id').inTable('user');
 

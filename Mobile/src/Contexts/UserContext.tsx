@@ -2,7 +2,6 @@ import React from 'react'
 import AsyncStorage from "@react-native-community/async-storage";
 import { createContext, ReactNode, useContext, useState } from "react";
 import api from '../services/api';
-import { Navigate } from '../services/RootNavigation';
 
 type User = {
     userName: string,
@@ -83,9 +82,3 @@ export const UserContextProvider = ({children}:UserContextProviderProps) => {
 export const useUser = () => {
     return useContext(UserContext)
 }
-
-/*
-* Informações do usuário logado e do perfil. Pode usar 
-até para manter o usuário logado no app, savando o permanecer logado
-no AsyncStorage e disponibilizando ao Axios pelo Context
-*/

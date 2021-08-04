@@ -7,10 +7,9 @@ const upload = require('./services/multerConfig')
 
 
 const routes = express.Router()
-const morgan = require('morgan');
 const { authenticateToken, refreshToken } = require('./services/authorization')
+const appUrl = process.env.PROJECT_MODE == 'production'? 'itscaketime:///CreateNewPasswd/' : 'exp://10.0.0.105:19000/--/CreateNewPasswd/'
 
-routes.use(morgan('dev'));
 
 routes.use(express.json())
 
@@ -63,6 +62,6 @@ routes.post('/requestNewPassword', userController.requestNewPassword)
 
 routes.put('/users/resetPassword/:token/', userController.resetPassword)
 
-routes.get('/app/redirect/:token/:email',(request,response)=> {response.redirect(`itscaketime:///CreateNewPasswd/${request.params.token}/${request.params.email}`)})
+routes.get('/app/redirect/:token/:email',(request,response)=> {response.redirect(`${appUrl}${request.params.token}/${request.params.email}`)})
 
 module.exports = routes

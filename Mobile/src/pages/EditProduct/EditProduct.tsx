@@ -10,7 +10,6 @@ import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
-import AsyncStorage from '@react-native-community/async-storage'
 import ModalView from '../../components/Modal/ModalView'
 import { ModalButton} from '../../components/Modal/ModalButton'
 import { ModalText } from '../../components/Modal/ModalText'
@@ -21,7 +20,14 @@ import {ProductSchema} from '../../Schema/EditProductSchema'
 import AppLoading from 'expo-app-loading'
 
 export interface RouteProps{
-    productId: number
+    Navigation:any,
+    route: {
+        params: {
+            id: string,
+            name: string,
+            key: string,
+        }
+    }
 }
 
 
@@ -30,10 +36,11 @@ type Product = {
     detail: string,
     price: string,
     image: string,
-    category:string
+    category:string,
+    imageUrl?: string,
 }
 
-export default function EditProduct(){
+export default function EditProduct({route}:RouteProps){
     const [image,setImage] = useState(true)
     const [productdata,setProductdata] = useState<Product>()
     const [modalVisible, setModalVisible] = useState<boolean>(false)
@@ -47,9 +54,8 @@ export default function EditProduct(){
 
     async function deleteProduct(){
         setModalVisible(false)
-        const id = await AsyncStorage.getItem('@Key:tempId')
-        if(id){
-            await api.delete(`products/delete/${JSON.parse(id)}`).then(async response => {
+        if(route.params.id){
+            await api.delete(`products/delete/${JSON.parse(route.params.id)}`).then(async response => {
                 goBack()
     
             })
@@ -70,9 +76,8 @@ export default function EditProduct(){
 
 
     async function GetProductData(){
-        const id = await AsyncStorage.getItem('@Key:tempId')
-        if(id){
-            await api.get(`products/${JSON.parse(id)}`).then(async response => {
+        if(route.params.id){
+            await api.get(`products/${JSON.parse(route.params.id)}`).then(async response => {
                 setProductdata(await response.data)
             })
         }
@@ -80,10 +85,7 @@ export default function EditProduct(){
     }
 
     async function handleUpdateProduct(values:Product){
-
-         console.log(values)
-        const id = await AsyncStorage.getItem('@Key:tempId')
-        if(id){
+        if(route.params.id){
 
             const data = new FormData()
             const name = values.name.replace(' ', '_')
@@ -99,16 +101,19 @@ export default function EditProduct(){
                 uri:values.image,
 
             } as any )
-            
 
-            await api.put(`products/update/${id}`,data).then(response => {
+            try {
+                const response = await api.put(`/products/update/${route.params.id}/`, data)
+                console.log("response: ",response)
                 goBack()
-            }).catch(error => {
-                if(error.message=="undefined is not an object (evaluating 'error.response.includes')") return
-                console.log(error)
-                Alert.alert('Ops! um erro ocorreu, tente novamente mais tarde')
-            })
+                
 
+            } catch (error) {
+                console.log(error)
+                
+                Alert.alert('Ops! um erro ocorreu, tente novamente mais tarde')
+            }
+            
         }
 
     }
@@ -128,7 +133,7 @@ export default function EditProduct(){
                 <Formik
                 enableReinitialize={true}
                 innerRef={formikRef}
-                initialValues={{name:productdata.name, detail:productdata.detail, price: productdata.price, category:productdata.category, image:`http://10.0.0.105:3333/${productdata.image}`}}
+                initialValues={{name:productdata.name, detail:productdata.detail, price: productdata.price, category:productdata.category, image:productdata.imageUrl}}
                 onSubmit={values => handleUpdateProduct(values as Product)}
                 validationSchema={ProductSchema}
                 >
@@ -194,14 +199,20 @@ export default function EditProduct(){
                                 <View style={styles.pickerView}>
                                     <Picker 
                                         onValueChange={handleChange('category')} 
-                                        style={styles.CategoryInput}>
-                                        <Picker.Item label={productdata.category} value={productdata?.category} />
+                                        style={styles.CategoryInput}
+                                        selectedValue={values.category}
+                                        >
+                                            {console.log(values.category)}
+                                        <Picker.Item label={productdata.category} value={productdata.category} />
+
                                         {categories.map((category, i) => {
+
                                             if(category!= productdata?.category){
                                                 return (
                                                     <Picker.Item key={category+i} label={category} value={category} />
                                                 )
                                             }
+
                                         })}
                                         
                                     </Picker>

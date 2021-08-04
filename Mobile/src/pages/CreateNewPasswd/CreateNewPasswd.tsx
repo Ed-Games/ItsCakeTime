@@ -5,18 +5,16 @@ import { Image, Text, View, Keyboard} from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
 import Header from '../../components/Header/Header'
 import Input from '../../components/Input/Input'
+import { useUser } from '../../Contexts/UserContext'
 import Security from '../../images/Security.png'
 import { passwordValidationSchema } from '../../Schema/passwordValidationSchema'
 import api from '../../services/api'
 import styles from './styles'
 
-interface RouteParamsProps{
-    params:{
-        params:{
-            email:string,
-            token:string,
-        }
-    }
+type ParamsProps = {
+    token: string,
+    email: string
+
 }
 
 type Values = {
@@ -24,20 +22,18 @@ type Values = {
     confirmPassword: string
 }
 
-export default function CreateNewPasswd(){
-
+export default function CreateNewPasswd({route}: any){
     const [isKeyboardOpen, setIsKeyboardOpen] = useState(false)
-
     const navigation = useNavigation()
 
+    const {SaveUserDataToStorage} = useUser()
 
-    const route = useRoute() as RouteParamsProps
+    const params = route.params as ParamsProps
 
-    console.log("testing: ", route.params?.params.token)
-
-    function handleNavigateToProfile(values: Values){
+    async function handleNavigateToProfile(values: Values){
         if(values.password == values.confirmPassword){
-            handleResetPassword(values.password)
+            await handleResetPassword(values.password)
+            console.log('3 - redirecting to profile')
             navigation.navigate('Profile')
         } else{
             console.log('Precisam ser iguais')
@@ -46,11 +42,13 @@ export default function CreateNewPasswd(){
     }
 
     async function handleResetPassword(password: string){
-        console.log(route)
-        console.log("token: ", route.params.params.token, "email: ", route.params.params.email)
-        await api.put(`users/resetPassword/${route.params.params.token}`, {email:route.params.params.email,password:password }).then(response => {
-            return console.log(response.data)
-        })
+       try {
+        const response = await api.put(`users/resetPassword/${params.token}`, {email:params.email,password:password })
+        console.log('1 - password saved')
+        await SaveUserDataToStorage(response.data as any)
+       } catch (error) {
+           console.log(error)
+       }
     }
 
     useEffect(() => {

@@ -20,4 +20,4 @@ if(!fs.existsSync(uploads)){
 
 app.use('/uploads', express.static(uploads))
 
-app.listen(3333)
+app.listen(process.env.PORT || 3333)
