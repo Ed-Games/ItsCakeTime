@@ -133,28 +133,28 @@ module.exports = {
             const {password, email} = request.body
             const {token} = request.params
             
-            const user = await connection('user').select('expirationDate','requestPasswdToken').where('email','=', email)
+            const user = await connection('user').select('*').where('email','=', email).first()
 
 
             if(!user) {
-                console.log("user not found")
                 return response.status(404).send("user not found")
             }
-            console.log("token on database: ",user[0].requestPasswdToken)
 
-            if(user[0].requestPasswdToken != token) {
-                console.log("token invalid")
+            if(user.requestPasswdToken != token) {
                 return response.status(404).send("token invalid")
             }
 
             const now = new Date()
 
-            if( now > user[0].expirationDate) return response.status(400).send("this token is no longer valid, request a new one")
+            if( now > user.expirationDate) return response.status(400).send("this token is no longer valid, request a new one")
     
-            const passwdField = await connection('user')
+            await connection('user')
             .select('password').where("requestPasswdToken", "=",token)
             .update({password})
-            return response.json(passwdField)
+
+            const accessToken = generateAccessToken(user.userName)
+
+            return response.json({name:user.userName, email:user.email, id:user.id, accessToken})
         } catch (error) {
             console.log("erro: ",error)
             return response.sendStatus(error)
