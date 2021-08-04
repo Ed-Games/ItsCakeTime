@@ -51,8 +51,6 @@ export default function Routes() {
         config
       }
 
-      console.log('url: ',linking)
-
     return(
         <NavigationContainer ref={navigationRef} linking={linking}>
             <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}  initialRouteName="Landing">
