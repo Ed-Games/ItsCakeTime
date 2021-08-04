@@ -10,7 +10,6 @@ import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
-import AsyncStorage from '@react-native-community/async-storage'
 import ModalView from '../../components/Modal/ModalView'
 import { ModalButton} from '../../components/Modal/ModalButton'
 import { ModalText } from '../../components/Modal/ModalText'
@@ -19,7 +18,6 @@ import { Picker } from '@react-native-picker/picker'
 import { ImageUpload } from '../../utils/PickerImage'
 import {ProductSchema} from '../../Schema/EditProductSchema'
 import AppLoading from 'expo-app-loading'
-import { useUser } from '../../Contexts/UserContext'
 
 export interface RouteProps{
     Navigation:any,
@@ -49,7 +47,6 @@ export default function EditProduct({route}:RouteProps){
     const categories = ['Bolos', 'Tortas', 'Salgados', 'Biscoitos', 'Doces', 'Outros']
     const formikRef = useRef<FormikProps<FormikValues>>(null)
     const navigation = useNavigation()
-    const {loggedUser} = useUser()
 
     function goBack(){
         navigation.goBack()
@@ -202,14 +199,20 @@ export default function EditProduct({route}:RouteProps){
                                 <View style={styles.pickerView}>
                                     <Picker 
                                         onValueChange={handleChange('category')} 
-                                        style={styles.CategoryInput}>
-                                        <Picker.Item label={productdata.category} value={productdata?.category} />
+                                        style={styles.CategoryInput}
+                                        selectedValue={values.category}
+                                        >
+                                            {console.log(values.category)}
+                                        <Picker.Item label={productdata.category} value={productdata.category} />
+
                                         {categories.map((category, i) => {
+
                                             if(category!= productdata?.category){
                                                 return (
                                                     <Picker.Item key={category+i} label={category} value={category} />
                                                 )
                                             }
+
                                         })}
                                         
                                     </Picker>
