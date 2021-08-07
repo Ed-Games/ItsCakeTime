@@ -6,5 +6,6 @@ module.exports = {
     host: "smtp.gmail.com",
     port:587,
     user: "djangoguy2@gmail.com",
+    name: 'Django Guy',
     password:password
 }
