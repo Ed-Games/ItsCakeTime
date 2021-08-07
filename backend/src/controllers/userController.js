@@ -2,9 +2,8 @@ require('dotenv').config()
 const connection = require('../database/connection')
 const jwt = require('jsonwebtoken')
 const {generateAccessToken} = require('../services/authorization')
-const sendMail = require('../services/nodeMailerConfig')
 const crypto = require('crypto')
-const ip = require('ip')
+const { mailSender } = require('../services/nodemailer')
 
 module.exports = {
     async index(request, response){
@@ -178,7 +177,9 @@ module.exports = {
             console.log("EMAIL: ",email)
             const answer = await connection('user').select('*').where('email','=', email).update({requestPasswdToken:token,expirationDate: now})
             console.log("TOKEN: ",token)
-            sendMail(email, token)
+            //sendMail(email, token)
+            mailSender(token, email)
+            
             return response.json(answer).status(200)
 
         } catch (error) {
