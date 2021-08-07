@@ -18,7 +18,7 @@ routes.use(urlencoded({
 }))
 
 
-routes.get('/users/', userController.index) //NOT TO USE IN PRODUCTION
+process.env.PROJECT_MODE && routes.get('/users/', userController.index) //NOT TO USE IN PRODUCTION
 
 routes.post('/login', userController.login)
 
