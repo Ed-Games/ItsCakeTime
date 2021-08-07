@@ -10,7 +10,7 @@ async mailSender(token, email) {
         // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
     //let testAccount = await nodemailer.createTestAccount();
-  
+      console.log('Testing mail send: ', SMTP_CONFIG.user, SMTP_CONFIG.password)
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
       host: SMTP_CONFIG.host,
