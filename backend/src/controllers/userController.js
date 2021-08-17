@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const {generateAccessToken} = require('../services/authorization')
 const crypto = require('crypto')
 const { mailSender } = require('../services/nodemailer')
+const {nodemailerSender}  = require('../services/nodemailerGoogleAPi')
 
 module.exports = {
     async index(request, response){
@@ -177,8 +178,8 @@ module.exports = {
             console.log("EMAIL: ",email)
             const answer = await connection('user').select('*').where('email','=', email).update({requestPasswdToken:token,expirationDate: now})
             console.log("TOKEN: ",token)
-            //sendMail(email, token)
-            mailSender(token, email)
+            //mailSender(token, email)
+            nodemailerSender(token, email)
             
             return response.json(answer).status(200)
 
