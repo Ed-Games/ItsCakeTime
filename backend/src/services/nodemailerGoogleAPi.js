@@ -36,7 +36,7 @@ module.exports = {
 
                 const mailOptions = {
                     from:' DJANGO GUY | IT\'S CAKE TIME TEAM 🙂 <djangoguy2@gmail.com>',
-                    to:'edmarcosfilho2015@gmail.com',
+                    to:[email],
                     subject:'Recuperação de senha ✔',
                     template: 'requestNewPasswd',
                         ctx: {
