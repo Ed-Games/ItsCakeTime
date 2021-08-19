@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer')
 const {google } = require('googleapis')
 const { pugEngine } = require("nodemailer-pug-engine")
 const path = require('path')
+const prefix = process.env.PROJECT_MODE == 'production'? 'itscaketime-server.herokuapp.com': `http://${ip.address()}:3333/app/redirect`
 
 module.exports = {
     async nodemailerSender(token, email){
@@ -41,7 +42,8 @@ module.exports = {
                     template: 'requestNewPasswd',
                         ctx: {
                             token,
-                            email
+                            email,
+                            prefix
                         }
                     }
 
