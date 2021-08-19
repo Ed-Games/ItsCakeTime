@@ -8,7 +8,7 @@ const upload = require('./services/multerConfig')
 
 const routes = express.Router()
 const { authenticateToken, refreshToken } = require('./services/authorization')
-const appUrl = process.env.PROJECT_MODE == 'production'? 'itscaketime:///CreateNewPasswd/' : 'exp://10.0.0.105:19000/--/CreateNewPasswd/'
+const appUrl = process.env.PROJECT_MODE? 'itscaketime:///CreateNewPasswd/' : 'exp://10.0.0.105:19000/--/CreateNewPasswd/'
 
 routes.use(express.json())
 
