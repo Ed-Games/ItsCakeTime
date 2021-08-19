@@ -2,14 +2,15 @@ const nodemailer = require('nodemailer')
 const {google } = require('googleapis')
 const { pugEngine } = require("nodemailer-pug-engine")
 const path = require('path')
+require('dotenv').config()
 const prefix = process.env.PROJECT_MODE == 'production'? 'https://itscaketime-server.herokuapp.com': `http://${ip.address()}:3333/app/redirect`
 
 module.exports = {
     async nodemailerSender(token, email){
-        const CLIENT_ID= process.env.CLIENT_ID
-        const CLIENT_SECRET= process.env.CLIENT_SECRET
-        const REDIRECT_URI= process.env.REDIRECT_URI
-        const REFRESH_TOKEN= process.env.REFRESH_TOKEN
+        const CLIENT_ID= `${process.env.CLIENT_ID}`
+        const CLIENT_SECRET= `${process.env.CLIENT_SECRET}`
+        const REDIRECT_URI= `${process.env.REDIRECT_URI}`
+        const REFRESH_TOKEN= `${process.env.REFRESH_TOKEN}`
 
         const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 
