@@ -4,7 +4,7 @@ const { pugEngine } = require("nodemailer-pug-engine")
 const ip = require('ip')
 const path = require('path')
 require('dotenv').config()
-const prefix = process.env.PROJECT_MODE == 'production'? 'https://itscaketime-server.herokuapp.com': `http://${ip.address()}:3333/app/redirect`
+const prefix = process.env.PROJECT_MODE == 'production'? 'https://itscaketime-server.herokuapp.com/app/redirect': `http://${ip.address()}:3333/app/redirect`
 
 module.exports = {
     async nodemailerSender(token, email){
