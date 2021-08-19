@@ -3,8 +3,7 @@ const connection = require('../database/connection')
 const jwt = require('jsonwebtoken')
 const {generateAccessToken} = require('../services/authorization')
 const crypto = require('crypto')
-const { mailSender } = require('../services/nodemailer')
-const {nodemailerSender}  = require('../services/nodemailerGoogleAPi')
+const {nodemailerSender}  = require('../services/nodemailer')
 
 module.exports = {
     async index(request, response){

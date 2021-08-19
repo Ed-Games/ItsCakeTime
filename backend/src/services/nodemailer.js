@@ -1,52 +1,60 @@
-"use strict";
-const nodemailer = require("nodemailer");
+const nodemailer = require('nodemailer')
+const {google } = require('googleapis')
 const { pugEngine } = require("nodemailer-pug-engine")
-const SMTP_CONFIG = require('./smtp')
+const path = require('path')
+const prefix = process.env.PROJECT_MODE == 'production'? 'https://itscaketime-server.herokuapp.com': `http://${ip.address()}:3333/app/redirect`
 
 module.exports = {
-    // async..await is not allowed in global scope, must use a wrapper
-async mailSender(token, email) {
-    try {
-        // Generate test SMTP service account from ethereal.email
-    // Only needed if you don't have a real mail account for testing
-    //let testAccount = await nodemailer.createTestAccount();
-      console.log('Testing mail send: ', SMTP_CONFIG.user, SMTP_CONFIG.password)
-    // create reusable transporter object using the default SMTP transport
-    let transporter = nodemailer.createTransport({
-      host: SMTP_CONFIG.host,
-      port: SMTP_CONFIG.port,
-      secure: false, // true for 465, false for other ports
-      auth: {
-        user: SMTP_CONFIG.user, 
-        pass: SMTP_CONFIG.password, 
-      },
-    });
+    async nodemailerSender(token, email){
+        const CLIENT_ID= process.env.CLIENT_ID
+        const CLIENT_SECRET= process.env.CLIENT_SECRET
+        const REDIRECT_URI= process.env.REDIRECT_URI
+        const REFRESH_TOKEN= process.env.REFRESH_TOKEN
 
-    transporter.use('compile',pugEngine({
-        templateDir:'./resources/mail',
-    }))
-  
-    // send mail with defined transport object
-    let info = await transporter.sendMail({
-      from:`${SMTP_CONFIG.name} <${SMTP_CONFIG.user}>`,
-      to: [email],
-      subject: "Recuperação de senha ✔",
-      template: 'requestNewPasswd',
-      ctx: {
-        token,
-        email
+        const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
+
+        oAuth2Client.setCredentials({refresh_token: REFRESH_TOKEN})
+
+        async function sendMail(){
+            try {
+                const accessToken = await oAuth2Client.getAccessToken()
+
+                const transport = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth : {
+                        type: 'OAuth2',
+                        user:'djangoguy2@gmail.com',
+                        clientId: CLIENT_ID,
+                        clientSecret: CLIENT_SECRET,
+                        refreshToken: REFRESH_TOKEN,
+                        accessToken: accessToken
+                    }
+                })
+
+                transport.use('compile',pugEngine({
+                    templateDir: path.resolve(__dirname,'..', '..','resources', 'mail')
+                }))
+
+                const mailOptions = {
+                    from:' DJANGO GUY | IT\'S CAKE TIME TEAM 🙂 <djangoguy2@gmail.com>',
+                    to:[email],
+                    subject:'Recuperação de senha ✔',
+                    template: 'requestNewPasswd',
+                        ctx: {
+                            token,
+                            email,
+                            prefix
+                        }
+                    }
+
+                const result = await transport.sendMail(mailOptions)
+                return result
+
+            } catch (error) {
+                return error
+            }
+        }
+
+        sendMail().then(result => console.log('Email Sent', result)).catch(error => console.log(error.message))
     }
-    });
-  
-    console.log("Message sent: %s", info.messageId);
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-  
-    // Preview only available when sending through an Ethereal account
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou..
-    } catch (error) {
-        console.log(error)
-    }
-  }
-  
 }
