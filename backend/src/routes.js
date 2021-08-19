@@ -61,6 +61,6 @@ routes.post('/requestNewPassword', userController.requestNewPassword)
 
 routes.put('/users/resetPassword/:token/', userController.resetPassword)
 
-routes.get('/app/redirect/:token/:email',(request,response)=> {response.redirect(`${appUrl}${request.params.token}/${request.params.email}`);{console.log(`${appUrl}${request.params.token}/${request.params.email}`)}})
+routes.get('/app/redirect/:token/:email',(request,response)=> {response.redirect(`${appUrl}${request.params.token}/${request.params.email}`)})
 
 module.exports = routes
