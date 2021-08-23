@@ -1,13 +1,12 @@
 import React from 'react'
-import { Dimensions, Image, Text, View } from 'react-native'
+import {Image, Text, View } from 'react-native'
 import EmailButton from '../EmailButton/EmailButton'
 import WhatsappButton from '../WhatsappButton/WhatsappButton'
 import styles from './styles'
-import Cake from '../../images/cake.jpg'
 import { RectButton } from 'react-native-gesture-handler'
 import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
-import AsyncStorage from '@react-native-community/async-storage'
+import { useProduct } from '../../Contexts/ProductContext'
 
 interface ProductItemProps{
     InfoButton?: boolean,
@@ -16,18 +15,16 @@ interface ProductItemProps{
 }
 
 export default function ProductItem(props:ProductItemProps) {
-
-
     const navigation = useNavigation()
-
+    const {setSelectedProduct} = useProduct()
 
     function handleNavigateToProfile(){
         navigation.navigate('Details', {id: props.Data.user_id})
     }
 
     async function handleNavigateToEditProduct(){
-        await AsyncStorage.setItem('@Key:tempId',JSON.stringify(props.Data.id))
-        navigation.navigate('EditProduct', {id: props.Data.id})
+        setSelectedProduct(props.Data)
+        navigation.navigate('EditProduct')
     }
 
     return(
