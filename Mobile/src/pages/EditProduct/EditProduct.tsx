@@ -18,6 +18,7 @@ import { Picker } from '@react-native-picker/picker'
 import { ImageUpload } from '../../utils/PickerImage'
 import {ProductSchema} from '../../Schema/EditProductSchema'
 import AppLoading from 'expo-app-loading'
+import { useProduct } from '../../Contexts/ProductContext'
 
 export interface RouteProps{
     Navigation:any,
@@ -42,11 +43,11 @@ type Product = {
 
 export default function EditProduct({route}:RouteProps){
     const [image,setImage] = useState(true)
-    const [productdata,setProductdata] = useState<Product>()
     const [modalVisible, setModalVisible] = useState<boolean>(false)
     const categories = ['Bolos', 'Tortas', 'Salgados', 'Biscoitos', 'Doces', 'Outros']
     const formikRef = useRef<FormikProps<FormikValues>>(null)
     const navigation = useNavigation()
+    const {selectedProduct} = useProduct()
 
     function goBack(){
         navigation.goBack()
@@ -54,19 +55,13 @@ export default function EditProduct({route}:RouteProps){
 
     async function deleteProduct(){
         setModalVisible(false)
-        if(route.params.id){
-            await api.delete(`products/delete/${JSON.parse(route.params.id)}`).then(async response => {
+        if(selectedProduct?.id){
+            await api.delete(`products/delete/${selectedProduct.id}`).then(async response => {
                 goBack()
     
             })
         }
     }
-
-    useEffect(()=>{
-        navigation.addListener('focus',()=>{
-            GetProductData()
-        })
-    }, [navigation])
 
     useEffect(()=>{
         if(image == false){
@@ -75,17 +70,8 @@ export default function EditProduct({route}:RouteProps){
     },[image])
 
 
-    async function GetProductData(){
-        if(route.params.id){
-            await api.get(`products/${JSON.parse(route.params.id)}`).then(async response => {
-                setProductdata(await response.data)
-            })
-        }
-
-    }
-
     async function handleUpdateProduct(values:Product){
-        if(route.params.id){
+        if(selectedProduct?.id){
 
             const data = new FormData()
             const name = values.name.replace(' ', '_')
@@ -103,8 +89,7 @@ export default function EditProduct({route}:RouteProps){
             } as any )
 
             try {
-                const response = await api.put(`/products/update/${route.params.id}/`, data)
-                console.log("response: ",response)
+                const response = await api.put(`/products/update/${selectedProduct.id}/`, data)
                 goBack()
                 
 
@@ -120,7 +105,6 @@ export default function EditProduct({route}:RouteProps){
     
 
     return(
-        
         <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.container}> 
             <View style={{height:160}}>
                 <ImageBackground source={Waves} style={styles.waves}>
@@ -129,11 +113,11 @@ export default function EditProduct({route}:RouteProps){
                 </ImageBackground>
             </View>
 
-            {productdata?(
+            {selectedProduct?(
                 <Formik
                 enableReinitialize={true}
                 innerRef={formikRef}
-                initialValues={{name:productdata.name, detail:productdata.detail, price: productdata.price, category:productdata.category, image:productdata.imageUrl}}
+                initialValues={{name:selectedProduct.name, detail:selectedProduct.detail, price: selectedProduct.price, category:selectedProduct.category, image:selectedProduct.imageUrl}}
                 onSubmit={values => handleUpdateProduct(values as Product)}
                 validationSchema={ProductSchema}
                 >
@@ -148,7 +132,7 @@ export default function EditProduct({route}:RouteProps){
                         
                         <Input 
                         name="Nome: " 
-                        defaultValue={productdata?.name}
+                        defaultValue={selectedProduct?.name}
                         setData={handleChange('name')} 
                         />
     
@@ -188,7 +172,7 @@ export default function EditProduct({route}:RouteProps){
                             customStyle: {height:115}
                         }} 
                         name="Detalhes: " 
-                        defaultValue={productdata?.detail} 
+                        defaultValue={selectedProduct?.detail} 
                         setData={handleChange('detail')} />
     
                         {errors.detail && (
@@ -202,12 +186,11 @@ export default function EditProduct({route}:RouteProps){
                                         style={styles.CategoryInput}
                                         selectedValue={values.category}
                                         >
-                                            {console.log(values.category)}
-                                        <Picker.Item label={productdata.category} value={productdata.category} />
+                                        <Picker.Item label={selectedProduct.category} value={selectedProduct.category} />
 
                                         {categories.map((category, i) => {
 
-                                            if(category!= productdata?.category){
+                                            if(category!= selectedProduct?.category){
                                                 return (
                                                     <Picker.Item key={category+i} label={category} value={category} />
                                                 )
@@ -224,7 +207,7 @@ export default function EditProduct({route}:RouteProps){
     
                         <Input 
                         name="Preço: " 
-                        defaultValue={JSON.stringify(productdata?.price)} 
+                        defaultValue={JSON.stringify(selectedProduct?.price)} 
                         setData={handleChange('price')} 
                         />
     
