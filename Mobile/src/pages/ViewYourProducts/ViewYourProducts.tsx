@@ -11,11 +11,6 @@ import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
 
-/*export interface Data extends Product{
-    whatsapp: string,
-    email: string,
-}*/
-
 export default function ViewYourProducts(){
 
     const navigation = useNavigation()
