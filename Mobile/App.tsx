@@ -5,6 +5,7 @@ import {Poppins_700Bold,Poppins_600SemiBold, Poppins_600SemiBold_Italic, Poppins
 import Routes from './src/routes';
 import AppLoading  from 'expo-app-loading';
 import { UserContextProvider } from './src/Contexts/UserContext';
+import { ProductContextProvider } from './src/Contexts/ProductContext';
 
 
 export default function App() {
@@ -29,7 +30,9 @@ export default function App() {
     <>
     <StatusBar style='dark'/>
     <UserContextProvider>
-      <Routes />
+      <ProductContextProvider>
+        <Routes />
+      </ProductContextProvider>
     </UserContextProvider>
     </>
   );
