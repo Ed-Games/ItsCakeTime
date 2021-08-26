@@ -69,6 +69,10 @@ export default function EditProduct({route}:RouteProps){
         }
     },[image])
 
+    useEffect(()=>{
+        console.log('4 - form data updated')
+    }, [selectedProduct])
+
 
     async function handleUpdateProduct(values:Product){
         if(selectedProduct?.id){
