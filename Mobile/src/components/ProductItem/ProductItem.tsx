@@ -16,14 +16,15 @@ interface ProductItemProps{
 
 export default function ProductItem(props:ProductItemProps) {
     const navigation = useNavigation()
-    const {setSelectedProduct} = useProduct()
+    const {handleSelectProduct} = useProduct()
 
     function handleNavigateToProfile(){
         navigation.navigate('Details', {id: props.Data.user_id})
     }
 
     async function handleNavigateToEditProduct(){
-        setSelectedProduct(props.Data)
+        await handleSelectProduct(props.Data)
+        console.log('3 - selection is done')
         navigation.navigate('EditProduct')
     }
 
