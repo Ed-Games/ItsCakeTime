@@ -1,44 +1,91 @@
-# It'sCakeTime
+<h1 align="center">
+    <img alt="It's Cake Time" src="./images/logo.svg" width="120px" style="border-radius: 50%" />
+</h1>
 
-### This is a simple website and mobile app for making connections between bakers and their customers
+<h3 align="center">
+  One click away from your favorite bakery
+</h3>
 
-```This project is opensource and it's under the MIT license, as soon as possible we'll give you the documentation explaining the fork process and all you need to get this working.```
+<p align="center">
 
-It's cake time permites that a bearker show your products (like cakes, candies, bread, pies) to the world. 
-Each Beaker is a user registered in the aplication. This user will have a profile with informations about his/hers work and a page to create and display his/hers products. All this happens in the website.
+  <a href="">
+    <img alt="Made by It's Cake TIme" src="https://img.shields.io/badge/made%20by-It'sCakeTime-%23F89">
+  </a>
 
-on the mobile app the customer will be able to see and search for products and find the beaker who is able to do that one the customer wants. So hi/she will be able to contact the beaker via whatsapp or e-mail.
+  <a href="LICENSE" >
+    <img alt="License" src="https://img.shields.io/badge/license-MIT-%23F89">
+  </a>
 
-## BEHAVIOR
+</p>
 
-### Website
+<p align="center">
+  <a href="#calendar-sobre">About</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 
+  <a href="#memo-licença">License</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 
+  <a href="https://www.figma.com/file/RbmdScgh54OmfgdHDJDvmw/DoctorWeb-Figma?node-id=0%3A1">Figma</a>
+</p>
 
-- <strong>Landing Page</strong>:<br />
-  A fast and simple explanation about the website and links to get started.
-  
-- <strong>Login Page</strong>: <br />
-  The user can log in or request for a password reset, in case his/her forgot it.
-  
-- <strong>Profile</strong>: <br />
-  Here the user can change the info that will be displayed about his/hers work.
-  There will be the user's name, a simple description, infos about the user's specialty and contact (e-mail or whatsapp).
-  
-- <strong>Products-page</strong>:
-  In this page, the user's products will be displayed with price, details and the contact buttons.
-  
-- <strong>Register Product</strong>: <br />
-  Here the user will have a form to register a new product with them same data explained in the product page.
 
-### Mobile
 
-- <strong>Initial Screen</strong>:<br />
-  A fast and simple explanation about the app and buttons to get started.
+## 📆 About
 
-- <strong>List screen</strong>:<br />
-  Here the user can search and see a list of products ordered by category.
-  
-- <strong>List specific product Screen</strong>: <br />
-  After pressing a detail button on the List Screen, the user will se a full info about one product and the contact buttons. There'll also be a button to see the   baker's profile.
+This is a simple mobile app for making connections between bakers and their customers.
 
-- <strong>Beakers Profile Screen</strong>:<br />
-  Here the info from the Profile page on the website is displayed for the customer.
+If you are a baker, you'll be able to create your account and show your cakes and candies to the world. If you are a costumer, you be able to search and found that perfect cake for the event you're planning.
+
+
+
+## 💻 How to execute the project
+
+To run the project source code you'll need Node.Js on your machine.
+
+[Download NodeJs here](https://nodejs.org/en/download/)
+
+If you have Node.js installed, follow this steps in your terminal:
+
+> git clone https://github.com/Ed-Games/ItsCakeTime.git
+
+> cd itsCakeTime
+
+> cd backends
+
+> yarn dev
+
+Let the server runing and open another terminal in ItsCakeTime folder.
+
+> cd Mobile
+
+> yarn start
+
+To see the app working download Expo Client [here](https://docs.expo.dev/) and use it to read the QR Code that will appear.
+
+
+
+## 📝 Licença
+
+This project is licensed under the MIT license. See the [LICENSE](/LICENSE) file for details.
+
+Please, if you are going to create another project with the same images and artwork, give credit to the authors: <br>
+<a href="https://storyset.com/business">SVG illustrations by Storyset</a><br>
+<a href="https://www.blobmaker.app/">Blobs SVG made by Blobmaker</a>
+
+## 🖼️ Images
+<h1 align="center">
+    <img alt="Image 01" src="./images/splash.svg" width="400px" />
+</h1>
+<h1 align="center">
+    <img alt="Image 02" src="./images/Landing.svg" width="400px" />
+</h1>
+<h1 align="center">
+    <img alt="Image 03" src="./images/list.svg" width="400px" />
+</h1>
+<h1 align="center">
+    <img alt="Image 04" src="./images/profile.svg" width="400px" />
+</h1>
+<h1 align="center">
+    <img alt="Image 05" src="./images/menu.svg" width="400px" />
+</h1>
+<h1 align="center">
+    <img alt="Image 06" src="./images/Login.svg" width="400px" />
+</h1>
+
+---
