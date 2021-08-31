@@ -53,7 +53,7 @@ export default function ProductItem(props:ProductItemProps) {
                     </RectButton>
                 )}
             </View>
-            <Text style={styles.ProductDescription}>{props.Data.detail}</Text>
+            <Text numberOfLines={3} style={styles.ProductDescription}>{props.Data.detail}</Text>
             <View style={styles.FlexRowView}>
                 {props.Data.whatsapp && (
                     <WhatsappButton number ={props.Data.whatsapp} />

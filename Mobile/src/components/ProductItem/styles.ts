@@ -56,10 +56,10 @@ const styles = StyleSheet.create({
     ProductDescription : {
         marginTop: 20,
         marginLeft:15,
-        width: 220,
+        width: Dimensions.get('screen').width -60,
         fontFamily: 'Poppins_300Light',
         fontSize: 15,
-        height: 80
+        height: 60,
     },
 
     LinkButton:{
