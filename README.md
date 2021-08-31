@@ -8,7 +8,7 @@
 
 <p align="center">
 
-  <a href="">
+  <a href="#">
     <img alt="Made by It's Cake TIme" src="https://img.shields.io/badge/made%20by-It'sCakeTime-%23F89">
   </a>
 
@@ -21,7 +21,7 @@
 <p align="center">
   <a href="#calendar-sobre">About</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 
   <a href="#memo-licença">License</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 
-  <a href="https://www.figma.com/file/RbmdScgh54OmfgdHDJDvmw/DoctorWeb-Figma?node-id=0%3A1">Figma</a>
+  <a href="https://www.figma.com/file/pd9G6cgbUey1yrHm11V393/It-sCakeTime?node-id=0%3A1">Figma</a>
 </p>
 
 
