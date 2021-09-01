@@ -32,6 +32,13 @@ This is a simple mobile app for making connections between bakers and their cust
 
 If you are a baker, you'll be able to create your account and show your cakes and candies to the world. If you are a costumer, you be able to search and found that perfect cake for the event you're planning.
 
+### Deployed Application:
+
+it's Cake Time API: https://itscaketime-server.herokuapp.com/products
+
+IT's Cake Time APK download: 
+https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40edmarcos_filho/Mobile-79cb4b335d0741bcb3e25510511395ce-signed.apk
+
 
 
 ## 💻 How to execute the project
