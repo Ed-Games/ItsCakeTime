@@ -8,11 +8,12 @@ import { Feather } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import { useProduct } from '../../Contexts/ProductContext'
 
-interface ProductItemProps{
+type ProductItemProps = {
     InfoButton?: boolean,
     EditButton?:boolean,
     Data: Product
 }
+
 
 export default function ProductItem(props:ProductItemProps) {
     const navigation = useNavigation()
@@ -22,10 +23,8 @@ export default function ProductItem(props:ProductItemProps) {
         navigation.navigate('Details', {id: props.Data.user_id})
     }
 
-    async function handleNavigateToEditProduct(){
-        await handleSelectProduct(props.Data)
-        console.log('3 - selection is done')
-        navigation.navigate('EditProduct')
+    function handleNavigateToEditProduct(){
+        handleSelectProduct(props.Data)
     }
 
     return(
