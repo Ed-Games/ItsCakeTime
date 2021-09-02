@@ -1,10 +1,12 @@
 import React,{ ReactNode } from "react";
+import { useEffect } from "react";
 import { createContext, useContext, useState } from "react";
+import { Navigate } from "../services/RootNavigation";
 
 type ProductContext = {
     selectedProduct: Product| undefined,
     setSelectedProduct: (product: Product) => void,
-    handleSelectProduct: (data: Product) => Promise<void>,
+    handleSelectProduct: (data: Product) => void,
 }
 
 type ProductContextProviderProps = {
@@ -16,11 +18,13 @@ const ProductContext = createContext({} as ProductContext)
 export function ProductContextProvider({children}: ProductContextProviderProps){
     const [selectedProduct, setSelectedProduct] = useState<Product>()
 
-    async function handleSelectProduct(data: Product){
-        console.log('1 - product data is been copied')
+    function handleSelectProduct(data: Product){
         setSelectedProduct(data)
-        console.log('2 - product data is now selected')
     }
+
+    useEffect(()=>{
+        Navigate('EditProduct', {})
+    }, [selectedProduct])
 
 
     return(
