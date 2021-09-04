@@ -37,7 +37,7 @@ If you are a baker, you'll be able to create your account and show your cakes an
 it's Cake Time API: https://itscaketime-server.herokuapp.com/products
 
 IT's Cake Time APK download: 
-https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40edmarcos_filho/Mobile-79cb4b335d0741bcb3e25510511395ce-signed.apk
+https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40edmarcos_filho/Mobile-5d8bc32c307c446dad45b42cf23e13cb-signed.apk
 
 
 
