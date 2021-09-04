@@ -145,7 +145,7 @@ module.exports = {
             const {search} = request.query
             const profiles = await connection('profile')
             .join('user','user.id','profile.user_id')
-            .select('user.userName','profile.image','profile.specialty','profile.id').where('user.userName','=',search)
+            .select('user.userName','profile.image','profile.specialty','profile.id').where('user.userName','like',`%${search}%`)
 
             const serializedProfiles = profiles.map(profile => {
                 return {
