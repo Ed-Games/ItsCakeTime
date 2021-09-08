@@ -23,7 +23,8 @@
     "nodemon": "^2.0.4",
     "pg": "^8.6.0",
     "pg-connection-string": "^2.5.0",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.0",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "morgan": "^1.10.0"
