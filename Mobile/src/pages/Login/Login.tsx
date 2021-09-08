@@ -32,7 +32,7 @@ export default function Login(){
 
     async function SignIn(values:{user:string, password:string}){
         const credentials = {
-            userName: values.user.trim(),
+            user: values.user.trim(),
             password: values.password.trim(),
         }
         
@@ -43,7 +43,7 @@ export default function Login(){
             })
             navigation.navigate('Profile') 
             
-        } catch (err) {
+        } catch (err: any) {
             console.log(err)
             if(err.response.status == 400){
                 console.log(err.response.status)
