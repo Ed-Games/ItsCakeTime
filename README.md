@@ -53,7 +53,7 @@ If you have Node.js installed, follow this steps in your terminal:
 
 > cd itsCakeTime
 
-> cd backends
+> cd backend
 
 > yarn dev
 
