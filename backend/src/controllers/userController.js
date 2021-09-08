@@ -1,9 +1,9 @@
 require('dotenv').config()
 const connection = require('../database/connection')
 const jwt = require('jsonwebtoken')
-const {generateAccessToken} = require('../services/authorization')
+const {generateAccessToken} = require('../middlewares/authorization')
 const crypto = require('crypto')
-const {nodemailerSender}  = require('../services/nodemailer')
+const {nodemailerSender}  = require('../config/nodemailer')
 
 module.exports = {
     async index(request, response){
@@ -17,14 +17,13 @@ module.exports = {
     },
 
     async login(request,response){
-        if(!request.body.userName || !request.body.password) return response.sendStatus(400)
-        const {userName, password} = request.body
+        const {user, password} = request.body
        try {
-            const user = await connection('user')
+            const resultUser = await connection('user')
             .select('*')
-            .where("user.userName","=",userName)
+            .where("user.userName","=",user).first()
             .andWhere("user.password","=",password)
-            if (!user[0].userName) return response.status(404).json("No user found")
+            if (!resultUser) return response.status(404).json("No user found")
 
        } catch (error) {
            console.log(error)
@@ -32,12 +31,12 @@ module.exports = {
        }
         
         try {
-            const userauth = {name : userName}
-            const accessToken = generateAccessToken(userName)
+            const userauth = {name : user}
+            const accessToken = generateAccessToken(user)
             const refreshToken = jwt.sign(userauth,''+process.env.REFRESH_TOKEN_SECRET)
-            await connection('user').where('user.userName','=',userName).update({refreshToken})
-            const data = await connection('user').select('email','id').where('user.userName',userName)
-            return response.json({accessToken : accessToken, refreshToken:refreshToken,userName,email: data[0]['email'], id: data[0]['id']})  
+            await connection('user').where('user.userName','=',user).update({refreshToken})
+            const data = await connection('user').select('email','id').where('user.userName',user).first()
+            return response.json({accessToken : accessToken, refreshToken:refreshToken,user,email: data['email'], id: data['id']})  
  
         } catch (error) {
             console.log(error)

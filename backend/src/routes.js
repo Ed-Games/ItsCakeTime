@@ -3,11 +3,13 @@ const express = require('express')
 const productController = require('./controllers/productController')
 const profileController = require('./controllers/profileController')
 const userController = require('./controllers/userController')
-const upload = require('./services/multerConfig')
+const upload = require('./config/multerConfig')
+const validation = require('./middlewares/validation')
 
 
 const routes = express.Router()
-const { authenticateToken, refreshToken } = require('./services/authorization')
+const { authenticateToken, refreshToken } = require('./middlewares/authorization')
+const loginSchema = require('./schemas/loginSchema')
 const appUrl = process.env.PROJECT_MODE? 'itscaketime:///CreateNewPasswd/' : 'exp://10.0.0.105:19000/--/CreateNewPasswd/'
 
 routes.use(express.json())
@@ -19,7 +21,7 @@ routes.use(urlencoded({
 
 !process.env.PROJECT_MODE && routes.get('/users/', userController.index) //NOT TO USE IN PRODUCTION
 
-routes.post('/login', userController.login)
+routes.post('/login',validation(loginSchema),userController.login)
 
 routes.post('/users/register/', userController.create)
 
