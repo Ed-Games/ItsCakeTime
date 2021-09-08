@@ -59,13 +59,13 @@ module.exports = {
 
     async create(request,response){
         try {
-            const {userName, email, password, whatsapp, image} = request.body
+            const {user, email, password, whatsapp, image} = request.body
  
             const trx = await connection.transaction()
 
             const hasUserWithTheseCredentials = await trx('user')
             .where('user.email','=',email)
-            .orWhere('user.userName','=',userName)
+            .orWhere('user.userName','=',user)
             .count().first()
 
             console.log("there is a user with these credentials? :",hasUserWithTheseCredentials.count)
@@ -79,7 +79,7 @@ module.exports = {
             } else {
                 console.log('there is no user with these credentials, go ahead')
                 await trx('user').insert({
-                    userName,
+                    userName: user,
                     email,
                     password,
                 })
