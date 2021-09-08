@@ -1,16 +1,18 @@
-const { urlencoded } = require('express')
 const express = require('express')
+const { urlencoded } = require('express')
+
 const productController = require('./controllers/productController')
 const profileController = require('./controllers/profileController')
 const userController = require('./controllers/userController')
+
 const upload = require('./config/multerConfig')
 const validation = require('./middlewares/validation')
+const { authenticateToken, refreshToken } = require('./middlewares/authorization')
 
+const {loginSchema, userSchema, profileSchema} = require('./schemas/schemas')
+const appUrl = process.env.PROJECT_MODE? 'itscaketime:///CreateNewPasswd/' : 'exp://10.0.0.105:19000/--/CreateNewPasswd/'
 
 const routes = express.Router()
-const { authenticateToken, refreshToken } = require('./middlewares/authorization')
-const loginSchema = require('./schemas/loginSchema')
-const appUrl = process.env.PROJECT_MODE? 'itscaketime:///CreateNewPasswd/' : 'exp://10.0.0.105:19000/--/CreateNewPasswd/'
 
 routes.use(express.json())
 
@@ -23,7 +25,7 @@ routes.use(urlencoded({
 
 routes.post('/login',validation(loginSchema),userController.login)
 
-routes.post('/users/register/', userController.create)
+routes.post('/users/register/',validation(userSchema) ,userController.create)
 
 routes.delete('/users/delete/:id/',authenticateToken, userController.delete)
 
@@ -37,7 +39,7 @@ routes.get('/profile/search/',profileController.search)
 
 routes.get('/profile/:id', profileController.detail)
 
-routes.put('/profile/update/:id/',authenticateToken,upload.single('image') ,profileController.update)
+routes.put('/profile/update/:id/',validation(profileSchema),authenticateToken,upload.single('image') ,profileController.update)
 
 routes.get('/products/', productController.index)
 
