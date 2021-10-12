@@ -67,7 +67,7 @@ To see the app working download Expo Client [here](https://docs.expo.dev/) and u
 
 
 
-## 📝 Licença
+## 📝 License
 
 This project is licensed under the MIT license. See the [LICENSE](/LICENSE) file for details.
 
