@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default async function GetUser(){
     const exists = await AsyncStorage.getItem('@Key:user')
