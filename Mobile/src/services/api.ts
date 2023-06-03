@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
-import { Alert } from 'react-native'
 import {Navigate} from './RootNavigation'
 
 async function GetUserData(){
@@ -9,7 +8,7 @@ async function GetUserData(){
 }
 
 const api = axios.create({
-    baseURL: process.env.NODE_ENV === 'production'? 'https://itscaketime-server.herokuapp.com' : process.env.NODE_ENV === 'test'? 'https://itscaketime-server.herokuapp.com' : 'http://10.0.0.105:3333',
+    baseURL: process.env.APP_URL,
     headers: {
         'Content-Type': 'application/json',
     }
@@ -22,12 +21,6 @@ api.interceptors.response.use(
 
     error => {
         if(error.message == 'Network Error'){
-            /*Alert.alert('Aviso', 
-            'Desculpe, houve uma falha na conexão. Tente novamente mais tarde',
-            [{text: 'Ok'}],
-            {cancelable:false}
-            )*/
-
             Navigate('Landing',{message:'connection error'})
             return
             
