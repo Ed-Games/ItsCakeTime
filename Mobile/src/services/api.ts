@@ -2,13 +2,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import {Navigate} from './RootNavigation'
 
+import {APP_URL } from '@env';
+
 async function GetUserData(){
     const userData = await AsyncStorage.getItem('@Key:user')
     if(userData) return JSON.parse(userData)
 }
 
 const api = axios.create({
-    baseURL: process.env.APP_URL,
+    baseURL: APP_URL,
     headers: {
         'Content-Type': 'application/json',
     }
