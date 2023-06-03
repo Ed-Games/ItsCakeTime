@@ -3,11 +3,10 @@ import React from 'react'
 import { Feather } from '@expo/vector-icons';
 import Search from '../../pages/SearchProfiles/Search';
 
-
 const Stack = createStackNavigator()
 
 
-export default function ProfileScreen({navigation}) {
+export default function ProfileScreen({navigation}: any) {
 
     function handleNavigateToPreviousPage(){
         navigation.goBack()
