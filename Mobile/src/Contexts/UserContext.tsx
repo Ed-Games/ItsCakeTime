@@ -44,20 +44,20 @@ export const UserContextProvider = ({children}:UserContextProviderProps) => {
     }
 
     async function LoadUserDataFromStorage(){
-        const userData = await AsyncStorage.getItem('@Key:user')
+        const userData = await AsyncStorage.getItem('user')
         if(userData){
             setLoggedUser(JSON.parse(userData))
         } 
     }
 
     async function SaveUserDataToStorage(user: User){
-        await AsyncStorage.setItem('@Key:user', JSON.stringify(user)).catch(error => {return false})
+        await AsyncStorage.setItem('user', JSON.stringify(user)).catch(error => {return false})
         setLoggedUser(user)
         return true
     }
 
     async function ClearUserDataFromStorage(){
-        await AsyncStorage.removeItem('@Key:user')
+        await AsyncStorage.removeItem('user')
         setLoggedUser({} as User)
         setProfileData(undefined)
     }

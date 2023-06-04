@@ -21,7 +21,7 @@ export default function Landing({navigation, params }: any) {
   }
 
   async function handleNavigateToNext() {
-    const user = await AsyncStorage.getItem("@Key:user");
+    const user = await AsyncStorage.getItem("user");
     navigation.navigate(user ? "Profile" : "Login");
   }
 

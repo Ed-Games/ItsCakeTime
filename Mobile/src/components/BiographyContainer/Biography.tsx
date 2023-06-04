@@ -17,7 +17,7 @@ export default function Biography(props: BiographyProps) {
   const navigation:any = useNavigation();
 
   async function handleNavigateToProfileProducts() {
-    const user = await AsyncStorage.getItem("@Key:user");
+    const user = await AsyncStorage.getItem("user");
     if (user) {
       navigation.navigate("ViewYourProducts");
     } else {
