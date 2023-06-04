@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Dimensions, Image, ImageBackground, Text, View, KeyboardAvoidingView, Platform } from 'react-native'
 import styles from './styles'
 import Waves from '../../images/waves.png'
@@ -8,7 +8,6 @@ import { RectButton, ScrollView } from 'react-native-gesture-handler'
 import { Picker } from '@react-native-picker/picker'
 import selectImg from '../../images/select.png'
 import { Feather } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
 import api from '../../services/api'
 import { Formik } from 'formik'
 import { ProductSchema } from '../../Schema/ProductSchema'
@@ -22,10 +21,7 @@ type ProductData = {
     image: string
 }
 
-export default function ProductRegister(){
-    const [images,setImages] = useState<string[]>([])
-    const navigation = useNavigation()
-
+export default function ProductRegister({navigation}: any){
     async function handleSubmitMultipartForm(values: ProductData){
         const data = new FormData()
 
@@ -45,7 +41,6 @@ export default function ProductRegister(){
             console.log(response)
         }).catch(err => console.log(err))
         navigation.navigate('ViewYourProducts')
-        console.log(data)
 
     }
 
