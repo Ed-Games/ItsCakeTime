@@ -19,26 +19,24 @@ interface ProfileProps {
   };
 }
 
-export default function Profile({navigation, name, params}:any) {
+export default function Profile({ navigation, name, params }: any) {
   const [image, setImage] = useState("");
   const [data, setData] = useState<Profile>();
 
   const { loggedUser, LoadProfileDataFromAPI, profileData } = useUser();
 
   const handleChangeProfileDataState = async () => {
-    setData(await LoadProfileDataFromAPI());
+    const profile  = await LoadProfileDataFromAPI();
+      setData(profile)
   };
 
   async function GetSelectedProfileData(id: string) {
-    console.log("id: ", id);
-    await api
-      .get(`/profile/${id}`)
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    try {
+      const { data } = await api.get(`/profile/${id}`);
+      setData(data)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   async function handleImageUpload() {
