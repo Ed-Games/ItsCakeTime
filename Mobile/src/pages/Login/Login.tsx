@@ -44,13 +44,10 @@ export default function Login({ navigation }: any) {
 
     try {
       const { data } = await api.post("login", credentials);
-      console.log(data)
       await SaveUserDataToStorage(data);
       navigation.navigate("Profile");
     } catch (err: any) {
-      console.log(err);
       if (err.response.status == 400) {
-        console.log(err.response.status);
         setLoginModalVisible(true);
         return;
       } else {
@@ -61,11 +58,9 @@ export default function Login({ navigation }: any) {
 
   async function requestPassword(email: string) {
     setForgotPasswdModalVisible(false);
-    console.log("email: ", email);
     const data = {
       email: email,
     };
-    console.log(data);
     const response = await api
       .post("requestNewPassword", data)
       .then((response) => {

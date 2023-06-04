@@ -29,7 +29,6 @@ export default function ViewProfileProducts(props: any) {
   async function getProducts(id: string) {
     await api.get(`profile/${id}/products`).then((response) => {
       setProducts(response.data);
-      console.log(products);
     });
   }
 

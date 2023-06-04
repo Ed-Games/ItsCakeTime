@@ -31,7 +31,6 @@ export default function Search(){
     }
 
     async function GetSearchResults(){
-        console.log(selectedProfile)
         await api.get('profile/search', {
             params: {
                 search: selectedProfile
