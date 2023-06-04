@@ -40,7 +40,6 @@ export const UserContextProvider = ({children}:UserContextProviderProps) => {
         } catch (error) {
             setProfileData(undefined)
             ClearUserDataFromStorage()
-            console.log("Erro: ",error)
         }
     }
 

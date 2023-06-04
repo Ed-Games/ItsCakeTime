@@ -108,8 +108,6 @@ export default function EditProduct() {
         );
         goBack();
       } catch (error) {
-        console.log(error);
-
         Alert.alert("Ops! um erro ocorreu, tente novamente mais tarde");
       }
     }
@@ -202,7 +200,9 @@ export default function EditProduct() {
                 </View>
 
                 {errors.image && (
-                  <Text style={{ color: "red" }}>{errors.image.toString()}</Text>
+                  <Text style={{ color: "red" }}>
+                    {errors.image.toString()}
+                  </Text>
                 )}
 
                 <Input
@@ -216,7 +216,9 @@ export default function EditProduct() {
                 />
 
                 {errors.detail && (
-                  <Text style={{ color: "red" }}>{errors.detail.toString()}</Text>
+                  <Text style={{ color: "red" }}>
+                    {errors.detail.toString()}
+                  </Text>
                 )}
 
                 <Text style={styles.InputText}>Categoria: </Text>
@@ -246,7 +248,9 @@ export default function EditProduct() {
                   <Image style={styles.selectImg} source={selectImg} />
                 </View>
                 {errors.category && (
-                  <Text style={{ color: "red" }}>{errors.category.toString()}</Text>
+                  <Text style={{ color: "red" }}>
+                    {errors.category.toString()}
+                  </Text>
                 )}
 
                 <Input
@@ -256,7 +260,9 @@ export default function EditProduct() {
                 />
 
                 {errors.price && (
-                  <Text style={{ color: "red" }}>{errors.price.toString()}</Text>
+                  <Text style={{ color: "red" }}>
+                    {errors.price.toString()}
+                  </Text>
                 )}
               </ScrollView>
 
