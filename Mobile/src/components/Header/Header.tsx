@@ -1,8 +1,7 @@
 import { Feather } from '@expo/vector-icons'
 import { DrawerActions, useNavigation } from '@react-navigation/native'
 import React from 'react'
-import { Image, Text, View } from 'react-native'
-import { RectButton } from 'react-native-gesture-handler'
+import { Text, View } from 'react-native'
 import styles from './styles'
 
 interface Headerprops {
