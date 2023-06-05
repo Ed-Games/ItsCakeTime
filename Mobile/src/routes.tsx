@@ -52,6 +52,7 @@ export default function Routes() {
       <Drawer.Navigator
         drawerContent={(props) => <DrawerContent {...props} />}
         initialRouteName="Landing"
+        screenOptions={{ headerShown: false }}
       >
         <Drawer.Screen name="Landing" component={Landing} />
         <Drawer.Screen name="ProductList" component={ProductsList} />
