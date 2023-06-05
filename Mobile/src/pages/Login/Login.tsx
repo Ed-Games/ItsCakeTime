@@ -1,7 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import {
-  GestureResponderEvent,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -29,7 +27,6 @@ export default function Login({ navigation }: any) {
   const [loginModalVisible, setLoginModalVisible] = useState(false);
   const [forgotPasswdmodalVisible, setForgotPasswdModalVisible] =
     useState(false);
-  const [email, setEmail] = useState("");
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
 
   function handleNavigateToRegister() {
@@ -68,7 +65,6 @@ export default function Login({ navigation }: any) {
       })
       .catch((err) => console.log(err));
     navigation.navigate("ResetPasswd");
-    setEmail("");
   }
 
   useEffect(() => {
