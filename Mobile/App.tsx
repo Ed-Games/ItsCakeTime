@@ -1,7 +1,7 @@
 import "react-native-gesture-handler";
 
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Archivo_600SemiBold,
   Archivo_700Bold,
@@ -17,9 +17,12 @@ import {
   Poppins_500Medium,
 } from "@expo-google-fonts/poppins";
 import Routes from "./src/routes";
-import AppLoading from "expo-app-loading";
 import { UserContextProvider } from "./src/Contexts/UserContext";
 import { ProductContextProvider } from "./src/Contexts/ProductContext";
+import * as SplashScreen from 'expo-splash-screen';
+import { View } from "react-native";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -34,17 +37,23 @@ export default function App() {
     Poppins_400Regular,
   });
 
+  const onLayoutRootView = useCallback(async()=>{
+    if(fontsLoaded){
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded])
+
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return null;
   }
   return (
-    <>
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <StatusBar style="dark" />
       <UserContextProvider>
         <ProductContextProvider>
           <Routes />
         </ProductContextProvider>
       </UserContextProvider>
-    </>
+    </View>
   );
 }
