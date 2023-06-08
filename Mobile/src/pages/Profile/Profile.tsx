@@ -10,32 +10,22 @@ import styles from "./style";
 import { useUser } from "../../Contexts/UserContext";
 import { ImageUpload } from "../../utils/PickerImage";
 
-interface ProfileProps {
-  route: {
-    name: string;
-    params: {
-      id: string;
-    };
-  };
-}
-
-export default function Profile({ navigation, name, params }: any) {
+export default function Profile({ navigation, routes }: any) {
   const [image, setImage] = useState("");
   const [data, setData] = useState<Profile>();
-
-  const { loggedUser, LoadProfileDataFromAPI, profileData } = useUser();
+  const { loggedUser, LoadProfileDataFromAPI } = useUser();
 
   const handleChangeProfileDataState = async () => {
-    const profile  = await LoadProfileDataFromAPI();
-      setData(profile)
+    const profile = await LoadProfileDataFromAPI();
+    setData(profile);
   };
 
   async function GetSelectedProfileData(id: string) {
     try {
       const { data } = await api.get(`/profile/${id}`);
-      setData(data)
+      setData(data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -58,14 +48,12 @@ export default function Profile({ navigation, name, params }: any) {
   }
 
   useEffect(() => {
-    navigation.addListener("focus", () => {
-      if (name == "Profile") handleChangeProfileDataState();
-    });
-  }, [navigation]);
-
-  useEffect(() => {
-    if (name == "Details") GetSelectedProfileData(params?.id);
-  }, [name]);
+    if(routes?.name == "Details") {
+      GetSelectedProfileData(routes?.params?.id);
+    } else {
+      handleChangeProfileDataState();
+    }
+  }, [routes]);
 
   return (
     <View style={styles.container}>
