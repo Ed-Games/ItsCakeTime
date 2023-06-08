@@ -10,7 +10,7 @@ import styles from "./style";
 import { useUser } from "../../Contexts/UserContext";
 import { ImageUpload } from "../../utils/PickerImage";
 
-export default function Profile({ navigation, routes }: any) {
+export default function Profile({ route }: any) {
   const [image, setImage] = useState("");
   const [data, setData] = useState<Profile>();
   const { loggedUser, LoadProfileDataFromAPI } = useUser();
@@ -48,12 +48,12 @@ export default function Profile({ navigation, routes }: any) {
   }
 
   useEffect(() => {
-    if(routes?.name == "Details") {
-      GetSelectedProfileData(routes?.params?.id);
+    if(route?.name == "Details") {
+      GetSelectedProfileData(route?.params?.id);
     } else {
       handleChangeProfileDataState();
     }
-  }, [routes]);
+  }, [route]);
 
   return (
     <View style={styles.container}>
