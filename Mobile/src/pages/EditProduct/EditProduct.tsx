@@ -26,7 +26,6 @@ import { Formik, FormikProps, FormikValues } from "formik";
 import { Picker } from "@react-native-picker/picker";
 import { ImageUpload } from "../../utils/PickerImage";
 import { ProductSchema } from "../../Schema/EditProductSchema";
-import AppLoading from "expo-app-loading";
 import { useProduct } from "../../Contexts/ProductContext";
 
 export interface RouteProps {
@@ -128,7 +127,7 @@ export default function EditProduct() {
         </ImageBackground>
       </View>
 
-      {selectedProduct ? (
+      {selectedProduct && (
         <Formik
           enableReinitialize={true}
           innerRef={formikRef}
@@ -289,8 +288,6 @@ export default function EditProduct() {
             </>
           )}
         </Formik>
-      ) : (
-        <AppLoading />
       )}
 
       <ModalView
